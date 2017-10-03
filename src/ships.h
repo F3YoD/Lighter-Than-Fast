@@ -25,7 +25,7 @@ typedef struct {
   // maybe some part of it should be randomly generated?
   const char * name;
   // a ship has health, it is destroyed if this goes to or bellow 0
-  int health_points;
+  int hp;
   // a ship has belongings onboard
   belongings_t belongings;
   // a ship deals damage to others, with some room for randomness
