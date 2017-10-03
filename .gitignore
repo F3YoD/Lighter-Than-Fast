@@ -1,0 +1,5 @@
+# Discard all objects
+obj/*
+
+# Emacs and other editor files
+.#.*
