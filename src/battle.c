@@ -39,5 +39,8 @@ void shoot(ship_t* s1, ship_t* s2, const int shoottype)
     else if (s2->hp < damage) {
       destruction(s2);
     }
+    if (s2->hp <= 0){
+      destruction(s2);
+    }  
   }
 }
