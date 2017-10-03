@@ -50,4 +50,34 @@ void load_ships();
 // load one single ship
 ship_t get_ship(FILE *);
 
+
+//when a ship si shooting
+void shoot(ship_t* s1, ship_t* s2, int shoottype){
+  //3 damage type, 1,2,3.
+    int damage_min=s1->damage_min;
+    int damage_max=s1->damage_min;
+  //calibrate damage with the type of shoot
+    if (shoottype ==2){
+      damge_min++;
+      damage_max++;
+    }
+    else if (shoottype ==3){
+      damage_min=damage_min+2;
+      damage_max=damage_max+2;
+    }
+  //damage calcul
+    int damage=alea(damage_min,damage_max);
+    if(touch_chance>s2.dodge_score){
+      if (s2->shield<damage){
+        damage=damage-s2->shield;
+        s2->shield=0;
+        s2->hp=s2->hp-damage;
+      }
+      else if (s2->shield>damage){
+        s2->shield=s2->shield-damage;
+      }
+      else if (s2->hp<damage){
+        destruction(s2);
+      }
+    } 
 #endif
