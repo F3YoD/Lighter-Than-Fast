@@ -1,4 +1,4 @@
-# Lighter Than Fast
+# Lighter Than Fast : Unknow Within
 
 "Programmation nécessaire" project; Université de Lorraine, 2017.
 
