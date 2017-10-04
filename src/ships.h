@@ -23,7 +23,7 @@ typedef struct {
 typedef struct {
   // a ship is identified by a name
   // maybe some part of it should be randomly generated?
-  const char * name;
+  char * name;
   // a ship has health, it is destroyed if this goes to or bellow 0
   int hp;
   // a ship has belongings onboard
