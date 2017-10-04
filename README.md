@@ -1,4 +1,4 @@
-# Slower Than Light
+# Lighter Than Fast
 
 "Programmation nécessaire" project; Université de Lorraine, 2017.
 
