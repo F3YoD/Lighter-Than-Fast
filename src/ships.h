@@ -1,8 +1,9 @@
 #ifndef _SHIPS_
 #define _SHIPS_
 
+#include <stdio.h>
 #include <stdlib.h>
-#include <bool.h>
+#include <stdbool.h>
 #include <string.h>
 
 /***

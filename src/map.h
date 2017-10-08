@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <bool.h>
+#include <stdbool.h>
 
 #include "ships.h"
 
@@ -13,7 +13,7 @@
  */
 
 typedef struct node {
-  // there can be a ship or a shop under the node
+  // either a ship or a shop in a node
   void * target;
   // one node can lead to other nodes, represented as an array
   struct node * next;

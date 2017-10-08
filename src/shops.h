@@ -2,7 +2,7 @@
 #define _LIGHTER_SHOPS_
 
 #include <stdlib.h>
-#include <bool.h>
+#include <stdbool.h>
 #include <string.h>
 
 typedef struct {

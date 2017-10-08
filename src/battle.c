@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include <bool.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
@@ -26,9 +26,9 @@ void shoot(ship_t* s1, ship_t* s2, const int shoottype)
   }
 
   // determine inflicted damage
-  int touch_chance = alea(0,100);
+  int touch_chance = alea(0, 100);
   int damage = alea(damage_min, damage_max);
-  if (touch_chance > s2.dodge_score) {
+  if (touch_chance > s2->dodge_score) {
     if (s2->shield < damage) {
       damage = damage-s2->shield;
       s2->shield = 0;
@@ -38,10 +38,10 @@ void shoot(ship_t* s1, ship_t* s2, const int shoottype)
       s2->shield = s2->shield - damage;
     }
     else if (s2->hp < damage) {
-      destruction(s2);
+      // destruction(s2);
     }
     if (s2->hp <= 0){
-      destruction(s2);
-    }  
+      // destruction(s2);
+    }
   }
 }
