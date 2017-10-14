@@ -5,8 +5,12 @@
 #include <stdbool.h>
 #include <string.h>
 
-typedef struct {
-  // hey, why not use ships and add a variable defining if they are trading rather than hostile?
-} shop_t;
+typedef struct
+{
+    // Hey, why not use ships and add a variable defining if they are trading rather than hostile?
+    // Could make sense provided that:
+    //  - shops will only allow to repair ship or get scraps
+}
+shop_t;
 
 #endif

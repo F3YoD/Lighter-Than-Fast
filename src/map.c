@@ -9,9 +9,9 @@
 
 map_t build_map()
 {
-  // create entry node
+    // create entry node
 
-  // create each columns
+    // create each columns
 
-  // create exit node
+    // create exit node
 }

@@ -10,11 +10,11 @@
 /* Project libraries */
 #include "ships.h"
 
-int main()
+int main(void)
 {
-  // parse command-line arguments here
-  /* IDEAS */
-  // --help
-  // --lang=en
-  // --no-easter
+    // parse command-line arguments here
+    /* IDEAS */
+    // --help
+    // --lang=en
+    // --no-easter
 }

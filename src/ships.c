@@ -8,11 +8,11 @@
 
 void load_ships()
 {
-  char shipfiles_path[] = "../path/to/files";
-  // TODO define the need for a "master" file that redirects to other files
+    char shipfiles_path[] = "../path/to/files";
+    // TODO define the need for a "master" file that redirects to other files
 }
 
-ship_t get_ship(FILE * shipfile)
+ship_t get_ship(FILE *shipfile)
 {
-  // parse the ship files
+    // Parse the ship files
 }
