@@ -6,6 +6,7 @@ SDLFLAGS=`sdl2-config --cflags --libs`
 O=../obj
 
 all: $(O) ../bin $(O)/main.o
+	@mkdir -p $(O)
 	gcc $(CFLAGS) -o ../bin/$(NAME) $(O)/main.o $(SDLFLAGS)
 
 # necessary folders
@@ -27,4 +28,4 @@ $(O)/%.o: %.c %.h  # for ships, shops, map
 
 # cleaning
 clean:
-	rm -v $(O)/*
+	@rm -rfv $(O)/
