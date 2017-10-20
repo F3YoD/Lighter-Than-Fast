@@ -42,6 +42,8 @@ typedef struct
     int shield;
     /* IDEAS */
     // int crew_size;
+    // Enemy and self level, to balance gameplay, e.g. having more enemies of class X if player is class X
+    // int level;
 }
 ship_t;
 
