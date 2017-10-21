@@ -5,10 +5,13 @@
 #include <string.h>
 
 /* External libraries */
-#include <ncurses.h>
+//#include <ncurses.h>
+#include <SDL2/SDL>
 
 /* Project libraries */
 #include "ships.h"
+#include "game.h"
+#include "menu.h"
 
 int main(void)
 {
