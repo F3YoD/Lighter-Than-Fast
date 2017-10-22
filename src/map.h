@@ -31,7 +31,14 @@ typedef map_col_t * map_t;
  * FUNCTIONS
  */
 
+// Highest level function
 // Create map
 map_t build_map();
+
+// Lower level functions
+// Generate a column of map nodes
+map_col_t generate_map_col(int);
+// Generate a single node
+map_node_t * generate_map_node(int);
 
 #endif
