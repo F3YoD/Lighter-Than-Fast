@@ -1,7 +1,5 @@
-SHELL=/bin/bash  # allow brace expansion
-
 NAME=lighter_than_fast
-CFLAGS=-Wall -std=c99 -g  # use of c11 standard for anonymous unions and unicode support
+CFLAGS=-Wall -std=c99 -g
 SDLFLAGS=`sdl2-config --cflags --libs`
 O=../obj
 
@@ -28,4 +26,4 @@ $(O)/%.o: %.c %.h  # for ships, shops, map
 
 # cleaning
 clean:
-	@rm -rfv $(O)/
+	@rm -rfv $(O) ../bin
