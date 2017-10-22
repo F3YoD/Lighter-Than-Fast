@@ -28,6 +28,8 @@ typedef struct
     // A ship is identified by a name
     // Maybe some part of it should be randomly generated?
     char * name;
+    // A shop is just a ship willing to trade stuff
+    bool is_shop;
     // A ship has health, it is destroyed if this goes to or bellow 0
     int hp;
     // A ship has belongings onboard
