@@ -1,5 +1,8 @@
 # Discard all objects
-obj/*
+obj/
+
+# Discard separate files
+ressources/fonts/
 
 # Emacs and other editor files
-.#.*
+.#*
