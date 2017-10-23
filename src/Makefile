@@ -30,12 +30,7 @@ $(O)/%.o: %.c %.h  # for ships, shops, map
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
 $(FONTS):  # download & extract fonts
-	mkdir -p $(F)
-	wget -O $(F)/Inter-UI.zip "https://github.com/rsms/inter/releases/download/v2.1/Inter-UI-2.1.zip"
-	tar -C $(F)/ -xvf Inter-UI.zip "Inter UI (TTF)/*"
-	mv $(F)"/Inter UI (TTF)/*" $(F)/
-	rm -r $(F)"/Inter UI (TTF)"
-	rm $(F)/Inter-UI.zip
+	bash ../get_fonts.sh
 
 # cleaning
 clean:
