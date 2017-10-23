@@ -7,34 +7,44 @@
 
 #include "ships.h"
 
-map_t build_map()
+map_t *build_map(const int map_width)
 {
-    // Should we differentiate the entry and exit nodes?
-    // create entry node
+    map_t *map = (map_t *)malloc(sizeof(map_t));
 
-    // create each columns
+    map->nb_col = map_width;
+    map->columns = (map_col_t *)malloc(map_width * sizeof(map_col_t));
 
-    // create exit node
+    // Create 1st (entry) node
+    populate_map_col(&map->columns[0], 1);
+    // Create middle columns
+    for (int i = 1; i < map_width - 1; i++) {
+        // Generate random number for nodes in columns
+        int nb_nodes = (int)NULL; // TODO
+        // Generate column
+        populate_map_col(&map->columns[i], nb_nodes);
+    }
+    // Create end column
+    populate_map_col(&map->columns[map_width - 1], 1);
+
+    return map;
 }
 
-map_col_t generate_map_col(int nb_nodes)
+void populate_map_col(map_col_t *column, const int nb_nodes)
 {
-    // Create nb_nodes nodes and make an array out of it
-    map_col_t column = (map_col_t)malloc(nb_nodes * sizeof(map_node_t));
+    // Allocate memory for nodes in column
+    column->nodes = (map_node_t *)malloc(nb_nodes * sizeof(map_node_t));
 
-    return column;
+    // Populate column
+    for (int i = 0; i < nb_nodes; i++)
+        populate_map_node(&column->nodes[i]);
 }
 
-map_node_t * generate_map_node(int type)
+void populate_map_node(map_node_t *node)
 {
-    /*
-     * Nodes can be of different types:
-     *  -1 is an entry node
-     *   0 is a normal node
-     *   1 is an exit node
-     */
-    // Create a node
-    map_node_t *node = (map_node_t *)malloc(sizeof(map_node_t));
+    node->target = (ship_t *)malloc(sizeof(ship_t));
 
-    return node;
+    // Assign ship to node
+    // node->target = &one_ship;
+
+    // Do not link the node's ship to another node yet, will be done in build_map
 }
