@@ -8,15 +8,16 @@ if [[ "$(which wget)" == "" ]]; then
 fi
 
 INTER_UI_URL="https://github.com/rsms/inter/releases/download/v2.1/Inter-UI-2.1.zip"
-FONTS_FOLDER=ressources/fonts
+FONTS_FOLDER=../ressources/fonts
 
 # Create necessary folders, download, extract, and remove temp files
 if [ ! -f $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
     mkdir -p $FONTS_FOLDER
     cd $FONTS_FOLDER
-    wget -O inter.zip $INTER_UI_URL
+    echo "Downloading fonts..."
+    wget --no-verbose -O inter.zip $INTER_UI_URL
     tar xvf inter.zip "Inter UI (TTF)/*"
-    mv "Inter UI (TTF)/*" .
+    mv ./Inter\ UI\ \(TTF\)/*.ttf .
     rm -r "Inter UI (TTF)/" inter.zip
 fi
 

@@ -4,12 +4,12 @@ NAME=lighter_than_fast
 CFLAGS=-Wall -std=c99 -g
 SDLFLAGS=`sdl2-config --cflags --libs`
 O=../obj
+B=../bin
 R=../ressources
 FONTS=$(R)"/fonts/InterUI-{Black,Bold,Medium,Regular}{,Italic}.ttf"
 
-all: $(O) ../bin $(O)/main.o
-	mkdir -p $(O)
-	gcc $(CFLAGS) -o ../bin/$(NAME) $(O)/main.o $(SDLFLAGS)
+all: $(O) $(FONTS) $(B) $(O)/main.o
+	gcc $(CFLAGS) -o $(B)/$(NAME) $(O)/main.o $(SDLFLAGS)
 
 # necessary folders
 $(O):
@@ -33,4 +33,4 @@ $(FONTS):  # download & extract fonts
 
 # cleaning
 clean:
-	rm -rfv $(O) ../bin
+	rm -rf $(O) $(B) $(R)/fonts
