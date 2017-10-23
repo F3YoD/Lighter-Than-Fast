@@ -1,5 +1,6 @@
-# Discard all objects
+# Discard binary files
 obj/
+bin/
 
 # Discard separate files
 ressources/fonts/
