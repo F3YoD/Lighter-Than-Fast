@@ -5,8 +5,7 @@
 #include <string.h>
 
 /* External libraries */
-//#include <ncurses.h>
-#include <SDL2/SDL>
+#include <SDL2/SDL.h>
 
 /* Project libraries */
 #include "ships.h"

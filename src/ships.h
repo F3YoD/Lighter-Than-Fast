@@ -33,12 +33,12 @@ typedef struct
     // A ship has health, it is destroyed if this goes to or bellow 0
     int hp;
     // A ship has belongings onboard
-    belongings_t belongings;
+    belongings_t *belongings;
     // A ship deals damage to others, with some room for randomness
     int damage_min;
     int damage_max;
     // A skilled pilot can dodge attacks
-    int dodge_score;
+    float dodge_score;
     // Shield can reduce damages
     // Should it be extra health or constantly reduce damages?
     int shield;
@@ -58,5 +58,8 @@ void load_ships();
 
 // load one single ship
 ship_t get_ship(FILE *);
+
+// generate dummy ship for testing purpose
+ship_t * dummy_ship();
 
 #endif

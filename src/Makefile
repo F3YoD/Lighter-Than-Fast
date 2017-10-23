@@ -1,4 +1,4 @@
-SHELL=/usr/bin/bash  # allow brace expansion
+SHELL=/usr/bin/env bash  # allow brace expansion
 
 NAME=lighter_than_fast
 CFLAGS=-Wall -std=c99 -g
