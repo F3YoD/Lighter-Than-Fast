@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <SDL2/SDL.h>
 
+#include "ships.h"
 #include "menu.h"
 #include "battle.h"
 
