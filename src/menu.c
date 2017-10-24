@@ -26,7 +26,7 @@ void choices(int choice,ship_t * your_ship,ship_t * ennemy_ship){
 	}
 	elseif(choice==5){ //Try to pay some scraps or plasma to the enemy to escape the fight
 		Pay(your_ship,ennemy_ship,prix); //don't know now how calculate this price
-		//TODO
+		//TODO Pay function
 	}
 }
 
