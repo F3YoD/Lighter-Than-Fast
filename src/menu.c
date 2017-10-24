@@ -4,6 +4,30 @@
 #include <SDL2/SDL.h>
 
 #include "menu.h"
+#include "battle.h"
+
+void choices(int choice,ship_t * your_ship,ship_t * ennemy_ship){
+	//This code is here to manage the choises in the menu during a battle, shoot and ship_t are in the file battle.c
+	if (choice==1){  //shoottype 1
+		//TODO Fire animation
+		shoot(your_ship,ennemy_ship,choice);
+	}
+	elseif(choice==2){ //shoottype 2
+		//TODO Fire animation
+		shoot(your_ship,ennemy_ship,choice);
+	}
+	elseif(choice==3){ //shoottype 3
+		//TODO Fire animation
+		shoot(your_ship,ennemy_ship,choice);
+	}
+	elseif(choice==4){ //Try to escape 
+		//TODO, Don't know yet how we manage this case
+	}
+	elseif(choice==5){ //Try to pay some scraps or plasma to the enemy to escape the fight
+		Pay(your_ship,ennemy_ship,prix); //don't know now how calculate this price
+		//TODO
+	}
+}
 
 void menu(int * pState, SDL_Renderer * pRend){
 	///variables
