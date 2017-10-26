@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include "image.h"
 
 /***
  * TYPES
@@ -46,6 +47,8 @@ typedef struct
     // int crew_size;
     // Enemy and self level, to balance gameplay, e.g. having more enemies of class X if player is class X
     // int level;
+    image_t img;
+    //Image of the ship
 }
 ship_t;
 
@@ -53,11 +56,12 @@ ship_t;
  * FUNCTIONS
  */
 
-// Load all the ships from dedicated text files
-void load_ships();
-
-// load one single ship
-ship_t get_ship(FILE *);
+void load_ship(ship_t *,char *,SDL_Renderer *);
+//load a ship from an image
+void update_ship(ship_t,SDL_Renderer *);
+//update ship 
+void free_ship(ship_t *);
+//Free the memory when the ship is useless
 
 // generate dummy ship for testing purpose
 ship_t * dummy_ship();
