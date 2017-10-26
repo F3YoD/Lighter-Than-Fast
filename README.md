@@ -76,3 +76,6 @@ typedef struct
 }
 map_t;
 ```
+
+
+Along the path, we'll adopt [CS50's Style Guide](https://manual.cs50.net/style).
