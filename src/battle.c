@@ -45,9 +45,64 @@ void shoot(ship_t *s1, ship_t *s2, const int shoottype)
         else if (s2->hp < damage)
         {
             // destruction(s2);
+            // TODO à la destruction, ne pas oublier de loot()
         }
         if (s2->hp <= 0){
             // destruction(s2);
         }
     }
+}
+
+int exchange(ship_t *s1, ship_t *s2, belongings_t *from_s1, belongings_t *from_s2) {
+    /*
+     * Details on `given`:
+     * It's a structure defining how much money, scraps and plasma s1 gives to s2
+     */
+    belongings_t *b1 = s1->belongings;
+    belongings_t *b2 = s2->belongings;
+
+    // If either ship doesn't have enough, abort, i.e. return -1
+    // That allows us to test the outcome of the exchange
+    if (b1->plasma < from_s1->plasma || b2->plasma < from_s2->plasma ||
+        b1->money  < from_s1->money  || b2->money  < from_s2->money  ||
+        b1->scraps < from_s1->scraps || b2->scraps < from_s2->scraps) {
+        return -1;
+    }
+
+    // s2 gives to s1
+    b1->plasma += from_s2->plasma;
+    b2->plasma -= from_s2->plasma;
+
+    b1->money += from_s2->money;
+    b2->money -= from_s2->money;
+
+    b1->scraps += from_s2->money;
+    b2->scraps -= from_s2->scraps;
+
+    // s1 gives to s2
+    b2->plasma += from_s1->plasma;
+    b1->plasma -= from_s1->plasma;
+
+    b2->money += from_s1->money;
+    b1->money -= from_s1->money;
+
+    b2->scraps += from_s1->money;
+    b1->scraps -= from_s1->scraps;
+
+    return 0;
+}
+
+void loot(ship_t *s1, ship_t *s2)
+{
+    // s1 takes everything from s2
+    // TODO maybe implement the fact that some of s2's belongings are lost in the process?
+    // maybe through a `total` parameter: if true, everything goes, else only some part of it
+
+    // s1 ain't giving nothing
+    belongings_t *empty = (belongings_t *)malloc(sizeof(belongings_t));
+    empty->plasma = empty->money = empty->scraps = 0;
+
+    exchange(s1, s2, empty, s2->belongings);
+
+    free(empty);
 }
