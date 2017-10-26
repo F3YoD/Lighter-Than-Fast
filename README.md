@@ -11,7 +11,7 @@ This repo will contain the source for a C program, aiming to be a SDL game inspi
 - Use `sdl2` for interface
 
 ## Non-Goals
-- Relying too much on (FTL)[https://ddg.co/?q=ftl]: we're driven towards spaceships combats and ressources management, and the way we see it might evolve through time
+- Relying too much on [FTL](http://subsetgames.com/): we're driven towards spaceships combats and ressources management, and the way we see it might evolve through time
 
 ## Optional
 - Multiple language support
