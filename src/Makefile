@@ -5,8 +5,8 @@ CFLAGS=-Wall -std=c99 -g
 SDLFLAGS=`sdl2-config --cflags --libs`
 O=../obj
 B=../bin
-R=../ressources
-FONTS=$(R)"/fonts/InterUI-{Black,Bold,Medium,Regular}{,Italic}.ttf"
+A=../assets
+FONTS=$(A)"/fonts/InterUI-{Black,Bold,Medium,Regular}{,Italic}.ttf"
 
 all: $(O) $(FONTS) $(B) $(O)/main.o
 	gcc $(CFLAGS) -o $(B)/$(NAME) $(O)/main.o $(SDLFLAGS)
@@ -33,4 +33,4 @@ $(FONTS):  # download & extract fonts
 
 # cleaning
 clean:
-	rm -rf $(O) $(B) $(R)/fonts
+	rm -rf $(O) $(B) $(A)/fonts

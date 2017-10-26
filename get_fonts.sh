@@ -8,7 +8,7 @@ if [[ "$(which wget)" == "" ]]; then
 fi
 
 INTER_UI_URL="https://github.com/rsms/inter/releases/download/v2.1/Inter-UI-2.1.zip"
-FONTS_FOLDER=../ressources/fonts
+FONTS_FOLDER=../assets/fonts
 
 # Create necessary folders, download, extract, and remove temp files
 if [ ! -f $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
