@@ -18,10 +18,10 @@ void load_alien(alien_t * pA, SDL_Renderer * pR, interface_t * pI, int pId){
 	printf("chargement de l'alien\n");
 	pA->id = pId;
 	pA->pv = 100;
-	pA->img[0] = IMG_Load("./assets/images/alien1.png");
-	pA->img[1] = IMG_Load("./assets/images/alien2.png");
-	pA->img[2] = IMG_Load("./assets/images/alien3.png");
-	pA->img[3] = IMG_Load("./assets/images/alien4.png");
+	pA->img[0] = IMG_Load("../assets/images/alien1.png");
+	pA->img[1] = IMG_Load("../assets/images/alien2.png");
+	pA->img[2] = IMG_Load("../assets/images/alien3.png");
+	pA->img[3] = IMG_Load("../assets/images/alien4.png");
 	for(int i = 0; i < 4; i++){
 		pA->tex[i] = SDL_CreateTextureFromSurface(pR, pA->img[i]);
 	}

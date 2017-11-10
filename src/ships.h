@@ -59,7 +59,7 @@ ship_t;
 
 void load_ship(ship_t *,char *,SDL_Renderer *);
 //load a ship from an image
-void update_ship(ship_t,SDL_Renderer *);
+void update_ship(ship_t *,SDL_Renderer *);
 //update ship 
 void free_ship(ship_t *);
 //Free the memory when the ship is useless

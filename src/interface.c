@@ -9,7 +9,7 @@
 #include "game.h"
 #include "jauge.h"
 #include "alien.h"
-#include "ship.h"
+#include "ships.h"
 #include "fond.h"
 
 #include "interface.h"
@@ -21,10 +21,10 @@ void load_interface(interface_t * pI, SDL_Renderer * pR){
 //        il appel tout les sous programme de chargement qui initialise
 //        nos barres de vies, de bouclier, le fond du jeu .. etc 
 	printf("***** CHARGEMENT INTERFACE *****\n");
-	load_fond(&pI->fond, "./assets/images/gameFond1.jpg", pR);
-	load_barre_vie(&pI->barreVie, 10, "./assets/images/lifebare2.png", pR);
-	load_bar_shield(&pI->shield, 100, "./assets/images/shieldbare.png", pR);
-	load_ship(pI->ship, "./assets/images/ship2.png", pR);
+	load_fond(&pI->fond, "../assets/images/gameFond1.jpg", pR);
+	load_barre_vie(&pI->barreVie, 10, "../assets/images/lifebare2.png", pR);
+	load_bar_shield(&pI->shield, 100, "../assets/images/shieldbare.png", pR);
+	load_ship(pI->ship, "../assets/images/ship2.png", pR);
 }
 
 void update_interface(interface_t * pI, SDL_Renderer * pR){

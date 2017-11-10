@@ -3,7 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdlib.h>
 #include "image.h"
-#include "ship.h"
+#include "ships.h"
 
 
 
@@ -16,11 +16,11 @@ void load_ship(ship_t * pS, char * pDest, SDL_Renderer * pR){
 	pS->img.pos.w = 500; pS->img.pos.h = 400; 
 }
 
-void update_ship(ship_t pS, SDL_Renderer * pR){
+void update_ship(ship_t * pS, SDL_Renderer * pR){
 //
 	//printf("affichage du vaisseau\n");
-	SDL_QueryTexture(pS.img.tex,NULL,NULL,&pS.img.pos.w, &pS.img.pos.h);
-	SDL_RenderCopy(pR, pS.img.tex, NULL, &pS.img.pos);
+	SDL_QueryTexture(pS->img.tex,NULL,NULL,&pS->img.pos.w, &pS->img.pos.h);
+	SDL_RenderCopy(pR, pS->img.tex, NULL, &pS->img.pos);
 }
 
 void free_ship(ship_t * pS){
