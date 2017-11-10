@@ -24,7 +24,7 @@ if [ ! -f $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading fonts..."
     wget --no-verbose -O inter.zip $INTER_UI_URL
-    tar xvzf inter.zip "Inter UI (TTF)/*"
+    tar -xvzf inter.zip "Inter UI (TTF)/*"
     mv ./Inter\ UI\ \(TTF\)/*.ttf .
     rm -r "Inter UI (TTF)/" inter.zip
 fi
