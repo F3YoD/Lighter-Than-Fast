@@ -1,6 +1,7 @@
 #ifndef _FOND_
 #define _FOND_
 
+#include <SDL2/SDL.h>
 
 typedef struct {
 	SDL_Surface * img;
