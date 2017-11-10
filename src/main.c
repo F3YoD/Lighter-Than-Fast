@@ -36,7 +36,7 @@ int main(int argc, char * argv[]){
 		// puis on cree la fenetre de la maniere standard 
 		// suivante : 'fenetre = SDL_CreateWindow();'
 	fenetre = SDL_CreateWindow(
-		"Projet LTF : nothing quelquechose",
+		"Projet Lighter Than Fast: Unknow Within",
 		SDL_WINDOWPOS_UNDEFINED,
 		SDL_WINDOWPOS_UNDEFINED,
 		1024,
