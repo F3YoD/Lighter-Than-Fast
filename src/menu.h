@@ -1,6 +1,8 @@
 #ifndef _MENU_
 #define _MENU_
 
-	void menu(int *, SDL_Renderer *);
+#include <SDL2/SDL.h>
+
+void menu(int *, SDL_Renderer *);
 
 #endif
