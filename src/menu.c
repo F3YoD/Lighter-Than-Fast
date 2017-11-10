@@ -21,7 +21,7 @@ void menu(int * pState, SDL_Renderer * pRend){
 	///fin variables
 	
 	///affichage menu
-	imgMenu = SDL_LoadBMP("./assets/images/menu.bmp");
+	imgMenu = SDL_LoadBMP("../assets/images/menu.bmp");
 	texture = SDL_CreateTextureFromSurface(pRend, imgMenu);
 	posFond.x = 0; posFond.y = 0;
 	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);	
