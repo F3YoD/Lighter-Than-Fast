@@ -19,7 +19,7 @@ map_t *build_map(const int map_width)
     // Create middle columns
     for (int i = 1; i < map_width - 1; i++) {
         // Generate random number for nodes in columns
-        int nb_nodes = (int)NULL; // TODO
+        int nb_nodes = 2; // TODO
         // Generate column
         populate_map_col(&map->columns[i], nb_nodes);
     }
