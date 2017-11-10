@@ -16,15 +16,15 @@ void menu(int * pState, SDL_Renderer * pRend){
 	SDL_Rect posFond;
 	SDL_Rect posPl;
 	SDL_Rect posMouse;
-	bool droite = true; 
+	bool droite = true;
 	bool bas = true;
 	///fin variables
-	
+
 	///affichage menu
 	imgMenu = SDL_LoadBMP("./assets/images/menu.bmp");
 	texture = SDL_CreateTextureFromSurface(pRend, imgMenu);
 	posFond.x = 0; posFond.y = 0;
-	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);	
+	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);
 	SDL_RenderCopy(pRend, texture, NULL, &posFond);
 	///fin affichage menu
 
@@ -45,7 +45,7 @@ void menu(int * pState, SDL_Renderer * pRend){
 			case SDL_MOUSEBUTTONUP:
 				posMouse.x = ev.button.x;
 				posMouse.y = ev.button.y;
-				
+
 				if(posMouse.x > 0 && posMouse.x < 200){
 					if(posMouse.y > 0 && posMouse.y < 400){
 						continuer = 0;
@@ -53,13 +53,13 @@ void menu(int * pState, SDL_Renderer * pRend){
 					}
 				}
 				break;
-		}	
+		}
 
 		SDL_RenderCopy(pRend, texture, NULL, &posFond);
 		SDL_RenderPresent(pRend);
 	}
 	*pState = choix_joueur;
-	
+
 	///On efface notre menu
 	SDL_RenderClear(pRend);
 
