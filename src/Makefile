@@ -29,7 +29,7 @@ $(O)/%.o: %.c %.h  # for ships, shops, map
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
 $(FONTS):  # download & extract fonts
-	bash ../get_fonts.sh
+	bash ../get_ressources.sh
 
 # cleaning
 clean:
