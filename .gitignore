@@ -5,6 +5,7 @@ bin/
 # Discard separate files
 ressources/fonts/
 
-# Emacs and other editor files
+# Emacs/test/OS files/folders
+.DS_Store
 .#*
 localtests/
