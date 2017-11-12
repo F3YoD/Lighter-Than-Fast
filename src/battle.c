@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "battle.h"
+#include "ships.h"
 
 void shoot(ship_t *s1, ship_t *s2, const int shoottype)
 {
