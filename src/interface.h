@@ -3,9 +3,10 @@
 
 #include "image.h"
 #include "jauge.h"
-#include "ship.h"
+#include "ships.h"
 #include "game.h"
 #include "fond.h"
+
 typedef struct {
 	fond_t fond;
 	barre_vie_t barreVie;
