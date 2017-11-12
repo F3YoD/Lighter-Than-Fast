@@ -1,36 +1,47 @@
-SHELL=/usr/bin/env bash  # allow brace expansion
+SHELL=/usr/bin/env bash  # Allow brace expansion
 
 NAME=lighter_than_fast
 CFLAGS=-Wall -std=c99 -g
-SDLFLAGS=`sdl2-config --cflags --libs`
+SDLFLAGS=$(shell pkg-config --cflags --libs sdl2 sdl2_image sdl2_ttf)
 O=../obj
 B=../bin
 A=../assets
-FONTS=$(A)"/fonts/InterUI-{Black,Bold,Medium,Regular}{,Italic}.ttf"
+FONTS=$(A)/fonts/Inter-UI-Regular.ttf
+MIDI_EXAMPLE=$(A)/midi/1\ Space\ Cruise\ (Title).mid
+OBJECTS=$(O)/alien.o $(O)/battle.o $(O)/fond.o $(O)/game.o $(O)/interface.o $(O)/jauge.o $(O)/map.o $(O)/menu.o $(O)/ships.o $(O)/tools.o
 
-all: $(O) $(FONTS) $(B) $(O)/main.o
-	gcc $(CFLAGS) -o $(B)/$(NAME) $(O)/main.o $(SDLFLAGS)
+all: $(O) $(FONTS) $(MIDI_EXAMPLE) $(B) $(O)/main.o
+	gcc $(CFLAGS) -o $(B)/$(NAME) $(O)/main.o $(OBJECTS) $(SDLFLAGS)
 
-# necessary folders
+# Necessary folders
 $(O):
-	mkdir $@
+	@mkdir $@
 
 ../bin:
-	mkdir $@
+	@mkdir $@
 
-# objects
-$(O)/main.o: main.c $(O)/battle.o $(O)/map.o
+# Objects
+$(O)/alien.o: alien.c alien.h
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
-$(O)/battle.o: $(O)/ships.o battle.c battle.h
+$(O)/battle.o: battle.c $(O)/ships.o battle.h
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
-$(O)/%.o: %.c %.h  # for ships, shops, map
+$(O)/game.o: game.c $(O)/alien.o $(O)/interface.o
+	gcc $(CFLAGS) -o $@ -c $^ $(SDLFLAGS)
+
+$(O)/interface.o: interface.c $(O)/jauge.o $(O)/alien.o $(O)/ships.o $(O)/fond.o
+	gcc $(CFLAGS) -o $@ -c $<
+
+$(O)/main.o: main.c $(OBJECTS)
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
-$(FONTS):  # download & extract fonts
-	bash ../get_ressources.sh
+$(O)/%.o: %.c
+	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
-# cleaning
+$(FONTS):  # Download & extract fonts
+	@bash ../get_ressources.sh
+
+# Cleaning
 clean:
-	rm -rf $(O) $(B) $(A)/fonts
+	rm -rf $(O) $(B) $(A)/fonts $(A)/midi
