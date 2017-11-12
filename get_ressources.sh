@@ -13,12 +13,15 @@ MIDI_FOLDER=../assets/midi
 
 # Initialisation
 # Look for wget
-if [[ "$(which wget)" == "" ]]; then
-    echo "wget not found in PATH. Please install it."
+if [ "$(which wget)" != "" ]; then
+    download="wget --no-verbose -O"
+elif [ "$(which curl)" != "" ]; then
+    download="curl -o"
+else
+    echo "wget and curl not found in PATH. Please install one of them."
     exit 1
 fi
 
-alias download="wget --no-verbose -O"
 
 # Create folders in case they don't exist
 mkdir -p $FONTS_FOLDER $MIDI_FOLDER
@@ -28,7 +31,7 @@ mkdir -p $FONTS_FOLDER $MIDI_FOLDER
 if [ ! -e $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading fonts..."
-    download inter.zip $INTER_UI_URL
+    $download inter.zip $INTER_UI_URL
     unzip inter.zip "Inter UI (TTF)/Inter-UI-Regular.ttf"
     mv "Inter UI (TTF)"/* .
     rm -r "Inter UI (TTF)/" inter.zip
@@ -39,11 +42,8 @@ fi
 if [[ "$(ls $MIDI_FOLDER)" == "" ]]; then
     cd $MIDI_FOLDER
     echo "Downloading MIDI files..."
-    download midi.zip $MIDI_URL
+    $download midi.zip $MIDI_URL
     unzip midi.zip
-    mv MIDI/* .
-    rm -r MIDI/ midi.zip
+    rm -r midi.zip
 fi
 )
-
-unalias download
