@@ -42,8 +42,8 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 	TTF_Init();
 	printf("init ttf\n");
 	posTexte.x = 0; posTexte.y = 0;
-	police = TTF_OpenFont(
-	"../assets/police/arial.ttf", 21);
+	/* police = TTF_OpenFont("../assets/police/arial.ttf", 21); */
+	police = TTF_OpenFont("../assets/fonts/Inter-UI-Regular.ttf", 21);
 	if(!police){
 		printf("TTP_OpenFont : %s\n", TTF_GetError());
 	}
