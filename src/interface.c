@@ -6,7 +6,6 @@
 #include <SDL2/SDL_ttf.h>
 
 #include "image.h"
-#include "game.h"
 #include "jauge.h"
 #include "alien.h"
 #include "ships.h"
