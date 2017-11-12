@@ -6,6 +6,9 @@
 #include "battle.h"
 #include "ships.h"
 
+// TODO remove this when alea() is created
+#define alea(x, y) 50
+
 void shoot(ship_t *s1, ship_t *s2, const int shoottype)
 {
     // We can shoot one, two or three times at once
