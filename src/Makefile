@@ -8,16 +8,13 @@ B=../bin
 A=../assets
 FONTS=$(A)/fonts/Inter-UI-Regular.ttf
 MIDI_EXAMPLE=$(A)/midi/1\ Space\ Cruise\ (Title).mid
-OBJECTS=$(O)/alien.o $(O)/battle.o $(O)/fond.o $(O)/game.o $(O)/interface.o $(O)/jauge.o $(O)/map.o $(O)/menu.o $(O)/ships.o $(O)/tools.o
+OBJECTS=$(patsubst %.c, $(O)/%.o, $(wildcard *.c))
 
-all: $(O) $(FONTS) $(MIDI_EXAMPLE) $(B) $(O)/main.o
-	gcc $(CFLAGS) -o $(B)/$(NAME) $(O)/main.o $(OBJECTS) $(SDLFLAGS)
+all: $(O) $(FONTS) $(MIDI_EXAMPLE) $(B) $(OBJECTS)
+	gcc $(CFLAGS) -o $(B)/$(NAME) $(OBJECTS) $(SDLFLAGS)
 
 # Necessary folders
-$(O):
-	@mkdir $@
-
-../bin:
+$(O) $(B):
 	@mkdir $@
 
 # Objects
@@ -31,9 +28,9 @@ $(O)/game.o: game.c $(O)/alien.o $(O)/interface.o
 	gcc $(CFLAGS) -o $@ -c $^ $(SDLFLAGS)
 
 $(O)/interface.o: interface.c $(O)/jauge.o $(O)/alien.o $(O)/ships.o $(O)/fond.o
-	gcc $(CFLAGS) -o $@ -c $<
+	gcc $(CFLAGS) -o $@ -c $^ $(SDLFLAGS)
 
-$(O)/main.o: main.c $(OBJECTS)
+$(O)/main.o: main.c $(patsubst $(O)/main.o, , $(OBJECTS))
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
 $(O)/%.o: %.c
