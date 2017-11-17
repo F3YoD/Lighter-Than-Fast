@@ -31,7 +31,7 @@ $(O)/interface.o: interface.c $(O)/jauge.o $(O)/alien.o $(O)/ships.o $(O)/fond.o
 	gcc $(CFLAGS) -o $@ -c $^ $(SDLFLAGS)
 
 $(O)/main.o: main.c $(patsubst $(O)/main.o, , $(OBJECTS))
-	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
+	gcc $(CFLAGS) -o $@ -c $^ $(SDLFLAGS)
 
 $(O)/%.o: %.c
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
