@@ -10,3 +10,8 @@ assets/midi/
 .DS_Store
 .#*
 localtests/
+
+# Development-related folders
+GPATH
+GRTAGS
+GTAGS
