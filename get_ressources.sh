@@ -14,7 +14,7 @@ MIDI_FOLDER=../assets/midi
 # Initialisation
 # Look for wget
 if [ "$(which wget)" != "" ]; then
-    download="wget --no-verbose -O"
+    download="wget -q --show-progress -O"
 elif [ "$(which curl)" != "" ]; then
     download="curl -o"
 else
