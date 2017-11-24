@@ -2,7 +2,7 @@ SHELL=/usr/bin/env bash  # Allow brace expansion
 
 NAME=lighter_than_fast
 CFLAGS=-Wall -std=c99 -g
-SDLFLAGS=$(shell pkg-config --cflags --libs sdl2 sdl2_image sdl2_ttf)
+SDLFLAGS=$(shell sdl2-config --cflags --libs) -lSDL2_image -lSDL2_ttf
 O=../obj
 B=../bin
 A=../assets
