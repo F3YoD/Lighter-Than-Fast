@@ -5,9 +5,8 @@
 
 #include "battle.h"
 #include "ships.h"
+#include "tools.h"
 
-// TODO remove this when alea() is created
-#define alea(x, y) 50
 
 void shoot(ship_t *s1, ship_t *s2, const int shoottype)
 {
@@ -32,8 +31,8 @@ void shoot(ship_t *s1, ship_t *s2, const int shoottype)
     }
 
     // Determine inflicted damage
-    int touch_chance = 2; //alea(0, 100);
-    int damage = 2;//alea(damage_min, damage_max);
+    int touch_chance = CreeAlea(0, 100);
+    int damage = CreeAlea(damage_min, damage_max);
     if (touch_chance > s2->dodge_score)
     {
         if (s2->shield < damage)
