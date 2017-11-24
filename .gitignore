@@ -3,8 +3,15 @@ obj/
 bin/
 
 # Discard separate files
-ressources/fonts/
+assets/fonts/
+assets/midi/
 
-# Emacs and other editor files
+# Emacs/test/OS files/folders
+.DS_Store
 .#*
 localtests/
+
+# Development-related folders
+GPATH
+GRTAGS
+GTAGS

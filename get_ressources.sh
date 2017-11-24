@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Download custom fonts
+# Download custom fonts and music
 
 # Ressources URLs
 # Fonts
@@ -13,20 +13,37 @@ MIDI_FOLDER=../assets/midi
 
 # Initialisation
 # Look for wget
-if [[ "$(which wget)" == "" ]]; then
-    echo "wget not found in PATH. Please install it."
+if [ "$(which wget)" != "" ]; then
+    download="wget -q --show-progress -O"
+elif [ "$(which curl)" != "" ]; then
+    download="curl -o"
+else
+    echo "wget and curl not found in PATH. Please install one of them."
     exit 1
 fi
 
-# Create necessary folders, download, extract, and remove temp files
-if [ ! -f $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
-    mkdir -p $FONTS_FOLDER
+
+# Create folders in case they don't exist
+mkdir -p $FONTS_FOLDER $MIDI_FOLDER
+
+( # Subshell to ease use of `cd`
+# Download & extract fonts, and remove temp files
+if [ ! -e $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading fonts..."
-    wget --no-verbose -O inter.zip $INTER_UI_URL
-    tar -xvzf inter.zip "Inter UI (TTF)/*"
-    mv ./Inter\ UI\ \(TTF\)/*.ttf .
+    $download inter.zip $INTER_UI_URL
+    unzip inter.zip "Inter UI (TTF)/Inter-UI-Regular.ttf"
+    mv "Inter UI (TTF)"/* .
     rm -r "Inter UI (TTF)/" inter.zip
 fi
+)
 
-echo "Fonts successfully downloaded."
+(
+if [[ "$(ls $MIDI_FOLDER)" == "" ]]; then
+    cd $MIDI_FOLDER
+    echo "Downloading MIDI files..."
+    $download midi.zip $MIDI_URL
+    unzip midi.zip
+    rm -r midi.zip
+fi
+)
