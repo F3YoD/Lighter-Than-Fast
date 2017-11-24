@@ -28,7 +28,7 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 			/* ecrire test */
 	SDL_Surface * texte = NULL;
 	TTF_Font * police = NULL;
-	SDL_Color couleurRouge = {255,0,255};
+	SDL_Color couleurRouge = { 255, 0, 255, 0 };
 	SDL_Rect posTexte;
 	
 	interface_t * inter = (interface_t *)malloc(sizeof(interface_t));
