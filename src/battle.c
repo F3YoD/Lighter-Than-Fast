@@ -4,6 +4,7 @@
 #include <math.h>
 
 #include "battle.h"
+#include "ships.h"
 
 void shoot(ship_t *s1, ship_t *s2, const int shoottype)
 {
@@ -28,8 +29,8 @@ void shoot(ship_t *s1, ship_t *s2, const int shoottype)
     }
 
     // Determine inflicted damage
-    int touch_chance = alea(0, 100);
-    int damage = alea(damage_min, damage_max);
+    int touch_chance = 2; //alea(0, 100);
+    int damage = 2;//alea(damage_min, damage_max);
     if (touch_chance > s2->dodge_score)
     {
         if (s2->shield < damage)
