@@ -1,8 +1,10 @@
 # This Makefile should only redirect the job to the Makefile in src/
 GOTOSUB=cd src/
 
+# all:
+#   $(GOTOSUB) && make all
 all:
-	$(GOTOSUB) && make all
+	@echo use the one in src/
 
 clean:
-	$(GOTOSUB) && make clean
+	@echo use the one in src/
