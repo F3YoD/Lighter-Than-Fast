@@ -29,3 +29,6 @@ void free_ship(ship_t * pS){
 	SDL_DestroyTexture(pS->img.tex);
 }
 
+//void load_stats(int ship[100]){
+//	file=fopen("ships_stats.txt","r")	
+//}

@@ -1,0 +1,9 @@
+Vaisseau de Bernard,0,100,100,100,100,5,10,25,50,...
+Vaisseau d'Albert,1,100,100,100,100,0,0,85,50,...
+Vaisseau de Brigite,0,200,100,100,100,9,17,35,100,...
+
+
+legende:
+n=nom , s=is_shop, h=hp, pl=plasma,mo=money , sc=scraps d=damage min , m=damage max, e=escape score,sh=shield
+img=chemin de l'image
+n,s,h,pl,mo,sc,d,m,e,s,i
