@@ -60,8 +60,7 @@ int main(int argc, char * argv[]){
 
     ///init renderer
     renderer = SDL_CreateRenderer(fenetre, -1,
-        SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
-                );
+                                  SDL_RENDERER_ACCELERATED);
     ///fin init renderer
 
     // on lance notre menu le joueur va donc faire un choix dans ce menu
