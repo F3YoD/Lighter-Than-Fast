@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdbool.h>
-#include <SDL2/SDL.h>
-
 #include "tools.h"
 
 int gen_rand(int min, int max)
@@ -11,7 +7,7 @@ int gen_rand(int min, int max)
     return rand() % (max - min + 1) + min;
 }
 
-list_t cons_empty()
+list_t cons_empty(void)
 {
     return NULL;
 }

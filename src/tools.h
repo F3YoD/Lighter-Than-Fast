@@ -13,7 +13,7 @@ typedef struct node
 
 int gen_rand(int, int);
 
-list_t cons_empty();
+list_t cons_empty(void);
 list_t cons(void *, list_t);
 void *pop_nth(list_t, int);
 bool is_empty(list_t);

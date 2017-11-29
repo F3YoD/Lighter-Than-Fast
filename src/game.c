@@ -1,7 +1,3 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-
-#include "macros.h"
 #include "game.h"
 
 #define BACKGROUND_IMAGE "../assets/images/gameFond1.jpg"

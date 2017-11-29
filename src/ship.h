@@ -1,8 +1,11 @@
 #ifndef _SHIP_
 #define _SHIP_
 
-#include <stdbool.h>
+#include <stdio.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+
+#include "tools.h"
 
 struct belongings
 {

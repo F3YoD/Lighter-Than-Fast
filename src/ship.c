@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-
-#include "tools.h"
 #include "ship.h"
 
 #define SHIPS_STATS_FILE "../assets/ships/ships_stats.txt"
