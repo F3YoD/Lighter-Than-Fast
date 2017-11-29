@@ -1,8 +1,9 @@
 #ifndef _GAME_
 #define _GAME_
 
+#include <stdbool.h>
 #include <SDL2/SDL.h>
 
-void game(SDL_Renderer *, SDL_Surface *);
+void play_game(SDL_Renderer *, bool *);
 
 #endif

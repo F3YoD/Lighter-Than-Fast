@@ -2,69 +2,51 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
+#include "macros.h"
 #include "menu.h"
-#include "image.h"
 
-void menu(int * pState, SDL_Renderer * pRend){
-	///variables
-	int choix_joueur = 0;
-	int continuer = 1;
-	SDL_Event ev;
-	SDL_Surface * imgMenu;
-	SDL_Texture * texture;
-	SDL_Rect posFond;
-	SDL_Rect posPl;
-	SDL_Rect posMouse;
-	bool droite = true;
-	bool bas = true;
-	///fin variables
+#define MENU_BG "../assets/images/menu.bmp"
 
-	///affichage menu
-	imgMenu = SDL_LoadBMP("../assets/images/menu.bmp");
-	texture = SDL_CreateTextureFromSurface(pRend, imgMenu);
-	posFond.x = 0; posFond.y = 0;
-	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);
-	SDL_RenderCopy(pRend, texture, NULL, &posFond);
-	///fin affichage menu
+menu_choice_t menu(SDL_Renderer *renderer)
+{
+    /* Display background */
+    SDL_Surface *bg_surface = NULL;
+    SDL_Texture *bg_texture = NULL;
 
-	while(continuer){
-		SDL_PollEvent(&ev);
-		switch(ev.type){
-			case SDL_KEYDOWN:
-				switch(ev.key.keysym.sym){
-					case SDLK_SPACE :
-						choix_joueur = 1;
-						continuer = 0;
-						break;
-				}
-				break;
-			case SDL_QUIT:
-				continuer = 0;
-				break;
-			case SDL_MOUSEBUTTONUP:
-				posMouse.x = ev.button.x;
-				posMouse.y = ev.button.y;
+    bg_surface = SDL_LoadBMP(MENU_BG);
+    check_SDL(bg_surface);
+    bg_texture = SDL_CreateTextureFromSurface(renderer, bg_surface);
+    check_SDL(bg_texture);
+    SDL_FreeSurface(bg_surface);
 
-				if(posMouse.x > 0 && posMouse.x < 200){
-					if(posMouse.y > 0 && posMouse.y < 400){
-						continuer = 0;
-						choix_joueur = 1;
-					}
-				}
-				break;
-		}
+    SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
+    SDL_RenderPresent(renderer);
 
-		SDL_RenderCopy(pRend, texture, NULL, &posFond);
-		SDL_RenderPresent(pRend);
-	}
-	*pState = choix_joueur;
+    /* Get user's choice */
+    menu_choice_t choice = QUIT_GAME;
+    int quit = false;
+    SDL_Event event;
+    while (!quit)
+    {
+        while (SDL_PollEvent(&event))
+        {
+            switch (event.type)
+            {
+            case SDL_KEYDOWN:
+            case SDL_MOUSEBUTTONDOWN:
+                choice = PLAY_GAME;
+            case SDL_QUIT:
+                quit = true;
+            default:
+                break;
+            }
+        }
+    }
 
-	///On efface notre menu
-	SDL_RenderClear(pRend);
+    SDL_DestroyTexture(bg_texture);
+    SDL_RenderClear(renderer);
 
-	///libération texture
-	printf("libération du menu\n");
-	SDL_DestroyTexture(texture);
-	SDL_FreeSurface(imgMenu);
+    return choice;
 }
