@@ -26,6 +26,7 @@
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
+TTF_Font *font = NULL;
 
 int main(int argc, char *argv[])
 {
@@ -52,7 +53,7 @@ int main(int argc, char *argv[])
 
     // Load font
     // TODO load the same font several times to give if several attributes?
-    TTF_Font *font = TTF_OpenFont(FONT_PATH, 14);
+    font = TTF_OpenFont(FONT_PATH, 14);
     check_TTF(font);
 
     /* Get user selection */
