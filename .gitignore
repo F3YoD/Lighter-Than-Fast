@@ -1,4 +1,5 @@
 # Discard binary files
+a.out
 obj/
 bin/
 
