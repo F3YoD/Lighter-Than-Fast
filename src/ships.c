@@ -1,4 +1,4 @@
-#include "ship.h"
+#include "ships.h"
 
 #define SHIPS_STATS_FILE "../assets/ships/ships_stats.txt"
 
