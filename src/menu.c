@@ -2,7 +2,7 @@
 
 #define MENU_BG "../assets/images/menu.bmp"
 
-menu_choice_t menu(SDL_Renderer *renderer)
+menu_choice_t menu()
 {
     /* Display background */
     SDL_Surface *bg_surface = NULL;

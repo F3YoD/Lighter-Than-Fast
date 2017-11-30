@@ -2,7 +2,7 @@
 
 #define BACKGROUND_IMAGE "../assets/images/gameFond1.jpg"
 
-void play_game(SDL_Renderer *renderer, bool *show_menu)
+void play_game(bool *show_menu)
 {
     // TODO maybe implement a loading screen!!
     /* Display basic interface */

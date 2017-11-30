@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
+#include "shared.h"
 #include "macros.h"
 #include "menu.h"
 #include "game.h"
@@ -11,6 +10,8 @@
 
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
+
+#define FONT_PATH "../assets/fonts/Inter-UI-Regular.ttf"
 
 /*
  * IDEAS:
@@ -23,15 +24,15 @@
  *  - are the aliens overkill?
  */
 
+SDL_Window *window = NULL;
+SDL_Renderer *renderer = NULL;
+
 int main(int argc, char *argv[])
 {
-    SDL_Window *window = NULL;
-    SDL_Renderer *renderer = NULL;
-
     /* Init SDL */
     int img_flags = IMG_INIT_JPG | IMG_INIT_PNG;
     int img_init = IMG_Init(img_flags);
-    if (SDL_Init(SDL_INIT_VIDEO) != 0 || img_init != img_flags)
+    if (SDL_Init(SDL_INIT_VIDEO) != 0 || img_init != img_flags || TTF_Init() != 0)
     {
         fprintf(stderr, "/!\\ Could not init SDL: %s\nSDL_image flags: %d/%d\n",
                 SDL_GetError(), img_init, img_flags);
@@ -49,18 +50,23 @@ int main(int argc, char *argv[])
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     check_SDL(renderer);
 
+    // Load font
+    // TODO load the same font several times to give if several attributes?
+    TTF_Font *font = TTF_OpenFont(FONT_PATH, 14);
+    check_TTF(font);
+
     /* Get user selection */
     // TODO implement a "back to main menu" option
     bool show_menu;
     do
     {
         show_menu = false;
-        switch (menu(renderer))
+        switch (menu())
         {
         case PLAY_GAME:
             puts("Playing:");
             // TODO lancer le jeu
-            play_game(renderer, &show_menu);
+            play_game(&show_menu);
         case QUIT_GAME:
         default:
             break;
