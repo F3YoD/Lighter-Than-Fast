@@ -1,5 +1,5 @@
-SHELL=/usr/bin/env bash  # Allow brace expansion
-NAME=lighter_than_fast
+SHELL = /usr/bin/env bash  # Allow brace expansion TODO maybe useless
+NAME = lighter_than_fast
 
 CC = gcc
 CFLAGS = -Wall -std=c99
@@ -10,20 +10,26 @@ A = ../assets
 FONTS = $(A)/fonts/Inter-UI-Regular.ttf
 MIDI_EXAMPLE = $(A)/midi/1\ Space\ Cruise\ (Title).mid
 OBJECTS = $(patsubst %.c, $(O)/%.o, $(wildcard *.c))
+DEBUG_MARK = $(O)/.DEBUG_MARK
+RELEASE_MARK = $(O)/.RELEASE_MARK
 
-.PHONY: $(O)/tools.o all binary
 
-all: binary
+# Manage debugging
+all: $(RELEASE_MARK) binary
 
 debug: CFLAGS += -g -DDEBUG
-debug: binary
+debug: $(DEBUG_MARK) binary
 
+$(DEBUG_MARK) $(RELEASE_MARK):
+	@$(MAKE) cleanobj
+	@$(MAKE) $(O)
+	@touch $@
+
+
+# General
 binary: $(O) $(FONTS) $(MIDI_EXAMPLE) $(B) $(OBJECTS)
-	gcc $(CFLAGS) -o $(B)/$(NAME) $(OBJECTS) $(SDLFLAGS)
+	$(CC) $(CFLAGS) -o $(B)/$(NAME) $(OBJECTS) $(SDLFLAGS)
 
-# Necessary folders
-$(O) $(B):
-	@mkdir $@
 
 # Objects
 $(O)/tools.o: tools.c
@@ -38,13 +44,20 @@ $(O)/main.o: main.c $(patsubst $(O)/main.o, , $(OBJECTS))
 $(O)/%.o: %.c  # Default
 	$(CC) $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
+
+# Necessary folders
+$(O) $(B):
+	@mkdir $@
+
+
 # Download & extract fonts
 $(FONTS):
 	@bash ../get_ressources.sh
 
+
 # Cleaning
 clean:
-	rm -rf $(O) $(B) $(A)/fonts $(A)/midi
+	@rm -rf $(O) $(B) $(A)/fonts $(A)/midi
 
 cleanobj:
-	rm -rf $(O)
+	@rm -rf $(O)
