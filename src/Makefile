@@ -10,17 +10,17 @@ A = ../assets
 FONTS = $(A)/fonts/Inter-UI-Regular.ttf
 MIDI_EXAMPLE = $(A)/midi/1\ Space\ Cruise\ (Title).mid
 OBJECTS = $(patsubst %.c, $(O)/%.o, $(wildcard *.c))
-DEBUG_MARK = $(O)/.DEBUG_MARK
-RELEASE_MARK = $(O)/.RELEASE_MARK
+DEBUG_MARKER = $(O)/.DEBUG_MARKER
+RELEASE_MARKER = $(O)/.RELEASE_MARKER
 
 
 # Manage debugging
-all: $(RELEASE_MARK) binary
+all: $(RELEASE_MARKER) binary
 
 debug: CFLAGS += -g -DDEBUG
-debug: $(DEBUG_MARK) binary
+debug: $(DEBUG_MARKER) binary
 
-$(DEBUG_MARK) $(RELEASE_MARK):
+$(DEBUG_MARKER) $(RELEASE_MARKER):
 	@$(MAKE) cleanobj
 	@$(MAKE) $(O)
 	@touch $@
