@@ -9,6 +9,10 @@ void load_player_ship(player_ship_t * pS, char pDest[50], SDL_Renderer * pRend){
 // role : initialise un player_ship_t
 	printf("chargement du vaisseau\n");
 	pS->img.img = IMG_Load(pDest);
+	pS->img.tex = SDL_CreateTextureFromSurface(pRend, pS->img.img);
+	if(pS->img.img == NULL){ printf("erreur load img ships\n");}
+	pS->img.pos.x = 100;
+	pS->img.pos.y = 100;
 }
 
 void update_player_ship(player_ship_t * pS, SDL_Renderer * pR){

@@ -27,7 +27,7 @@ void load_alien(alien_t * pA, SDL_Renderer * pR, interface_t * pI, int pId){
 	for(int i = 0; i < 4; i++){
 		pA->tex[i] = SDL_CreateTextureFromSurface(pR, pA->img[i]);
 	}
-	pA->pos.x = 100;//pI->ship->img.pos.x + (pI->ship->img.pos.w) / 2 + pId*20 - esp; 
+	pA->pos.x = pI->ship->img.pos.x + (pI->ship->img.pos.w) / 2 + pId*20 - esp; 
 	pA->pos.y = 100;//pI->ship->img.pos.y + (pI->ship->img.pos.h) / 2 + pId*10;
 }
 

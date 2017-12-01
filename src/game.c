@@ -22,7 +22,9 @@
 ///////////////////////////////////////////////////////////////////
 
 void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en parametre
-	
+// role : gere la partie jouable du jeu
+//
+// nb : la partie interface sera supprimé car jugé comme obsolète 
 	int continuer = 1;
 	SDL_Event ev;
 			/* ecrire test */
@@ -41,7 +43,7 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 	///init TTF
 	TTF_Init();
 	printf("init ttf\n");
-	posTexte.x = 0; posTexte.y = 0;
+	posTexte.x = 0; posTexte.y = 0;		
 	/* police = TTF_OpenFont("../assets/police/arial.ttf", 21); */
 	police = TTF_OpenFont("../assets/fonts/Inter-UI-Regular.ttf", 21);
 	if(!police){
@@ -75,7 +77,7 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 		
 		update_interface(inter, pRend);
 		update_team(team, pRend, ev, inter, control);
-		SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
+		//SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
 		SDL_RenderPresent(pRend);
 		SDL_RenderClear(pRend);
 	
