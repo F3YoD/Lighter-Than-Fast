@@ -65,7 +65,6 @@ int main(int argc, char *argv[])
         switch (menu())
         {
         case PLAY_GAME:
-            puts("Playing:");
             // TODO lancer le jeu
             play_game(&show_menu);
         case QUIT_GAME:
