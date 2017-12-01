@@ -29,12 +29,13 @@ typedef struct
 {
     // A ship is identified by a name
     // Maybe some part of it should be randomly generated?
-    char * name;
+    char name[50];
     // A shop is just a ship willing to trade stuff
     bool is_shop;
     // A ship has health, it is destroyed if this goes to or bellow 0
     int hp;
     // A ship has belongings onboard
+    //int plasma, money, scraps; 
     belongings_t *belongings;
     // A ship deals damage to others, with some room for randomness
     int damage_min;
@@ -48,20 +49,25 @@ typedef struct
     // int crew_size;
     // Enemy and self level, to balance gameplay, e.g. having more enemies of class X if player is class X
     // int level;
-    image_t img;
+    char img_path[50];
     //Image of the ship
 }
-ship_t;
+ship_t, * map_node_t, ** map_col_t, *** map_t;
+
+typedef struct {
+	ship_t ship;
+	image_t img;
+}player_ship_t;
 
 /***
  * FUNCTIONS
  */
 
-void load_ship(ship_t *,char *,SDL_Renderer *);
+void load_player_ship(player_ship_t *,char *,SDL_Renderer *);
 //load a ship from an image
-void update_ship(ship_t *,SDL_Renderer *);
+void update_player_ship(player_ship_t *,SDL_Renderer *);
 //update ship 
-void free_ship(ship_t *);
+void free_player_ship(player_ship_t *);
 //Free the memory when the ship is useless
 
 // generate dummy ship for testing purpose

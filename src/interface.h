@@ -11,7 +11,7 @@ typedef struct {
 	fond_t fond;
 	barre_vie_t barreVie;
 	bar_shield_t shield;
-	ship_t * ship;	
+	player_ship_t * ship;	
 }interface_t;
 
 

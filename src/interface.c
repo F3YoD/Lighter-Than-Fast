@@ -23,7 +23,7 @@ void load_interface(interface_t * pI, SDL_Renderer * pR){
 	load_fond(&pI->fond, "../assets/images/gameFond1.jpg", pR);
 	load_barre_vie(&pI->barreVie, 10, "../assets/images/lifebare2.png", pR);
 	load_bar_shield(&pI->shield, 100, "../assets/images/shieldbare.png", pR);
-	load_ship(pI->ship, "../assets/images/ship2.png", pR);
+	load_player_ship(pI->ship, "../assets/images/ship2.png", pR);
 }
 
 void update_interface(interface_t * pI, SDL_Renderer * pR){
@@ -32,7 +32,7 @@ void update_interface(interface_t * pI, SDL_Renderer * pR){
 	update_fond(pI->fond, pR);
 	update_barre_vie(&pI->barreVie, pR);
 	update_bar_shield(&pI->shield, pR);
-	update_ship(pI->ship, pR);
+	update_player_ship(pI->ship, pR);
 }
 
 void free_interface(interface_t * pI){
@@ -42,6 +42,6 @@ void free_interface(interface_t * pI){
 	free_fond(&pI->fond);
 	free_barre_vie(&pI->barreVie);
 	free_bar_shield(&pI->shield);
-	free_ship(pI->ship);
+	free_player_ship(pI->ship);
 }
 

@@ -32,7 +32,7 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 	SDL_Rect posTexte;
 	
 	interface_t * inter = (interface_t *)malloc(sizeof(interface_t));
-	inter->ship = (ship_t *)malloc(sizeof(ship_t));
+	inter->ship = (player_ship_t *)malloc(sizeof(player_ship_t));
 	load_interface(inter, pRend);
 	team_t * team = (team_t *)malloc(sizeof(team_t));
 	load_team(team, pRend, inter);
