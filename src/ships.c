@@ -24,3 +24,8 @@ void free_player_ship(player_ship_t * pS){
 	printf("suppression du vaisseau\n");
 	SDL_DestroyTexture(pS->img.tex);
 }
+
+//void load_stats(int ship[100]){
+//	file=fopen("ships_stats.txt","r")	
+//}
+

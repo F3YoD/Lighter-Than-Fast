@@ -12,7 +12,7 @@
  * TYPES
  */
 
-typedef struct
+struct belongings
 {
     // Each ship has some amount of belongings, and some of it can be looted
     // The most important belonging is plasma, it can be used to move the ship and to shoot
@@ -22,8 +22,7 @@ typedef struct
     // Some vessels have spare scraps to repair itself, but it's hard to store because it's quite large
     // Some parts of a destructed ship can sometimes become scraps
     int scraps;
-}
-belongings_t;
+};
 
 typedef struct
 {

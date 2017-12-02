@@ -22,6 +22,7 @@ void menu(int * pState, SDL_Renderer * pRend){
 
 	///affichage menu
 	imgMenu = SDL_LoadBMP("../assets/images/menu.bmp");
+  if (imgMenu == NULL) printf("imgMenu error: %s", SDL_GetError());
 	texture = SDL_CreateTextureFromSurface(pRend, imgMenu);
 	posFond.x = 0; posFond.y = 0;
 	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);
