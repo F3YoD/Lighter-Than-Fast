@@ -10,6 +10,10 @@
 #include "alien.h"
 #include "interface.h"
 
+#include "ships.h"
+#include "fond.h"
+#include "jauge.h"
+
 // ============================================================= //
 //			TEST STRUCT ET SS-PROG			 //
 // ============================================================= //
@@ -32,15 +36,29 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 	TTF_Font * police = NULL;
 	SDL_Color couleurRouge = { 255, 0, 255, 0 };
 	SDL_Rect posTexte;
+		
 	
-	interface_t * inter = (interface_t *)malloc(sizeof(interface_t));
-	inter->ship = (player_ship_t *)malloc(sizeof(player_ship_t));
-	load_interface(inter, pRend);
+	// ========================= LOADING ======================== //
+	fond_t fond;
+	barre_vie_t life;
+	bar_shield_t shield;
+	player_ship_t * my_ship = (player_ship_t *)malloc(sizeof(player_ship_t));
+	
+	load_fond(&fond, "../assets/images/gameFond1.jpg", pRend);
+	load_barre_vie(&life, 10, "../assets/images/lifebare2.png", pRend);
+	load_bar_shield(&shield, 100, "../assets/images/shieldbare.png", pRend);
+	load_player_ship(my_ship, "../assets/images/ship2.png", pRend);
+	
 	team_t * team = (team_t *)malloc(sizeof(team_t));
 	load_team(team, pRend);
+	/**************************************************************/	
 
+
+	// =========================== TTF =========================== //
 	
-	///init TTF
+	// nb : for the moment, ttf don't run because we don't know create
+	//	a 
+	
 	TTF_Init();
 	printf("init ttf\n");
 	posTexte.x = 0; posTexte.y = 0;		
@@ -51,7 +69,7 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 	}
 	texte = TTF_RenderText_Blended(police, "BIENVENUE", couleurRouge);
 	SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
-	///fin init TTF
+	/***************************************************************/
 
 	int control = 0;
 	while(continuer){
@@ -75,11 +93,17 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 				break;
 		}
 		
-		update_interface(inter, pRend);
-		update_team(team, pRend, ev, inter->ship, control);
+		// ==================== UPDATE ================== //
+		update_fond(fond, pRend);
+		update_barre_vie(&life, pRend);
+		update_bar_shield(&shield, pRend);
+		update_player_ship(my_ship, pRend);
+		update_team(team, pRend, ev, my_ship, control);
+		
 		//SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
 		SDL_RenderPresent(pRend);
 		SDL_RenderClear(pRend);
+		/**************************************************/
 	
 	}
 	
@@ -90,9 +114,12 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 	TTF_Quit();
 
 	freeTeam(team);
-	free_interface(inter);
-	free(inter->ship);
-	free(inter);
+	
+	free_fond(&fond);
+	free_barre_vie(&life);
+	free_bar_shield(&shield);
+	free_player_ship(my_ship);
+
 	free(team);
 
 } 

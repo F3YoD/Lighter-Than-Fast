@@ -14,10 +14,9 @@ void menu(int * pState, SDL_Renderer * pRend){
 	SDL_Surface * imgMenu;
 	SDL_Texture * texture;
 	SDL_Rect posFond;
-	SDL_Rect posPl;
 	SDL_Rect posMouse;
-	bool droite = true;
-	bool bas = true;
+	//bool droite = true;
+	//bool bas = true;
 	///fin variables
 
 	///affichage menu
