@@ -12,8 +12,7 @@
 void load_fond(fond_t * pF, char * pDest, SDL_Renderer * pR){
 //
 	printf("chargement du fond\n");
-	pF->img = IMG_Load(pDest);
-	pF->tex = SDL_CreateTextureFromSurface(pR, pF->img);
+	pF->tex = IMG_LoadTexture(pR, pDest);
 	pF->pos.x = 0; pF->pos.y = 0; 
 	pF->pos.w = 1024; pF->pos.h = 768; 
 }
@@ -27,6 +26,5 @@ void update_fond(fond_t pF, SDL_Renderer * pR){
 
 void free_fond(fond_t * pF){
 	printf("suppression du fond\n");
-	SDL_FreeSurface(pF->img);
 	SDL_DestroyTexture(pF->tex);
 }

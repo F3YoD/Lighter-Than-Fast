@@ -9,29 +9,23 @@
 			/*	      alien	      */
 			//****************************//
 
-void load_alien(alien_t * pA, SDL_Renderer * pR, interface_t * pI, int pId){
+void load_alien(alien_t * pA, SDL_Renderer * pR, int pId, SDL_Rect pPos){
 // role : ce sous programme, charge un alien en lui donnant grace au sdl 
 //	  image les 4 images qui sont propre a l'alien. 
 //	  de plus on donne un identifiant à l'alien, et une position en
 //	  fonction de son identifiant
-
-	const int esp = 35; // on espace entre les aliens
-
 	printf("chargement de l'alien\n");
 	pA->id = pId;
 	pA->pv = 100;
-	pA->img[0] = IMG_Load("../assets/images/alien1.png");
-	pA->img[1] = IMG_Load("../assets/images/alien2.png");
-	pA->img[2] = IMG_Load("../assets/images/alien3.png");
-	pA->img[3] = IMG_Load("../assets/images/alien4.png");
-	for(int i = 0; i < 4; i++){
-		pA->tex[i] = SDL_CreateTextureFromSurface(pR, pA->img[i]);
-	}
-	pA->pos.x = pI->ship->img.pos.x + (pI->ship->img.pos.w) / 2 + pId*20 - esp; 
-	pA->pos.y = 100;//pI->ship->img.pos.y + (pI->ship->img.pos.h) / 2 + pId*10;
+	pA->tex[0] = IMG_LoadTexture(pR, "../assets/images/alien1.png");
+	pA->tex[1] = IMG_LoadTexture(pR, "../assets/images/alien2.png");
+	pA->tex[2] = IMG_LoadTexture(pR, "../assets/images/alien3.png");
+	pA->tex[3] = IMG_LoadTexture(pR, "../assets/images/alien4.png");
+	
+	pA->pos = pPos;
 }
 
-void update_alien(alien_t * pA, SDL_Renderer * pR, SDL_Event pEv, interface_t * i, int pControl){
+void update_alien(alien_t * pA, SDL_Renderer * pR, SDL_Event pEv, player_ship_t * pShip, int pControl){
 // role : ce sous programme affiche un l'alien *pA a la position pA->pos ..
 //	  de plus si pControl correspond a pA->id (l'identifiant de 
 //	  l'alien) on peu modifier la position de l'alien a l'aide des 
@@ -39,10 +33,21 @@ void update_alien(alien_t * pA, SDL_Renderer * pR, SDL_Event pEv, interface_t * 
 //	  sinon on se contente d'afficher l'alien!
 // parametrage : si controle = pA->id alors on peut bouger le perso! 
 	if(pControl == pA->id){
-		int murDroit = i->ship->img.pos.x + 380;
-		int murGauche = i->ship->img.pos.x + 100;
-		int murHaut = i->ship->img.pos.y + 100;
-		int murBas = i->ship->img.pos.y + 290;	
+		int murDroit = pShip->img.pos.x + 380;
+		int murGauche = pShip->img.pos.x + 100;
+		int murHaut = pShip->img.pos.y + 100;
+		int murBas = pShip->img.pos.y + 290;	
+		
+		/******TEST DU DEV******/
+		//printf("mur droit : %d\n", murDroit);
+		//printf("mur gauche : %d\n", murGauche);
+		//printf("mur haut : %d\n", murHaut);
+		//printf("mur bas : %d\n", murBas);
+		printf("pos alien 0 : (%d,%d)\n", pA->pos.x, pA->pos.y);
+		printf("mur gauche : %d\n", murGauche);
+		printf("mur haut : %d\n", murHaut);
+		printf("mur bas : %d\n", murBas);
+		/***********************/
 		switch(pEv.type){
 			case SDL_KEYDOWN:
 				switch(pEv.key.keysym.sym){
@@ -95,7 +100,6 @@ void free_alien(alien_t * pA){
 // role : libere la memoir utiliser par *pA
 	printf("suppression alien\n");
 	for(int i = 0; i < 4; i++){
-		SDL_FreeSurface(pA->img[i]);
 		SDL_DestroyTexture(pA->tex[i]);
 	}
 }
@@ -104,24 +108,28 @@ void free_alien(alien_t * pA){
 			/*	  team    alien	      */
 			//****************************//
 
-void load_team(team_t * pT, SDL_Renderer * pR, interface_t * pI){
+void load_team(team_t * pT, SDL_Renderer * pR){
 // role : charge un à un les alien présent dans le vaisseau en appellant 
-//	  pTaille fois le sous programme load_alien(...)
+//	  Taille fois le sous programme load_alien(...)
+//        de plus on initialise leur position
 	pT->taille = NBRE_ALIENS;
 	for(int i = 0; i < pT->taille; i++){
-		load_alien(&pT->aliens[i], pR, pI, i);
+		SDL_Rect position_alien;
+		position_alien.x = 350 + i*10;
+		position_alien.y = 350 + i*10;
+		load_alien(&pT->aliens[i], pR, i, position_alien);
 	}
 }
 
 //void drawAlien(alien_t * pA, SDL_Renderer * pR, SDL_Event pEv, interface_t i, int pControl){
-void update_team(team_t * pT, SDL_Renderer * pR, SDL_Event pEv, interface_t * pI, int pControl){
+void update_team(team_t * pT, SDL_Renderer * pR, SDL_Event pEv, player_ship_t * pShip, int pControl){
 // role : parcour tout les membre de l'equpage *pT du vaisseau et appel
 //	  le sous programme update_alien qui permet plusieurs chose :
 //		- l'affichage de l'alien en paramètre
 //		- gere le deplacement de l'alien que l'on controle
 //		  (l'alien d'indice pControl)	
 	for(int i = 0; i < pT->taille; i++){
-		update_alien(&pT->aliens[i], pR, pEv, pI, (pControl));
+		update_alien(&pT->aliens[i], pR, pEv, pShip, (pControl));
 	}	
 }
 

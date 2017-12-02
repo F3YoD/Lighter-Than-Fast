@@ -37,7 +37,7 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 	inter->ship = (player_ship_t *)malloc(sizeof(player_ship_t));
 	load_interface(inter, pRend);
 	team_t * team = (team_t *)malloc(sizeof(team_t));
-	load_team(team, pRend, inter);
+	load_team(team, pRend);
 
 	
 	///init TTF
@@ -76,7 +76,7 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en para
 		}
 		
 		update_interface(inter, pRend);
-		update_team(team, pRend, ev, inter, control);
+		update_team(team, pRend, ev, inter->ship, control);
 		//SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
 		SDL_RenderPresent(pRend);
 		SDL_RenderClear(pRend);

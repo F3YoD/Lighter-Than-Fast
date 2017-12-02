@@ -8,16 +8,13 @@
 void load_player_ship(player_ship_t * pS, char pDest[50], SDL_Renderer * pRend){
 // role : initialise un player_ship_t
 	printf("chargement du vaisseau\n");
-	pS->img.img = IMG_Load(pDest);
-	pS->img.tex = SDL_CreateTextureFromSurface(pRend, pS->img.img);
-	if(pS->img.img == NULL){ printf("erreur load img ships\n");}
+	pS->img.tex = IMG_LoadTexture(pRend, pDest);
 	pS->img.pos.x = 100;
 	pS->img.pos.y = 100;
 }
 
 void update_player_ship(player_ship_t * pS, SDL_Renderer * pR){
-// role : mes a jour, affiche notre ship
-	//printf("affichage du vaisseau\n");
+// role : met a jour, affiche notre ship
 	SDL_QueryTexture(pS->img.tex,NULL,NULL,&pS->img.pos.w, &pS->img.pos.h);
 	SDL_RenderCopy(pR, pS->img.tex, NULL, &pS->img.pos);
 }
@@ -25,7 +22,5 @@ void update_player_ship(player_ship_t * pS, SDL_Renderer * pR){
 void free_player_ship(player_ship_t * pS){
 // role : free notre player_ship_t
 	printf("suppression du vaisseau\n");
-	SDL_FreeSurface(pS->img.img);
 	SDL_DestroyTexture(pS->img.tex);
 }
-
