@@ -8,7 +8,6 @@
 #include "image.h"
 #include "game.h"
 #include "alien.h"
-#include "interface.h"
 
 #include "ships.h"
 #include "fond.h"

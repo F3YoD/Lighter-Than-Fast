@@ -24,7 +24,7 @@ $(O)/alien.o: alien.c alien.h
 $(O)/battle.o: battle.c $(O)/ships.o battle.h
 	gcc $(CFLAGS) -o $@ -c $< $(SDLFLAGS)
 
-$(O)/game.o: game.c $(O)/alien.o $(O)/interface.o
+$(O)/game.o: game.c $(O)/alien.o
 	gcc $(CFLAGS) -o $@ -c $^ $(SDLFLAGS)
 
 $(O)/interface.o: interface.c $(O)/jauge.o $(O)/alien.o $(O)/ships.o $(O)/fond.o
