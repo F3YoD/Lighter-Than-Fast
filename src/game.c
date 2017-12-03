@@ -13,18 +13,7 @@
 #include "fond.h"
 #include "jauge.h"
 
-// ============================================================= //
-//			TEST STRUCT ET SS-PROG			 //
-// ============================================================= //
-			
-			//****************************//
-			/*	      shield	      */
-			//****************************//
-
-
-///////////////////////////////////////////////////////////////////
-
-void game(SDL_Renderer * pRend, SDL_Surface * pEcran){ // mettre l'ecran en parametre
+void game(SDL_Renderer * pRend, SDL_Surface * pEcran){
 // role : gere la partie jouable du jeu
 //
 // nb : la partie interface sera supprimé car jugé comme obsolète 

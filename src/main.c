@@ -7,6 +7,8 @@
 #include "menu.h"
 #include "game.h"
 
+#include "extern.h"
+
 // =================================== //
 // 		CONSTANTES             //
 // =================================== //
@@ -17,10 +19,10 @@
 
 int main(int argc, char * argv[]){
     ///variables
-    SDL_Renderer * renderer = NULL;
+    //SDL_Renderer * renderer = NULL;
     int State = 0;
     SDL_Surface * ecran = NULL;
-    SDL_Window * fenetre = NULL;
+    //SDL_Window * fenetre = NULL;
     // DEBUG
     SDL_Surface* bmp_surface = NULL;
     ///fin variables
