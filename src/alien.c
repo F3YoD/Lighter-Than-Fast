@@ -39,14 +39,6 @@ void update_alien(alien_t * pA, SDL_Renderer * pR, SDL_Event pEv, player_ship_t 
 		int murBas = pShip->img.pos.y + 290;	
 		
 		/******TEST DU DEV******/
-		//printf("mur droit : %d\n", murDroit);
-		//printf("mur gauche : %d\n", murGauche);
-		//printf("mur haut : %d\n", murHaut);
-		//printf("mur bas : %d\n", murBas);
-		printf("pos alien 0 : (%d,%d)\n", pA->pos.x, pA->pos.y);
-		printf("mur gauche : %d\n", murGauche);
-		printf("mur haut : %d\n", murHaut);
-		printf("mur bas : %d\n", murBas);
 		/***********************/
 		switch(pEv.type){
 			case SDL_KEYDOWN:
