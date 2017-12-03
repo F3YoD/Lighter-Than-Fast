@@ -9,19 +9,19 @@
 #include "fond.h"
 
 
-void load_fond(fond_t * pF, char * pDest, SDL_Renderer * pR){
+void load_fond(fond_t * pF, char * pDest){
 //
 	printf("chargement du fond\n");
-	pF->tex = IMG_LoadTexture(pR, pDest);
+	pF->tex = IMG_LoadTexture(renderer, pDest);
 	pF->pos.x = 0; pF->pos.y = 0; 
 	pF->pos.w = 1024; pF->pos.h = 768; 
 }
 
-void update_fond(fond_t pF, SDL_Renderer * pR){
+void update_fond(fond_t pF){
 //
 	//printf("affichage du fond\n");
 	SDL_QueryTexture(pF.tex,NULL,NULL,&pF.pos.w, &pF.pos.h);
-	SDL_RenderCopy(pR, pF.tex, NULL, &pF.pos);
+	SDL_RenderCopy(renderer, pF.tex, NULL, &pF.pos);
 }
 
 void free_fond(fond_t * pF){

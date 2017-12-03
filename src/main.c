@@ -68,11 +68,11 @@ int main(int argc, char * argv[]){
     // on lance notre menu le joueur va donc faire un choix dans ce menu
     // il sera diriger soit dans le jeu, soit dans un tuto, option, ..etc
     // ou bien quitter directement
-    menu(&State, renderer);
+    menu(&State);
     switch(State){
     case ETAT_GAME :
         printf("***** DEBUT DE PARTIE *****\n\n\n");
-        game(renderer, ecran);
+        game(ecran);
         break;
     case ETAT_QUIT:
         // le programme se ferme !

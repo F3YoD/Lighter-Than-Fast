@@ -6,7 +6,7 @@
 #include "menu.h"
 #include "image.h"
 
-void menu(int * pState, SDL_Renderer * pRend){
+void menu(int * pState){
 	///variables
 	int choix_joueur = 0;
 	int continuer = 1;
@@ -22,10 +22,10 @@ void menu(int * pState, SDL_Renderer * pRend){
 	///affichage menu
 	imgMenu = SDL_LoadBMP("../assets/images/menu.bmp");
   if (imgMenu == NULL) printf("imgMenu error: %s", SDL_GetError());
-	texture = SDL_CreateTextureFromSurface(pRend, imgMenu);
+	texture = SDL_CreateTextureFromSurface(renderer, imgMenu);
 	posFond.x = 0; posFond.y = 0;
 	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);
-	SDL_RenderCopy(pRend, texture, NULL, &posFond);
+	SDL_RenderCopy(renderer, texture, NULL, &posFond);
 	///fin affichage menu
 
 	while(continuer){
@@ -55,13 +55,13 @@ void menu(int * pState, SDL_Renderer * pRend){
 				break;
 		}
 
-		SDL_RenderCopy(pRend, texture, NULL, &posFond);
-		SDL_RenderPresent(pRend);
+		SDL_RenderCopy(renderer, texture, NULL, &posFond);
+		SDL_RenderPresent(renderer);
 	}
 	*pState = choix_joueur;
 
 	///On efface notre menu
-	SDL_RenderClear(pRend);
+	SDL_RenderClear(renderer);
 
 	///libération texture
 	printf("libération du menu\n");

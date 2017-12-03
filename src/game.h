@@ -2,7 +2,8 @@
 #define _GAME_
 
 #include <SDL2/SDL.h>
+#include "extern.h"
 
-void game(SDL_Renderer *, SDL_Surface *);
+void game(SDL_Surface *);
 
 #endif

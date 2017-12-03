@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "image.h"
+#include "extern.h"
 
 /***
  * TYPES
@@ -62,9 +63,9 @@ typedef struct {
  * FUNCTIONS
  */
 
-void load_player_ship(player_ship_t *,char *,SDL_Renderer *);
+void load_player_ship(player_ship_t *,char *);
 //load a ship from an image
-void update_player_ship(player_ship_t *,SDL_Renderer *);
+void update_player_ship(player_ship_t *);
 //update ship 
 void free_player_ship(player_ship_t *);
 //Free the memory when the ship is useless

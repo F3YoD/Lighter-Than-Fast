@@ -13,7 +13,7 @@
 #include "fond.h"
 #include "jauge.h"
 
-void game(SDL_Renderer * pRend, SDL_Surface * pEcran){
+void game(SDL_Surface * pEcran){
 // role : gere la partie jouable du jeu
 //
 // nb : la partie interface sera supprimé car jugé comme obsolète 
@@ -32,13 +32,13 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){
 	bar_shield_t shield;
 	player_ship_t * my_ship = (player_ship_t *)malloc(sizeof(player_ship_t));
 	
-	load_fond(&fond, "../assets/images/gameFond1.jpg", pRend);
-	load_barre_vie(&life, 10, "../assets/images/lifebare2.png", pRend);
-	load_bar_shield(&shield, 100, "../assets/images/shieldbare.png", pRend);
-	load_player_ship(my_ship, "../assets/images/ship2.png", pRend);
+	load_fond(&fond, "../assets/images/gameFond1.jpg");
+	load_barre_vie(&life, 10, "../assets/images/lifebare2.png");
+	load_bar_shield(&shield, 100, "../assets/images/shieldbare.png");
+	load_player_ship(my_ship, "../assets/images/ship2.png");
 	
 	team_t * team = (team_t *)malloc(sizeof(team_t));
-	load_team(team, pRend);
+	load_team(team);
 	/**************************************************************/	
 
 
@@ -82,15 +82,15 @@ void game(SDL_Renderer * pRend, SDL_Surface * pEcran){
 		}
 		
 		// ==================== UPDATE ================== //
-		update_fond(fond, pRend);
-		update_barre_vie(&life, pRend);
-		update_bar_shield(&shield, pRend);
-		update_player_ship(my_ship, pRend);
-		update_team(team, pRend, ev, my_ship, control);
+		update_fond(fond);
+		update_barre_vie(&life);
+		update_bar_shield(&shield);
+		update_player_ship(my_ship);
+		update_team(team, ev, my_ship, control);
 		
 		//SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
-		SDL_RenderPresent(pRend);
-		SDL_RenderClear(pRend);
+		SDL_RenderPresent(renderer);
+		SDL_RenderClear(renderer);
 		/**************************************************/
 	
 	}

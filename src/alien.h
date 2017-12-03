@@ -5,6 +5,9 @@
 #include <SDL2/SDL_image.h>
 #include "game.h"
 #include "ships.h"
+
+#include "extern.h"
+
 // ======================================= //
 //		CONSTANTE ALIENS	   //
 // ======================================= //
@@ -24,12 +27,12 @@ typedef struct {
 }team_t;
 
 /* ALIEN */
-void load_alien(alien_t *, SDL_Renderer *, int , SDL_Rect);
-void update_alien(alien_t *, SDL_Renderer *, SDL_Event, player_ship_t *, int);
+void load_alien(alien_t *, int , SDL_Rect);
+void update_alien(alien_t *, SDL_Event, player_ship_t *, int);
 void free_alien(alien_t *);
 /* TEAM */
-void load_team(team_t *, SDL_Renderer *);
-void update_team(team_t *, SDL_Renderer *, SDL_Event, player_ship_t *, int);
+void load_team(team_t *);
+void update_team(team_t *, SDL_Event, player_ship_t *, int);
 void freeTeam(team_t *);
 
 #endif
