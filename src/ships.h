@@ -57,6 +57,8 @@ ship_t, * map_node_t, ** map_col_t, *** map_t;
 typedef struct {
 	ship_t ship;
 	image_t img;
+	double angle;   // angle de notre vaisseaux sur l'écran
+			// qui sera modifié a la destruction du vaisseau
 }player_ship_t;
 
 /***
