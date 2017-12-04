@@ -16,7 +16,6 @@ void load_alien(alien_t * pA, int pId, SDL_Rect pPos){
 //	  fonction de son identifiant
 	printf("chargement de l'alien\n");
 	pA->id = pId;
-	pA->pv = 100;
 	pA->tex[0] = IMG_LoadTexture(renderer, "../assets/images/alien1.png");
 	pA->tex[1] = IMG_LoadTexture(renderer, "../assets/images/alien2.png");
 	pA->tex[2] = IMG_LoadTexture(renderer, "../assets/images/alien3.png");

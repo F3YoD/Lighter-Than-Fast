@@ -22,7 +22,7 @@ void game(SDL_Surface * pEcran){
 			/* ecrire test */
 	SDL_Surface * texte = NULL;
 	TTF_Font * police = NULL;
-	SDL_Color couleurRouge = { 255, 0, 255, 0 };
+	SDL_Color couleurRouge = { 255, 0, 0};
 	SDL_Rect posTexte;
 		
 	
@@ -49,7 +49,7 @@ void game(SDL_Surface * pEcran){
 	
 	TTF_Init();
 	printf("init ttf\n");
-	posTexte.x = 0; posTexte.y = 0;		
+	posTexte.x = 500; posTexte.y = 500;		
 	/* police = TTF_OpenFont("../assets/police/arial.ttf", 21); */
 	police = TTF_OpenFont("../assets/fonts/Inter-UI-Regular.ttf", 21);
 	if(!police){
