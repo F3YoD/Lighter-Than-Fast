@@ -15,7 +15,6 @@
 #define NBRE_ALIENS 4 // pas plus de 5 membres d'équipages
 
 typedef struct {
-	int id, pv;
 	SDL_Surface * img[4];
 	SDL_Texture * tex[4];
 	SDL_Rect pos;
