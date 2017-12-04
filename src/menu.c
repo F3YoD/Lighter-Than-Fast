@@ -4,15 +4,13 @@
 
 menu_choice_t menu()
 {
+    #ifdef DEBUG
+    puts("* Loading menu");
+    #endif
     /* Display background */
-    SDL_Surface *bg_surface = NULL;
     SDL_Texture *bg_texture = NULL;
-
-    bg_surface = SDL_LoadBMP(MENU_BG);
-    check_SDL(bg_surface);
-    bg_texture = SDL_CreateTextureFromSurface(renderer, bg_surface);
-    check_SDL(bg_texture);
-    SDL_FreeSurface(bg_surface);
+    bg_texture = IMG_LoadTexture(renderer, MENU_BG);
+    check_IMG(bg_texture);
 
     SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
     SDL_RenderPresent(renderer);
@@ -27,7 +25,19 @@ menu_choice_t menu()
         {
             switch (event.type)
             {
-            case SDL_KEYDOWN:
+            case SDL_KEYUP:
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_ESCAPE:
+                case SDLK_q:
+                    quit = true;
+                    break;
+                default:
+                    choice = PLAY_GAME;
+                    quit = true;
+                    break;
+                }
+                break;
             case SDL_MOUSEBUTTONDOWN:
                 choice = PLAY_GAME;
             case SDL_QUIT:

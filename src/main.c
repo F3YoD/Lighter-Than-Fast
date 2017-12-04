@@ -30,6 +30,7 @@ TTF_Font *font = NULL;
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL));
     /* Init SDL */
     int img_flags = IMG_INIT_JPG | IMG_INIT_PNG;
     int img_init = IMG_Init(img_flags);
@@ -61,6 +62,9 @@ int main(int argc, char *argv[])
     bool show_menu;
     do
     {
+        #ifdef DEBUG
+        puts("* In main menu");
+        #endif
         show_menu = false;
         switch (menu())
         {

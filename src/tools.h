@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 #include <SDL2/SDL.h>
 
 typedef struct node
@@ -15,6 +17,9 @@ int gen_rand(int, int);
 
 list_t cons_empty(void);
 list_t cons(void *, list_t);
+void *head(list_t);
+list_t son(list_t);
+void print_list(list_t);
 void *pop_nth(list_t, int);
 bool is_empty(list_t);
 void free_list(list_t);
