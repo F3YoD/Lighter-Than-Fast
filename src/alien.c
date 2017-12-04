@@ -31,7 +31,7 @@ void update_alien(alien_t * pA, SDL_Event pEv, player_ship_t * pShip, int pContr
 //	  touches directionnelles
 //	  sinon on se contente d'afficher l'alien!
 // parametrage : si controle = pA->id alors on peut bouger le perso! 
-	if(pControl == pA->id){
+	if(pControl == pA->id && pShip->ship.hp > 0){
 		int murDroit = pShip->img.pos.x + 380;
 		int murGauche = pShip->img.pos.x + 100;
 		int murHaut = pShip->img.pos.y + 100;
@@ -82,8 +82,10 @@ void update_alien(alien_t * pA, SDL_Event pEv, player_ship_t * pShip, int pContr
 	}
 	else{
 		//on veut quand meme afficher notre aliens dans tout les cas
-		SDL_QueryTexture(pA->tex[0], NULL, NULL, &pA->pos.w, &pA->pos.h);
-		SDL_RenderCopy(renderer, pA->tex[0], NULL, &pA->pos);	
+		if(pShip->ship.hp > 0){
+			SDL_QueryTexture(pA->tex[0], NULL, NULL, &pA->pos.w, &pA->pos.h);
+			SDL_RenderCopy(renderer, pA->tex[0], NULL, &pA->pos);	
+		}
 	}
 }
 

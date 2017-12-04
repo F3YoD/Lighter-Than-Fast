@@ -10,7 +10,7 @@ void load_player_ship(player_ship_t * pS, char pDest[50]){
 	printf("chargement du vaisseau\n");
 	pS->img.tex = IMG_LoadTexture(renderer, pDest);
 	pS->img.pos.x = 100;
-	pS->img.pos.y = 100;
+	pS->img.pos.y = 150;
 	pS->angle = 180.0;
 	
 	// ================== INIT STATS PLAYER ================== //
