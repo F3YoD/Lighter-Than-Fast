@@ -7,7 +7,8 @@ SDLFLAGS = $(shell sdl2-config --cflags --libs) -lSDL2_image -lSDL2_ttf
 O = ../obj
 B = ../bin
 A = ../assets
-FONTS = $(A)/fonts/Inter-UI-Regular.ttf
+FONTS = $(A)/fonts/firamono.ttf
+FONTS = $(A)/fonts/fontawesome.ttf
 MIDI_EXAMPLE = $(A)/midi/1\ Space\ Cruise\ (Title).mid
 OBJECTS = $(patsubst %.c, $(O)/%.o, $(wildcard *.c))
 DEBUG_MARKER = $(O)/.DEBUG_MARKER
@@ -29,6 +30,7 @@ $(DEBUG_MARKER) $(RELEASE_MARKER):
 # General
 binary: $(O) $(FONTS) $(MIDI_EXAMPLE) $(B) $(OBJECTS)
 	$(CC) $(CFLAGS) -o $(B)/$(NAME) $(OBJECTS) $(SDLFLAGS)
+	@echo "Executable file created in "$(B)"/"$(NAME)
 
 
 # Objects
