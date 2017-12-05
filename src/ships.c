@@ -16,6 +16,12 @@ void load_player_ship(player_ship_t * pS, char pDest[50]){
 	// ================== INIT STATS PLAYER ================== //
 	pS->ship.hp = 100;
 	pS->ship.shield = 50;
+	sprintf(pS->ship.name,"Vaisseau de Jean-Ive");
+	pS->ship.damage_min=5;
+	pS->ship.damage_max=10;
+	//pS->ship.belongings->plasma=10;
+	//pS->ship.belongings->money=10;
+	//pS->ship.belongings->scraps=5;
 	/***********************************************************/
 }
 
@@ -32,7 +38,7 @@ void update_player_ship(player_ship_t * pS){
 
 	// ====================== UPDATE LIFE PLAYER ================== //
 	// juste pour le test de defaite du joueur
-	if(pS->ship.hp > 0) { pS->ship.hp--; }
+	if(pS->ship.hp > 0){ pS->ship.hp--; }
 
 	if(pS->ship.hp <= 0){
 		if(pS->img.pos.x > -1000)

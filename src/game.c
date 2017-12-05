@@ -24,10 +24,6 @@ void game(SDL_Surface * pEcran){
 	int continuer = 1;
 	SDL_Event ev;
 			/* ecrire test */
-	SDL_Surface * texte = NULL;
-	TTF_Font * police = NULL;
-	SDL_Color couleurRouge = { 255, 0, 0};
-	SDL_Rect posTexte;
 		
 	
 	// ========================= LOADING ======================== //
@@ -50,18 +46,8 @@ void game(SDL_Surface * pEcran){
 	
 	// nb : for the moment, ttf don't run because we don't know create
 	//	a 
-	
 	TTF_Init();
-	printf("init ttf\n");
-	posTexte.x = 500; posTexte.y = 500;		
-	/* police = TTF_OpenFont("../assets/police/arial.ttf", 21); */
-	police = TTF_OpenFont("../assets/fonts/Inter-UI-Regular.ttf", 21);
-	if(!police){
-		printf("TTP_OpenFont : %s\n", TTF_GetError());
-	}
-	texte = TTF_RenderText_Blended(police, "BIENVENUE", couleurRouge);
-	SDL_Texture* texturetexte = SurfaceToTexture( texte );
-	SDL_QueryTexture( texturetexte, NULL, NULL,&posTexte.w,&posTexte.h );
+	printf("init ttf\n");	
 	
 	/***************************************************************/
 
@@ -89,13 +75,15 @@ void game(SDL_Surface * pEcran){
 		
 		// ==================== UPDATE ================== //
 		update_fond(fond);
-		update_barre_vie(&life);
-		update_bar_shield(&shield);
+		//update_barre_vie(&life);
+		//update_bar_shield(&shield);
 		update_player_ship(my_ship);
 		update_team(team, ev, my_ship, control);
 		
 		//affichage du texte 
-		SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
+		//AfficherTexte("Bienvenue",police,couleur,posTexte);
+		//SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
+		AfficherStatShip(my_ship);
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
 		/**************************************************/
@@ -103,12 +91,9 @@ void game(SDL_Surface * pEcran){
 	}
 	
 	///libération	
-	
-	TTF_CloseFont(police);	
-	SDL_FreeSurface(texte);
-	SDL_DestroyTexture(texturetexte);
 	TTF_Quit();
-	printf("libération du ttf \n");
+	//SDL_DestroyTexture(texturetexte);
+	//printf("libération du ttf \n");
 	freeTeam(team);
 	
 	free_fond(&fond);
