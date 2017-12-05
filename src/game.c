@@ -12,6 +12,10 @@
 #include "ships.h"
 #include "fond.h"
 #include "jauge.h"
+#include "tools.h"
+
+
+
 
 void game(SDL_Surface * pEcran){
 // role : gere la partie jouable du jeu
@@ -56,7 +60,9 @@ void game(SDL_Surface * pEcran){
 		printf("TTP_OpenFont : %s\n", TTF_GetError());
 	}
 	texte = TTF_RenderText_Blended(police, "BIENVENUE", couleurRouge);
-	SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
+	SDL_Texture* texturetexte = SurfaceToTexture( texte );
+	SDL_QueryTexture( texturetexte, NULL, NULL,&posTexte.w,&posTexte.h );
+	
 	/***************************************************************/
 
 	int control = 0;
@@ -88,7 +94,8 @@ void game(SDL_Surface * pEcran){
 		update_player_ship(my_ship);
 		update_team(team, ev, my_ship, control);
 		
-		//SDL_BlitSurface(texte, NULL, pEcran, &posTexte);
+		//affichage du texte 
+		SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);
 		/**************************************************/
@@ -99,8 +106,9 @@ void game(SDL_Surface * pEcran){
 	
 	TTF_CloseFont(police);	
 	SDL_FreeSurface(texte);
+	SDL_DestroyTexture(texturetexte);
 	TTF_Quit();
-
+	printf("libération du ttf \n");
 	freeTeam(team);
 	
 	free_fond(&fond);
