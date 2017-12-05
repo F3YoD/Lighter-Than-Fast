@@ -27,7 +27,7 @@ SDL_Texture* SurfaceToTexture( SDL_Surface* surfacedutexte )
 void AfficherTexte(char texte[],TTF_Font* police, SDL_Color couleur,SDL_Rect position){
 
 	SDL_Surface* txt = TTF_RenderText_Blended(police,texte,couleur);
-	SDL_Texture* texturetexte=SurfaceToTexture(txt);
+	SDL_Texture* texturetexte = SurfaceToTexture(txt);
 
 	SDL_QueryTexture(texturetexte,NULL,NULL,&position.w,&position.h);
 	SDL_RenderCopy(renderer,texturetexte,NULL,&position);

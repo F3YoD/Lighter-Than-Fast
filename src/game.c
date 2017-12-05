@@ -14,17 +14,12 @@
 #include "jauge.h"
 #include "tools.h"
 
-
-
-
 void game(SDL_Surface * pEcran){
 // role : gere la partie jouable du jeu
 //
 // nb : la partie interface sera supprimé car jugé comme obsolète 
 	int continuer = 1;
-	SDL_Event ev;
-			/* ecrire test */
-		
+	SDL_Event ev;	
 	
 	// ========================= LOADING ======================== //
 	fond_t fond;
@@ -41,11 +36,8 @@ void game(SDL_Surface * pEcran){
 	load_team(team);
 	/**************************************************************/	
 
-
 	// =========================== TTF =========================== //
 	
-	// nb : for the moment, ttf don't run because we don't know create
-	//	a 
 	TTF_Init();
 	printf("init ttf\n");	
 	
