@@ -11,12 +11,11 @@
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
 
-#define FONT_PATH "../assets/fonts/Inter-UI-Regular.ttf"
+#define FIRAMONO_PATH "../assets/fonts/firamono.ttf"
+#define FONTAWESOME_PATH "../assets/fonts/fontawesome.ttf"
 
 /*
  * IDEAS:
- *  - get rid of interface.{h,c} and use it all in game.c
- *    - would allow to have more expressive code
  *  - get rid of everything jauge.{h,c}
  *    - should be rendered when the ship's life/shield changes
  *  - get rid of everything fond.{h,c}
@@ -53,29 +52,30 @@ int main(int argc, char *argv[])
     check_SDL(renderer);
 
     // Load font
-    // TODO load the same font several times to give if several attributes?
-    font = TTF_OpenFont(FONT_PATH, 14);
+    // load the same font several times to give if several attributes?
+    font = TTF_OpenFont(FIRAMONO_PATH, 22);
     check_TTF(font);
 
     /* Get user selection */
-    // TODO implement a "back to main menu" option
-    bool show_menu;
-    do
-    {
-        #ifdef DEBUG
-        puts("* In main menu");
-        #endif
-        show_menu = false;
-        switch (menu())
-        {
-        case PLAY_GAME:
-            // TODO lancer le jeu
-            play_game(&show_menu);
-        case QUIT_GAME:
-        default:
-            break;
-        }
-    } while (show_menu);
+    /* bool show_menu; */
+    /* do */
+    /* { */
+    /*     #ifdef DEBUG */
+    /*     puts("* In main menu"); */
+    /*     #endif */
+    /*     show_menu = false; */
+    /*     switch (menu()) */
+    /*     { */
+    /*     case PLAY_GAME: */
+    /*         // TODO lancer le jeu */
+    /*         play_game(&show_menu); */
+    /*     case QUIT_GAME: */
+    /*     default: */
+    /*         break; */
+    /*     } */
+    /* } while (show_menu); */
+
+    _play_game();
 
     /* Exit */
     // TODO create goodbye screen
