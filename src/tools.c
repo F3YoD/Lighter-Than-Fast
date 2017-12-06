@@ -1,5 +1,5 @@
 #include "tools.h"
-#include "ships.h" // only for debug
+//#include "ships.h" // only for debug
 
 int gen_rand(int min, int max)
 {
@@ -25,7 +25,7 @@ list_t cons_empty(void)
 list_t cons(void *elt, list_t next)
 {
     list_t l = (list_t)malloc(sizeof(node_t));
-    printf("cons: got %s\n", ((ship_t *)elt)->name);
+    /* printf("cons: got %s\n", ((ship_t *)elt)->name); */
     l->value = elt;
     l->next = next;
 
@@ -55,8 +55,8 @@ void print_list(list_t l)
     list_t tmp = l;
     while (!is_empty(tmp))
     {
-        ship_t *curr = (ship_t *)tmp->value;
-        printf("%s %s\n", curr->name, curr->is_shop ? "(Shop)" : "");
+        /* ship_t *curr = (ship_t *)tmp->value; */
+        /* printf("%s %s\n", curr->name, curr->is_shop ? "(Shop)" : ""); */
         tmp = child(tmp);
     }
 }
