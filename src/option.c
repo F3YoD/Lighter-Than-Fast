@@ -4,7 +4,7 @@ void load_fenetre_option(fenetre_option_t * fO){
 // role : charge notre fenetre d'option, c'est a dire, sa position, son image et
 //	  l'image de son curseur
 	printf("*****chargement de la fenetre d'option*****\n");
-	fO->actif = true;
+	fO->actif = false; // on affiche pas le menu de base
 	fO->img_fenetre.tex = IMG_LoadTexture(renderer, 
 		"../assets/images/option.png"	
 	);

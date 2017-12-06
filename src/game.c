@@ -16,7 +16,7 @@
 #include "jauge.h"
 #include "tools.h"
 
-void game(SDL_Surface * pEcran){
+void game(SDL_Surface * pEcran, char pNom[20]){
 // role : gere la partie jouable du jeu
 //
 // nb : la partie interface sera supprimé car jugé comme obsolète 
@@ -35,7 +35,7 @@ void game(SDL_Surface * pEcran){
 	load_fond(&fond, "../assets/images/gameFond1.jpg");
 	load_barre_vie(&life, 10, "../assets/images/lifebare2.png");
 	load_bar_shield(&shield, 100, "../assets/images/shieldbare.png");
-	load_player_ship(my_ship, "../assets/images/ship2.png");
+	load_player_ship(my_ship, "../assets/images/ship2.png", pNom);
 	
 	team_t * team = (team_t *)malloc(sizeof(team_t));
 	load_team(team);
@@ -96,7 +96,7 @@ void game(SDL_Surface * pEcran){
 		//affichage du texte 
 		//AfficherTexte("Bienvenue",police,couleur,posTexte);
 		//SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
-		AfficherStatShip(my_ship);
+		afficher_stat_ship(my_ship);
 		update_fenetre_option(&fenetre_option);
 		SDL_RenderPresent(renderer);
 		SDL_RenderClear(renderer);

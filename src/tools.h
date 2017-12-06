@@ -6,7 +6,7 @@
 #include <SDL2/SDL_ttf.h>
 int CreeAlea(int,int);
 SDL_Texture* SurfaceToTexture( SDL_Surface*);
-void AfficherTexte(char*,TTF_Font*,SDL_Color,SDL_Rect);
-void AfficherStatShip(player_ship_t*);
+void afficher_texte(char*,TTF_Font*,SDL_Color,SDL_Rect);
+void afficher_stat_ship(player_ship_t*);
 
 #endif

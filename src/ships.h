@@ -65,7 +65,7 @@ typedef struct {
  * FUNCTIONS
  */
 
-void load_player_ship(player_ship_t *,char *);
+void load_player_ship(player_ship_t *,char *, char *);
 //load a ship from an image
 void update_player_ship(player_ship_t *);
 //update ship 

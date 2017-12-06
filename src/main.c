@@ -18,35 +18,38 @@
 #define ETAT_QUIT 2
 
 int main(int argc, char * argv[]){
-    ///variables
-    //SDL_Renderer * renderer = NULL;
-    int State = 0;
-    SDL_Surface * ecran = NULL;
-    //SDL_Window * fenetre = NULL;
-    // DEBUG
-    SDL_Surface* bmp_surface = NULL;
-    ///fin variables
+   	char nom[20];
+    	printf("saisir nom : ");
+    	scanf("%s", nom);
+   	///variables
+    	//SDL_Renderer * renderer = NULL;
+    	int State = 0;
+    	SDL_Surface * ecran = NULL;
+    	//SDL_Window * fenetre = NULL;
+    	// DEBUG
+    	SDL_Surface* bmp_surface = NULL;
+    	///fin variables
 
-    if(SDL_Init(SDL_INIT_VIDEO) != 0){
-        //on lance la sdl
-        fprintf(stdout, "echec de l'init sdl (%s)\n",SDL_GetError());
-        return EXIT_FAILURE;
-    }
-    printf("***** LANCEMENT SDL *****\n");
+    	if(SDL_Init(SDL_INIT_VIDEO) != 0){
+       		//on lance la sdl
+       		fprintf(stdout, "echec de l'init sdl (%s)\n",SDL_GetError());
+        	return EXIT_FAILURE;
+    	}
+    	printf("***** LANCEMENT SDL *****\n");
 
-    ///init fenetre
+    	///init fenetre
 		// on met en place la fenetre grace a SDL_Window*
 		// puis on cree la fenetre de la maniere standard
 		// suivante : 'fenetre = SDL_CreateWindow();'
-    fenetre = SDL_CreateWindow(
-        "Projet Lighter Than Fast: Unknow Within",
-        SDL_WINDOWPOS_UNDEFINED,
-        SDL_WINDOWPOS_UNDEFINED,
-        1024,
-        768,
-        0
-    );
-    ///fin init fenetre
+    	fenetre = SDL_CreateWindow(
+        	"Projet Lighter Than Fast: Unknow Within",
+        	SDL_WINDOWPOS_UNDEFINED,
+        	SDL_WINDOWPOS_UNDEFINED,
+        	1024,
+        	768,
+        	0
+    	);
+    	///fin init fenetre
 
     ///init ecran surface
     ecran = SDL_GetWindowSurface(fenetre);
@@ -72,7 +75,7 @@ int main(int argc, char * argv[]){
     switch(State){
     case ETAT_GAME :
         printf("***** DEBUT DE PARTIE *****\n\n\n");
-        game(ecran);
+        game(ecran, nom);
         break;
     case ETAT_QUIT:
         // le programme se ferme !

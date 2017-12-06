@@ -4,6 +4,6 @@
 #include <SDL2/SDL.h>
 #include "extern.h"
 
-void game(SDL_Surface *);
+void game(SDL_Surface *, char*);
 
 #endif

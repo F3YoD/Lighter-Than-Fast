@@ -24,7 +24,7 @@ SDL_Texture* SurfaceToTexture( SDL_Surface* surfacedutexte )
 	return texte;
 }
 
-void AfficherTexte(char texte[],TTF_Font* police, SDL_Color couleur,SDL_Rect position){
+void afficher_texte(char texte[],TTF_Font* police, SDL_Color couleur,SDL_Rect position){
 
 	SDL_Surface* txt = TTF_RenderText_Blended(police,texte,couleur);
 	SDL_Texture* texturetexte = SurfaceToTexture(txt);
@@ -36,7 +36,7 @@ void AfficherTexte(char texte[],TTF_Font* police, SDL_Color couleur,SDL_Rect pos
 	SDL_DestroyTexture(texturetexte);
 }
 
-void AfficherStatShip(player_ship_t* ps){
+void afficher_stat_ship(player_ship_t* ps){
 	//Initialisation		
 	TTF_Font* police = TTF_OpenFont("../assets/fonts/Inter-UI-Regular.ttf", 12);
 	if(!police){
@@ -49,35 +49,35 @@ void AfficherStatShip(player_ship_t* ps){
 
 	//ecriture des stats
 	sprintf(ecrire,"Nom du vaisseau : %s",ps->ship.name);
-	AfficherTexte(ecrire,police,couleur,position);
+	afficher_texte(ecrire,police,couleur,position);
 
 	position.y=position.y+15;
 	sprintf(ecrire,"Vie: %d",ps->ship.hp);
-	AfficherTexte(ecrire,police,couleur,position);
+	afficher_texte(ecrire,police,couleur,position);
 
 	position.y=position.y+15;
 	sprintf(ecrire,"Bouclier: %d",ps->ship.shield);
-	AfficherTexte(ecrire,police,couleur,position);
+	afficher_texte(ecrire,police,couleur,position);
 	
 	position.y=position.y+15;
 	sprintf(ecrire,"Degats minimum : %d",ps->ship.damage_min);
-	AfficherTexte(ecrire,police,couleur,position);
+	afficher_texte(ecrire,police,couleur,position);
 	
 	position.y=position.y+15;
 	sprintf(ecrire,"Degats maximum :%d",ps->ship.damage_max);
-	AfficherTexte(ecrire,police,couleur,position);
+	afficher_texte(ecrire,police,couleur,position);
 
-	/*position.y=position.y+15;
+	position.y=position.y+15;
 	sprintf(ecrire,"Plasma :%d",ps->ship.belongings->plasma);
-	AfficherTexte(ecrire,police,couleur,position);
+	afficher_texte(ecrire,police,couleur,position);
 
 	position.y=position.y+15;
 	sprintf(ecrire,"Money :%d",ps->ship.belongings->money);
-	AfficherTexte(ecrire,police,couleur,position);
+	afficher_texte(ecrire,police,couleur,position);
 
 	position.y=position.y+15;
 	sprintf(ecrire,"Scraps :%d",ps->ship.belongings->scraps);
-	AfficherTexte(ecrire,police,couleur,position);*/
+	afficher_texte(ecrire,police,couleur,position);
 	
 	TTF_CloseFont(police);	
 }
