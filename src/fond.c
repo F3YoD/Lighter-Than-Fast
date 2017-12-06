@@ -27,7 +27,7 @@ void load_fond(fond_t * pF){
 	pF->fond.pos.x = 0; pF->fond.pos.y = 0;
 	pF->fond_top.pos.x = 0; pF->fond_top.pos.y = -215;  
 	pF->fond_right.pos.x = 1024; pF->fond_right.pos.y = 48;  
-	pF->fond_bottom.pos.x = 0; pF->fond_bottom.pos.y = 768;  
+	pF->fond_bottom.pos.x = 1; pF->fond_bottom.pos.y = 768;  
 }
 
 void update_fond(fond_t * pF){
