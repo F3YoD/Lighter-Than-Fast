@@ -28,20 +28,29 @@ void play_game(void)
 
     // Gameplay
     SDL_Event event;
-    menu_choice_t choice = PLAY_GAME;
+    menu_choice_t choice = NEW_GAME;
     bool show_menu = true;
+    bool can_continue = false;
 
     while (choice != QUIT_GAME)
     {
         if (show_menu)
-            choice = menu();
-        if (!map)
+            choice = menu(can_continue);
+        if (choice == QUIT_GAME)
+            break;
+        else if (choice == NEW_GAME)
         {
-            bg_texture = IMG_LoadTexture(renderer, BACKGROUND_IMAGE);
-            check_IMG(bg_texture);
+            if (!bg_texture)
+            {
+                bg_texture = IMG_LoadTexture(renderer, BACKGROUND_IMAGE);
+                check_IMG(bg_texture);
+            }
 
-            self_texture = IMG_LoadTexture(renderer, self->img_path);
-            check_IMG(self_texture);
+            if (!self_texture)
+            {
+                self_texture = IMG_LoadTexture(renderer, self->img_path);
+                check_IMG(self_texture);
+            }
 
             map = (map_t)malloc(map_length * sizeof(map_col_t));
             gen_map(map, height_index, map_length, map_max_height);
@@ -57,54 +66,52 @@ void play_game(void)
             puts("We have the map and everything!");
 #endif
         }
-        if (choice != QUIT_GAME)
-        {
-            show_menu = false;
-            // Display background
-            SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
+        can_continue = true; // TODO manage file save
+        show_menu = false;
+        // Display background
+        SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
 
-            // Display player's ship
-            SDL_RenderCopy(renderer, self_texture, NULL, &self_pos);
+        // Display player's ship
+        SDL_RenderCopy(renderer, self_texture, NULL, &self_pos);
 
-            // Display life and shield
-            // TODO use characters to display life or shield
-            SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
-            SDL_RenderFillRect(renderer, &health_bar);
+        // Display life and shield
+        // TODO use characters to display life or shield
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
+        SDL_RenderFillRect(renderer, &health_bar);
 
-            SDL_RenderPresent(renderer);
+        SDL_RenderPresent(renderer);
 
-            // Get user input
-            bool action = false;
-            while (!action)
-                while (SDL_PollEvent(&event))
+        // Get user input
+        bool action = false;
+        while (!action)
+            while (SDL_PollEvent(&event))
+            {
+                action = false;
+                switch (event.type)
                 {
-                    action = false;
-                    switch (event.type)
+                case SDL_KEYUP:
+                    switch (event.key.keysym.sym)
                     {
-                    case SDL_KEYUP:
-                        switch (event.key.keysym.sym)
-                        {
-                        case SDLK_ESCAPE:
-                        case SDLK_TAB:
-                            show_menu = true;
-                            action = true;
-                            break;
-                        default:
-                            break;
-                        }
+                    case SDLK_ESCAPE:
+                    case SDLK_TAB:
+                        show_menu = true;
+                        action = true;
                         break;
-                    case SDL_QUIT:
-                        choice = QUIT_GAME;
                     default:
                         break;
                     }
+                    break;
+                case SDL_QUIT:
+                    choice = QUIT_GAME;
+                default:
+                    break;
                 }
+            }
 
-            // TODO display map
-            // TODO create overlay (would be used for maps, possibly shops)
-            //  - easier: create new window with only wanted content
-            //  - harder: overlay on renderer
-        }
+        // TODO display map
+        // TODO create overlay (would be used for maps, possibly shops)
+        //  - easier: create new window with only wanted content
+        //  - harder: overlay on renderer
     }
 
     /* Leave game */
