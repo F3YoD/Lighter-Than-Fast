@@ -32,18 +32,11 @@ menu_choice_t menu(bool can_continue)
     menu_txt[NEW_GAME] = "Nouvelle partie";
     menu_txt[QUIT_GAME] = "Quitter";
 
-    SDL_Surface *tmp_sur = NULL;
     SDL_Texture *tmp_tex = NULL;
     SDL_Texture **choices_textures = (SDL_Texture **)malloc(NB_CHOICES * sizeof(SDL_Texture *));
     for (int i = 0; i < NB_CHOICES; i++)
-    {
-        tmp_sur = TTF_RenderText_Blended(font, menu_txt[i],
+        choices_textures[i] = create_txt(font, menu_txt[i],
                                          ((i != CONTINUE_GAME || can_continue) ? white : gray));
-        check_TTF(tmp_sur);
-        choices_textures[i] = SDL_CreateTextureFromSurface(renderer, tmp_sur);
-        check_SDL(choices_textures[i]);
-        SDL_FreeSurface(tmp_sur);
-    }
 
     // *** Get user's choice ***
     enum menu_choice choice = can_continue ? CONTINUE_GAME : NEW_GAME;

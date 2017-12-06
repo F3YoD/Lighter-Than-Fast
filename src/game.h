@@ -11,7 +11,7 @@
 #include "menu.h"
 
 void play_game(void);
-void show_fake_loading(unsigned short);
+void show_fake_loading(unsigned int);
 
 ship_t *gen_self();
 

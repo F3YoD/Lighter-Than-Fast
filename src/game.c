@@ -26,10 +26,14 @@ void play_game(void)
     SDL_Rect self_pos = { 50, 215, 357, 286 };
     ship_t *self = gen_self();
 
+    // Help box
+    
+
     // Gameplay
     SDL_Event event;
     menu_choice_t choice = NEW_GAME;
     bool show_menu = true;
+    bool show_help = false;
     bool can_continue = false;
 
     while (choice != QUIT_GAME)
@@ -40,7 +44,8 @@ void play_game(void)
             break;
         else if (choice == NEW_GAME)
         {
-            show_fake_loading(2);
+            show_fake_loading(1500);
+
             if (!bg_texture)
             {
                 bg_texture = IMG_LoadTexture(renderer, BACKGROUND_IMAGE);
@@ -98,12 +103,16 @@ void play_game(void)
                         show_menu = true;
                         action = true;
                         break;
+                    case SDLK_h:
+                        show_help = !show_help;
+                        action = true;
                     default:
                         break;
                     }
                     break;
                 case SDL_QUIT:
                     choice = QUIT_GAME;
+                    action = true;
                 default:
                     break;
                 }
@@ -122,9 +131,8 @@ void play_game(void)
     SDL_RenderClear(renderer);
 }
 
-void show_fake_loading(unsigned short seconds)
+void show_fake_loading(unsigned int miliseconds)
 {
-    SDL_Surface *tmp_sur = NULL;
     SDL_Texture *shuttle = NULL;
     SDL_Texture *load_msg = NULL;
     SDL_Rect shuttle_rect;
@@ -137,22 +145,19 @@ void show_fake_loading(unsigned short seconds)
         { { 585, 459 }, { 585, 522 } }
     };
 
+    unsigned int endtime = SDL_GetTicks() + miliseconds;
+
     // Prepare shuttle symbol
-    shuttle = IMG_LoadTexture(renderer, "../assets/images/big_shuttle_white.png");
-    check_IMG(shuttle);
+    shuttle = load_img("../assets/images/big_shuttle_white.png");
     shuttle_rect.x = 437; shuttle_rect.y = 238;
     SDL_QueryTexture(shuttle, NULL, NULL, &shuttle_rect.w, &shuttle_rect.h);
 
     // Prepare "Loading..." message
-    tmp_sur = TTF_RenderText_Blended(font, "Loading...", white);
-    check_TTF(tmp_sur);
-    load_msg = SDL_CreateTextureFromSurface(renderer, tmp_sur);
-    check_SDL(load_msg);
-    SDL_FreeSurface(tmp_sur);
+    load_msg = create_txt(font, "Loading...", white);
     load_rect.x = 773; load_rect.y = 688;
     SDL_QueryTexture(load_msg, NULL, NULL, &load_rect.w, &load_rect.h);
 
-    for (int i = 0; i < 2 * seconds; i++)
+    do
     {
         // The body of this loop must take exactly half a second
         for (int j = 0; j < 4; j++)
@@ -173,8 +178,7 @@ void show_fake_loading(unsigned short seconds)
             SDL_RenderPresent(renderer);
             SDL_Delay(100);
         }
-        SDL_Delay(100);
-    }
+    } while (SDL_GetTicks() < endtime);
 
     SDL_DestroyTexture(shuttle);
     SDL_DestroyTexture(load_msg);
