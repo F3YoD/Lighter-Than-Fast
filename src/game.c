@@ -48,6 +48,10 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	
 	/***************************************************************/
 
+	// ====================  GESTION DU TEMPS ==================== //
+	int temps_precedent = 0, temps_actuel = 0;
+	/***************************************************************/ 
+
 	int control = 0;
 	while(continuer){
 		SDL_PollEvent(&ev);
@@ -85,23 +89,28 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				continuer = 0;
 				break;
 		}
+		// ======================= GESTION DU TEMPS ==================== //
+		temps_actuel = SDL_GetTicks();
+		if (temps_actuel - temps_precedent > 2){	
+			// ==================== UPDATE ================== //
+			update_fond(&fond);
+			//update_barre_vie(&life);
+			//update_bar_shield(&shield);
+			update_player_ship(my_ship);
+			update_team(team, ev, my_ship, control);
 		
-		// ==================== UPDATE ================== //
-		update_fond(&fond);
-		//update_barre_vie(&life);
-		//update_bar_shield(&shield);
-		update_player_ship(my_ship);
-		update_team(team, ev, my_ship, control);
-		
-		//affichage du texte 
-		//AfficherTexte("Bienvenue",police,couleur,posTexte);
-		//SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
-		afficher_stat_ship(my_ship);
-		update_fenetre_option(&fenetre_option);
-		SDL_RenderPresent(renderer);
-		SDL_RenderClear(renderer);
-		/**************************************************/
-	
+			//affichage du texte 
+			//AfficherTexte("Bienvenue",police,couleur,posTexte);
+			//SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
+			afficher_stat_ship(my_ship);
+			update_fenetre_option(&fenetre_option);
+			SDL_RenderPresent(renderer);
+			SDL_RenderClear(renderer);
+			/**************************************************/
+			
+			temps_precedent = temps_actuel;
+		}
+		/******************************************************************/
 	}
 	
 	///libération	

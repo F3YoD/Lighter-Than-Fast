@@ -9,8 +9,8 @@ void load_player_ship(player_ship_t * pS, char pDest[50], char pNom[20]){
 // role : initialise un player_ship_t
 	printf("chargement du vaisseau\n");
 	pS->img.tex = IMG_LoadTexture(renderer, pDest);
-	pS->img.pos.x = 100;
-	pS->img.pos.y = 150;
+	pS->img.pos.x = 20; // 100
+	pS->img.pos.y = 215; // 200
 	pS->angle = 180.0; // angle ship's image
 	
 	// ================== INIT STATS PLAYER ================== //
@@ -32,7 +32,6 @@ void update_player_ship(player_ship_t * pS){
 // role : met a jour, affiche notre ship
 	// ======================= DRAW SHIP PLAYER =================== //
 	SDL_QueryTexture(pS->img.tex,NULL,NULL,&pS->img.pos.w, &pS->img.pos.h);
-	//SDL_RenderCopy(renderer, pS->img.tex, NULL, &pS->img.pos);
 	SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
 	SDL_RenderCopyEx(
 		renderer, pS->img.tex, NULL, &pS->img.pos,pS->angle, NULL, flip
@@ -67,7 +66,7 @@ void update_player_ship(player_ship_t * pS){
 
 	// ====================== UPDATE LIFE PLAYER ================== //
 	// juste pour le test de defaite du joueur
-	if(pS->ship.hp > 0){ pS->ship.hp--; }
+//	if(pS->ship.hp > 0){ pS->ship.hp--; }
 
 	if(pS->ship.hp <= 0){
 		if(pS->img.pos.x > -1000)
