@@ -1,5 +1,6 @@
 # Discard binary files
 a.out
+*.swp
 obj/
 bin/
 
