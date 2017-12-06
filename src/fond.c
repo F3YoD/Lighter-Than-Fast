@@ -28,7 +28,6 @@ void load_fond(fond_t * pF){
 
 void update_fond(fond_t * pF){
 //
-	printf("affichage du fond\n");
 	SDL_QueryTexture(pF->fond.tex,NULL,NULL,&pF->fond.pos.w, 
 			&pF->fond.pos.h);
 	SDL_RenderCopy(renderer, pF->fond.tex, NULL, &pF->fond.pos);

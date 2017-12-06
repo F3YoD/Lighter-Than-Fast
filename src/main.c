@@ -18,8 +18,8 @@
 #define ETAT_QUIT 2
 
 int main(int argc, char * argv[]){
-   	char nom[20];
-    	printf("saisir nom : ");
+   	char nom[40];
+    	printf("saisir nom (sans espaces) : ");
     	scanf("%s", nom);
    	///variables
     	//SDL_Renderer * renderer = NULL;
