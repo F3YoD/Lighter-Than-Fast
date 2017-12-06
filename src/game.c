@@ -3,75 +3,7 @@
 #define BACKGROUND_IMAGE "../assets/images/gameFond1.jpg"
 #define SELF_SHIP_IMAGE "../assets/images/ship2.png"
 
-void play_game(bool *show_menu)
-{
-#ifdef DEBUG
-    puts("* Launching game");
-#endif
-    // TODO maybe implement a loading screen!!
-    /* Display basic interface */
-    // TODO use a while loop to stay in the game till the boss is beaten
-    // e.g. while (current_level < map.length)
-
-    // Display background
-    SDL_Texture *bg_texture = NULL;
-    bg_texture = IMG_LoadTexture(renderer, BACKGROUND_IMAGE);
-    check_IMG(bg_texture);
-    SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
-
-    // Create and display player's ship
-    ship_t *self = gen_self();
-    SDL_Texture *self_texture;
-    self_texture = IMG_LoadTexture(renderer, self->img_path);
-    check_IMG(self_texture);
-    SDL_Rect self_pos = { 50, 215, 357, 286 };
-    SDL_RenderCopy(renderer, self_texture, NULL, &self_pos);
-
-    // Display life and shield
-    // TODO use characters to display life or shield
-    SDL_Rect health_bar = { 10, 10, 1000, 16 };
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
-    SDL_RenderFillRect(renderer, &health_bar);
-
-    SDL_RenderPresent(renderer);
-
-    /* Handle game */
-    SDL_Delay(1000);
-    *show_menu = true;
-
-    // Manage map
-    int map_length = 6;
-    int map_max_height = 4;
-    int height_index[map_length];
-    map_t map = (map_t)malloc(map_length * sizeof(map_col_t));
-    gen_map(map, height_index, map_length, map_max_height);
-
-#ifdef DEBUG
-    // iter through columns
-    for (int i = 0; i < map_length; i++)
-    {
-        for (int j = 0; j < height_index[i]; j++)
-        {
-            map_node_t node = map[i][j];
-            printf("%d ", j);
-        }
-        puts("");
-    }
-#endif
-
-    // TODO display map
-    // TODO create overlay (would be used for maps, possibly shops)
-    //  - easier: create new window with only wanted content
-    //  - harder: overlay on renderer
-
-    /* Leave game */
-    free(self); // or let it go, go, go
-    SDL_DestroyTexture(self_texture);
-    SDL_DestroyTexture(bg_texture);
-    SDL_RenderClear(renderer);
-}
-
-void _play_game(void)
+void play_game(void)
 {
 #ifdef DEBUG
     puts("* Launching game");
@@ -102,7 +34,7 @@ void _play_game(void)
     while (choice != QUIT_GAME)
     {
         if (show_menu)
-            choice = _menu();
+            choice = menu();
         if (!map)
         {
             bg_texture = IMG_LoadTexture(renderer, BACKGROUND_IMAGE);

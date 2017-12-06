@@ -14,6 +14,5 @@
 typedef enum menu_choice { PLAY_GAME, QUIT_GAME, NB_CHOICES } menu_choice_t;
 
 menu_choice_t menu();
-menu_choice_t _menu();
 
 #endif

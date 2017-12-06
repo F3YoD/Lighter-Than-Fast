@@ -10,8 +10,7 @@
 #include "map.h"
 #include "menu.h"
 
-void play_game(bool *);
-void _play_game(void);
+void play_game(void);
 
 ship_t *gen_self();
 
