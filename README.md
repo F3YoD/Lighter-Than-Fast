@@ -4,6 +4,25 @@
 
 This repo will contain the source for a C program, aiming to be a SDL game inspired by Faster Than Light.
 
+## Dependencies
+You need SDL2, SDL2 Image and SDL2 TTF.
+
+- On Debian-based distros
+```sh
+sudo apt-get update
+sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+```
+- On macOS (with [http://brew.sh/](Homebrew))
+```sh
+brew install sdl2 sdl2_image sdl2_ttf
+```
+
+## Build
+```sh
+cd src/  # Optional
+make     # `make debug` to get a more talkative (through stdout) binary
+```
+
 ## Goals
 - Efficient memory management
 - Allow to add and modify content easily through text files and image files
@@ -17,6 +36,10 @@ This repo will contain the source for a C program, aiming to be a SDL game inspi
 
 ## Description
 - You play a spaceship desparately crawling through the universe. You lack ressources and need to fight hostile vessels to steal *plasma*, a form of energy used to fuel weapons and engines
+
+## Technical side
+- We're using the `extern` keyword on two types of variables: the renderer and the fonts. We want both to stay in memory and to be accessible everywhere given the need to use them everywhere.
+- Macros have been defined in order to be able to use the `#variable` notation to assert the good creation of SDL elements.
 
 ## Data structure
 We define game entities such as ships, as types.
@@ -41,6 +64,3 @@ typedef struct node
     struct node *next;
 } node_t, *list_t;
 ```
-
-
-Along the path, we'll adopt Allman indent style.
