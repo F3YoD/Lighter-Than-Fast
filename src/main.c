@@ -27,7 +27,6 @@ int main(int argc, char * argv[]){
     	SDL_Surface * ecran = NULL;
     	//SDL_Window * fenetre = NULL;
     	// DEBUG
-    	SDL_Surface* bmp_surface = NULL;
     	///fin variables
 
     	if(SDL_Init(SDL_INIT_VIDEO) != 0){
@@ -59,9 +58,6 @@ int main(int argc, char * argv[]){
     ///fin init ecran surface
 
     // DEBUG
-    bmp_surface = SDL_LoadBMP("monocolor.bmp");
-    SDL_BlitSurface(bmp_surface, NULL, ecran, NULL);
-    SDL_UpdateWindowSurface(fenetre);
 
     ///init renderer
     renderer = SDL_CreateRenderer(fenetre, -1,

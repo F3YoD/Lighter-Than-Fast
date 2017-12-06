@@ -32,7 +32,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	player_ship_t * my_ship = (player_ship_t *)malloc(sizeof(player_ship_t));
 	
 	load_fenetre_option(&fenetre_option);
-	load_fond(&fond, "../assets/images/gameFond1.jpg");
+	load_fond(&fond);
 	load_barre_vie(&life, 10, "../assets/images/lifebare2.png");
 	load_bar_shield(&shield, 100, "../assets/images/shieldbare.png");
 	load_player_ship(my_ship, "../assets/images/ship2.png", pNom);
@@ -87,7 +87,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 		}
 		
 		// ==================== UPDATE ================== //
-		update_fond(fond);
+		update_fond(&fond);
 		//update_barre_vie(&life);
 		//update_bar_shield(&shield);
 		update_player_ship(my_ship);

@@ -3,17 +3,16 @@
 
 #include <SDL2/SDL.h>
 #include "extern.h"
+#include "image.h"
 
 typedef struct {
-	SDL_Surface * img;
-	SDL_Texture * tex;
-	SDL_Rect pos;
+	image_t fond;
+	image_t fond_top;
+	image_t fond_right;
 }fond_t;
 
-
-void load_fond(fond_t *, char * pDest);
-void update_fond(fond_t);
+void load_fond(fond_t *);
+void update_fond(fond_t *);
 void free_fond(fond_t *);
-
 
 #endif
