@@ -6,6 +6,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+#include <SDL2/SDL_image.h>
+
+#include "shared.h"
+#include "macros.h"
 
 typedef struct node
 {
@@ -14,6 +19,9 @@ typedef struct node
 } node_t, *list_t;
 
 int gen_rand(int, int);
+
+SDL_Texture *create_txt(TTF_Font *, char *, SDL_Color);
+SDL_Texture *load_img(char *);
 
 list_t cons_empty(void);
 list_t cons(void *, list_t);

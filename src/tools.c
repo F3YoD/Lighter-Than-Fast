@@ -1,5 +1,4 @@
 #include "tools.h"
-//#include "ships.h" // only for debug
 
 int gen_rand(int min, int max)
 {
@@ -12,6 +11,28 @@ int gen_rand(int min, int max)
         max = tmp;
     }
     return rand() % (max - min + 1) + min;
+}
+
+SDL_Texture *load_img(char *path)
+{
+    SDL_Texture *t;
+    t = IMG_LoadTexture(renderer, path);
+    check_IMG(t);
+
+    return t;
+}
+
+SDL_Texture *create_txt(TTF_Font *font, char *str, SDL_Color color)
+{
+    SDL_Texture *t;
+    SDL_Surface *tmp;
+    tmp = TTF_RenderText_Blended(font, str, color);
+    check_TTF(tmp);
+    t = SDL_CreateTextureFromSurface(renderer, tmp);
+    check_SDL(t);
+    SDL_FreeSurface(tmp);
+
+    return t;
 }
 
 list_t cons_empty(void)
