@@ -17,11 +17,12 @@
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 TTF_Font *font = NULL;
+TTF_Font *big_symbol_font = NULL;
 
 int main(int argc, char *argv[])
 {
     srand(time(NULL));
-    /* Init SDL */
+    // *** Init SDL ***
     int img_flags = IMG_INIT_JPG | IMG_INIT_PNG;
     int img_init = IMG_Init(img_flags);
     if (SDL_Init(SDL_INIT_VIDEO) != 0 || img_init != img_flags || TTF_Init() != 0)
@@ -42,10 +43,11 @@ int main(int argc, char *argv[])
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     check_SDL(renderer);
 
-    // Load font
-    // load the same font several times to give if several attributes?
+    // Load fonts
     font = TTF_OpenFont(FIRAMONO_PATH, 22);
     check_TTF(font);
+    big_symbol_font = TTF_OpenFont(FONTAWESOME_PATH, 142);
+    check_TTF(big_symbol_font);
 
     play_game();
 

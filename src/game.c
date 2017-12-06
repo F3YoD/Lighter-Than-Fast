@@ -40,6 +40,7 @@ void play_game(void)
             break;
         else if (choice == NEW_GAME)
         {
+            show_fake_loading(2);
             if (!bg_texture)
             {
                 bg_texture = IMG_LoadTexture(renderer, BACKGROUND_IMAGE);
@@ -121,20 +122,65 @@ void play_game(void)
     SDL_RenderClear(renderer);
 }
 
-void show_fake_loading(int seconds)
+void show_fake_loading(unsigned short seconds)
 {
-    SDL_Rect pos1, pos2, pos3, pos4; // ship shakes between four positions
-    /* pos1 = {  }; */
-    // write background here
-    // here
-    for (int i = 0; i < seconds; i++)
+    SDL_Surface *tmp_sur = NULL;
+    SDL_Texture *shuttle = NULL;
+    SDL_Texture *load_msg = NULL;
+    SDL_Rect shuttle_rect;
+    SDL_Rect load_rect;
+    SDL_Color white = { 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE };
+    SDL_Point pts[][2] = {
+        { { 438, 459 }, { 438, 522 } },
+        { { 489, 478 }, { 489, 542 } },
+        { { 534, 478 }, { 534, 542 } },
+        { { 585, 459 }, { 585, 522 } }
+    };
+
+    // Prepare shuttle symbol
+    shuttle = IMG_LoadTexture(renderer, "../assets/images/big_shuttle_white.png");
+    check_IMG(shuttle);
+    shuttle_rect.x = 437; shuttle_rect.y = 238;
+    SDL_QueryTexture(shuttle, NULL, NULL, &shuttle_rect.w, &shuttle_rect.h);
+
+    // Prepare "Loading..." message
+    tmp_sur = TTF_RenderText_Blended(font, "Loading...", white);
+    check_TTF(tmp_sur);
+    load_msg = SDL_CreateTextureFromSurface(renderer, tmp_sur);
+    check_SDL(load_msg);
+    SDL_FreeSurface(tmp_sur);
+    load_rect.x = 773; load_rect.y = 688;
+    SDL_QueryTexture(load_msg, NULL, NULL, &load_rect.w, &load_rect.h);
+
+    for (int i = 0; i < 2 * seconds; i++)
     {
-        // The body of this loop must take exactly one second
-        SDL_Delay(250);
-        SDL_Delay(250);
-        SDL_Delay(250);
-        SDL_Delay(250);
+        // The body of this loop must take exactly half a second
+        for (int j = 0; j < 4; j++)
+        {
+            SDL_SetRenderDrawColor(renderer, 0x0A, 0x35, 0x36, SDL_ALPHA_OPAQUE);
+            SDL_RenderClear(renderer);
+
+            // Show shuttle and loading message
+            SDL_RenderCopy(renderer, shuttle, NULL, &shuttle_rect);
+            SDL_RenderCopy(renderer, load_msg, NULL, &load_rect);
+
+            // Show all lines except one
+            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
+            for (int k = 0; k < 4; k++)
+                if (j != k)
+                    SDL_RenderDrawLine(renderer, pts[k][0].x, pts[k][0].y, pts[k][1].x, pts[k][1].y);
+
+            SDL_RenderPresent(renderer);
+            SDL_Delay(100);
+        }
+        SDL_Delay(100);
     }
+
+    SDL_DestroyTexture(shuttle);
+    SDL_DestroyTexture(load_msg);
+
+    SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, 0xFF);
+    SDL_RenderClear(renderer);
 }
 
 ship_t *gen_self()

@@ -106,6 +106,9 @@ menu_choice_t menu(bool can_continue)
                     if (!can_continue && choice == CONTINUE_GAME)
                         choice = (choice + NB_CHOICES - 1) % NB_CHOICES;
                     break;
+                case SDLK_q:
+                    choice = QUIT_GAME;
+                    quit = true;
                 default:
                     break;
                 }
