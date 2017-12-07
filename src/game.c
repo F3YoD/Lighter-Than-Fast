@@ -26,7 +26,7 @@ void play_game(void)
     // Create player's ship
     SDL_Texture *self_texture = NULL;
     SDL_Rect self_pos = { 50, 215, 357, 286 };
-    ship_t *self = gen_self();
+    ship_t *self = NULL;
 
     // Help box
     // TODO
@@ -39,6 +39,7 @@ void play_game(void)
     enum menu_choice choice = NEW_GAME;
     bool show_menu = true;
     bool show_help = false;
+    bool show_overlay = false;
     bool can_continue = false;
 
     while (choice != QUIT_GAME)
@@ -54,6 +55,9 @@ void play_game(void)
             if (!bg_texture)
                 bg_texture = load_img(BACKGROUND_IMAGE);
 
+            if (self != NULL)
+                free(self);
+            self = gen_self();
             if (!self_texture)
                 self_texture = load_img(self->img_path);
 
@@ -93,6 +97,13 @@ void play_game(void)
         if (show_help)
             SDL_RenderCopy(renderer, help_texture, NULL, &help_rect);
 
+        // Display overlay
+        // TODO
+        if (show_overlay)
+        {
+            
+        }
+
         SDL_RenderPresent(renderer);
 
         // Get user input
@@ -122,15 +133,13 @@ void play_game(void)
             default:
                 break;
             }
-
-        // TODO display map
-        // TODO create overlay (would be used for maps, possibly shops)
-        //  - easier: create new window with only wanted content
-        //  - harder: overlay on renderer
     }
 
     /* Leave game */
-    free(self); // or let it go, go, go
+    if (self != NULL)
+        free(self); // or let it go, go, go
+    if (map != NULL)
+        free(map);
     SDL_DestroyTexture(help_texture);
     SDL_DestroyTexture(self_texture);
     SDL_DestroyTexture(bg_texture);
