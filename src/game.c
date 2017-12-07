@@ -97,32 +97,31 @@ void play_game(void)
 
         // Get user input
         bool action = false;
-        while (!action)
-            while (SDL_PollEvent(&event))
-                switch (event.type)
+        while (SDL_PollEvent(&event) && !action)
+            switch (event.type)
+            {
+            case SDL_KEYUP:
+                switch (event.key.keysym.sym)
                 {
-                case SDL_KEYUP:
-                    switch (event.key.keysym.sym)
-                    {
-                    case SDLK_ESCAPE:
-                    case SDLK_TAB:
-                        show_menu = true;
-                        action = true;
-                        break;
-                    case SDLK_h:
-                        show_help = !show_help;
-                        action = true;
-                        break;
-                    default:
-                        break;
-                    }
-                    break;
-                case SDL_QUIT:
-                    choice = QUIT_GAME;
+                case SDLK_ESCAPE:
+                case SDLK_TAB:
+                    show_menu = true;
                     action = true;
+                    break;
+                case SDLK_h:
+                    show_help = !show_help;
+                    action = true;
+                    break;
                 default:
                     break;
                 }
+                break;
+            case SDL_QUIT:
+                choice = QUIT_GAME;
+                action = true;
+            default:
+                break;
+            }
 
         // TODO display map
         // TODO create overlay (would be used for maps, possibly shops)
