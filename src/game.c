@@ -10,6 +10,8 @@
 #include "game.h"
 #include "alien.h"
 #include "option.h"
+#include "battle.h"
+
 
 #include "ships.h"
 #include "fond.h"
@@ -23,6 +25,8 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	int continuer = 1;
 	SDL_Event ev;
 	bool clique = false;	
+	TTF_Init();
+	printf("init ttf\n");
 		
 	// ========================= LOADING ======================== //
 	fenetre_option_t fenetre_option;
@@ -42,9 +46,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	/**************************************************************/	
 
 	// =========================== TTF =========================== //
-	
-	TTF_Init();
-	printf("init ttf\n");	
+		
 	
 	/***************************************************************/
 
@@ -103,6 +105,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 			//AfficherTexte("Bienvenue",police,couleur,posTexte);
 			//SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
 			afficher_stat_ship(my_ship);
+			init_menu_combat();
 			update_fenetre_option(&fenetre_option);
 			SDL_RenderPresent(renderer);
 			SDL_RenderClear(renderer);
