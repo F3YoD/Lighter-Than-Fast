@@ -113,17 +113,17 @@ void loot(ship_t *s1, ship_t *s2)
 }
 
 void init_menu_combat(){
-	TTF_Font* police = TTF_OpenFont("../assets/fonts/Inter-UI-Regular.ttf", 12);
+	TTF_Font* police = TTF_OpenFont("../assets/fonts/Inter-UI-Regular.ttf", 24);
 	if(!police){
 		printf("TTP_OpenFont : %s\n", TTF_GetError());
 	}
-	SDL_Color couleur = { 20, 200, 20};
+	SDL_Color couleur = { 255, 0, 0};
 	SDL_Rect position;
-	position.x = 16; position.y = 663;
+	position.x = 64; position.y = 663;
 	afficher_texte("Tirer",police,couleur,position);
-	position.y=position.y+20;
+	position.y=position.y+25;
 	afficher_texte("Se reparer (10 scraps)",police,couleur,position);
-	position.y=position.y+20;
+	position.y=position.y+25;
 	afficher_texte("Sauter vers un nouvel endroit",police,couleur,position);
 	TTF_CloseFont(police);	
 }
