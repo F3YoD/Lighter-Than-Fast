@@ -1,6 +1,6 @@
 #include "tools.h"
 
-int gen_rand(int min, int max)
+int gen_rand(unsigned int min, unsigned int max)
 {
     if (min == max)
         return min;
@@ -27,12 +27,31 @@ SDL_Texture *create_txt(TTF_Font *font, char *str, SDL_Color color)
     SDL_Texture *t;
     SDL_Surface *tmp;
     tmp = TTF_RenderText_Blended(font, str, color);
-    check_TTF(tmp);
+    if (!tmp)
+    {
+        fprintf(stderr, "could not write \"%s\": %s\n", str, TTF_GetError());
+        TTF_Quit();
+        IMG_Quit();
+        SDL_Quit(); /* This frees memory for everything SDL-related */
+        exit(EXIT_FAILURE);
+    }
+    else if (PRINT_DEBUG)
+        printf("\"%s\" loaded as surface -> ", str);
     t = SDL_CreateTextureFromSurface(renderer, tmp);
     check_SDL(t);
     SDL_FreeSurface(tmp);
 
     return t;
+}
+
+SDL_Rect rect_from_texture(SDL_Texture *t, unsigned int x, unsigned int y)
+{
+    SDL_Rect r;
+    r.x = x;
+    r.y = y;
+    SDL_QueryTexture(t, NULL, NULL, &r.w, &r.h);
+
+    return r;
 }
 
 list_t cons_empty(void)
@@ -95,7 +114,7 @@ void free_list(list_t l)
     }
 }
 
-void *pop_nth(list_t l, int n)
+void *pop_nth(list_t l, unsigned int n)
 {
     void *res = NULL;
     list_t tmp1 = l;

@@ -12,8 +12,8 @@
 #include "macros.h"
 
 // NB_CHOICES allows to know the boundary of the enum
-typedef enum menu_choice { CONTINUE_GAME, NEW_GAME, QUIT_GAME, NB_CHOICES } menu_choice_t;
+enum menu_choice { CONTINUE_GAME, NEW_GAME, QUIT_GAME, NB_CHOICES };
 
-menu_choice_t menu(bool);
+enum menu_choice menu(bool);
 
 #endif

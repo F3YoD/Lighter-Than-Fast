@@ -2,7 +2,7 @@
 
 #define BANNER_PATH "../assets/images/side_banner.png"
 
-menu_choice_t menu(bool can_continue)
+enum menu_choice menu(bool can_continue)
 {
     #ifdef DEBUG
     puts("* Loading menu");
@@ -14,12 +14,8 @@ menu_choice_t menu(bool can_continue)
 
     SDL_Rect banner_pos = { 700, 0, 212, 768 };
 
-    SDL_Texture *banner_texture = NULL;
-    SDL_Texture *pointer = NULL;
-    banner_texture = IMG_LoadTexture(renderer, BANNER_PATH);
-    check_IMG(banner_texture);
-    pointer = IMG_LoadTexture(renderer, "../assets/images/alien1.png");
-    check_IMG(pointer);
+    SDL_Texture *banner_texture = load_img(BANNER_PATH);
+    SDL_Texture *pointer = load_img("../assets/images/alien1.png");
     int pointer_w, pointer_h;
     SDL_QueryTexture(pointer, NULL, NULL, &pointer_w, &pointer_h);
 
@@ -114,6 +110,7 @@ menu_choice_t menu(bool can_continue)
                 break;
             }
         }
+
         SDL_RenderClear(renderer);
     }
 

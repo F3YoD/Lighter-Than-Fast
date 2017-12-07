@@ -15,6 +15,8 @@ void play_game(void)
     SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, 0xFF);
     SDL_RenderClear(renderer);
 
+    SDL_Color white = { 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE };
+
     // Map
     map_t map = NULL;
     int map_length = 6;
@@ -27,11 +29,14 @@ void play_game(void)
     ship_t *self = gen_self();
 
     // Help box
-    
+    // TODO
+    char *help_txt = "a\nb";
+    SDL_Texture *help_texture = create_txt(font, help_txt, white);
+    SDL_Rect help_rect = rect_from_texture(help_texture, 800, 600);
 
     // Gameplay
     SDL_Event event;
-    menu_choice_t choice = NEW_GAME;
+    enum menu_choice choice = NEW_GAME;
     bool show_menu = true;
     bool show_help = false;
     bool can_continue = false;
@@ -47,31 +52,28 @@ void play_game(void)
             show_fake_loading(1500);
 
             if (!bg_texture)
-            {
-                bg_texture = IMG_LoadTexture(renderer, BACKGROUND_IMAGE);
-                check_IMG(bg_texture);
-            }
+                bg_texture = load_img(BACKGROUND_IMAGE);
 
             if (!self_texture)
-            {
-                self_texture = IMG_LoadTexture(renderer, self->img_path);
-                check_IMG(self_texture);
-            }
+                self_texture = load_img(self->img_path);
 
             map = (map_t)malloc(map_length * sizeof(map_col_t));
             gen_map(map, height_index, map_length, map_max_height);
+
+            choice = CONTINUE_GAME;
 
 #ifdef DEBUG
             for (int i = 0; i < map_length; i++)
                 for (int j = 0; j < height_index[i]; j++)
                 {
-                    map_node_t node = map[i][j];
+                    /* map_node_t node = map[i][j]; */
                     printf("%d%s", j, (j == height_index[i] - 1) ? "\n" : " ");
                 }
 
             puts("We have the map and everything!");
 #endif
         }
+
         can_continue = true; // TODO manage file save
         show_menu = false;
         // Display background
@@ -85,14 +87,16 @@ void play_game(void)
         SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
         SDL_RenderFillRect(renderer, &health_bar);
 
+        // Display help
+        if (show_help)
+            SDL_RenderCopy(renderer, help_texture, NULL, &help_rect);
+
         SDL_RenderPresent(renderer);
 
         // Get user input
         bool action = false;
         while (!action)
             while (SDL_PollEvent(&event))
-            {
-                action = false;
                 switch (event.type)
                 {
                 case SDL_KEYUP:
@@ -106,6 +110,7 @@ void play_game(void)
                     case SDLK_h:
                         show_help = !show_help;
                         action = true;
+                        break;
                     default:
                         break;
                     }
@@ -116,7 +121,6 @@ void play_game(void)
                 default:
                     break;
                 }
-            }
 
         // TODO display map
         // TODO create overlay (would be used for maps, possibly shops)
@@ -133,10 +137,6 @@ void play_game(void)
 
 void show_fake_loading(unsigned int miliseconds)
 {
-    SDL_Texture *shuttle = NULL;
-    SDL_Texture *load_msg = NULL;
-    SDL_Rect shuttle_rect;
-    SDL_Rect load_rect;
     SDL_Color white = { 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE };
     SDL_Point pts[][2] = {
         { { 438, 459 }, { 438, 522 } },
@@ -148,18 +148,14 @@ void show_fake_loading(unsigned int miliseconds)
     unsigned int endtime = SDL_GetTicks() + miliseconds;
 
     // Prepare shuttle symbol
-    shuttle = load_img("../assets/images/big_shuttle_white.png");
-    shuttle_rect.x = 437; shuttle_rect.y = 238;
-    SDL_QueryTexture(shuttle, NULL, NULL, &shuttle_rect.w, &shuttle_rect.h);
+    SDL_Texture *shuttle = load_img("../assets/images/big_shuttle_white.png");
+    SDL_Rect shuttle_rect = rect_from_texture(shuttle, 437, 238);
 
     // Prepare "Loading..." message
-    load_msg = create_txt(font, "Loading...", white);
-    load_rect.x = 773; load_rect.y = 688;
-    SDL_QueryTexture(load_msg, NULL, NULL, &load_rect.w, &load_rect.h);
+    SDL_Texture *load_msg = create_txt(font, "Loading...", white);
+    SDL_Rect load_rect = rect_from_texture(load_msg, 773, 688);
 
-    do
-    {
-        // The body of this loop must take exactly half a second
+    while (SDL_GetTicks() < endtime)
         for (int j = 0; j < 4; j++)
         {
             SDL_SetRenderDrawColor(renderer, 0x0A, 0x35, 0x36, SDL_ALPHA_OPAQUE);
@@ -178,7 +174,6 @@ void show_fake_loading(unsigned int miliseconds)
             SDL_RenderPresent(renderer);
             SDL_Delay(100);
         }
-    } while (SDL_GetTicks() < endtime);
 
     SDL_DestroyTexture(shuttle);
     SDL_DestroyTexture(load_msg);
@@ -187,7 +182,7 @@ void show_fake_loading(unsigned int miliseconds)
     SDL_RenderClear(renderer);
 }
 
-ship_t *gen_self()
+ship_t *gen_self(void)
 {
     ship_t *self = (ship_t *)malloc(sizeof(ship_t));
 
