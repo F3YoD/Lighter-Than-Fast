@@ -57,6 +57,8 @@ void play_game(void)
             if (!self_texture)
                 self_texture = load_img(self->img_path);
 
+            if (map != NULL)
+                free(map);
             map = (map_t)malloc(map_length * sizeof(map_col_t));
             gen_map(map, height_index, map_length, map_max_height);
 
@@ -84,7 +86,7 @@ void play_game(void)
 
         // Display life and shield
         // TODO use characters to display life or shield
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0, 0, 0xFF);
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, SDL_ALPHA_OPAQUE);
         SDL_RenderFillRect(renderer, &health_bar);
 
         // Display help
@@ -130,6 +132,7 @@ void play_game(void)
 
     /* Leave game */
     free(self); // or let it go, go, go
+    SDL_DestroyTexture(help_texture);
     SDL_DestroyTexture(self_texture);
     SDL_DestroyTexture(bg_texture);
     SDL_RenderClear(renderer);
@@ -158,6 +161,7 @@ void show_fake_loading(unsigned int miliseconds)
     while (SDL_GetTicks() < endtime)
         for (int j = 0; j < 4; j++)
         {
+            // Show green background
             SDL_SetRenderDrawColor(renderer, 0x0A, 0x35, 0x36, SDL_ALPHA_OPAQUE);
             SDL_RenderClear(renderer);
 
