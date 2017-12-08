@@ -24,9 +24,12 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	SDL_Texture *img_enemy = IMG_LoadTexture(renderer, "../assets/images/ship1.png");	
 	SDL_Rect pos_enemy; pos_enemy.x = 600; pos_enemy.y = 100;
 
-	int choi = 1;
-	int action = NE_FAIT_RIEN;
-	SDL_Rect pos_tir; pos_tir.x = 100; pos_tir.y = 400;
+	int choi = CHOI_ATTAQUE; // le choi ou se pose le curseur en premier dans le
+				 // le sous programme combat()
+	int action = NE_FAIT_RIEN; // parametre obligatoir pour le sous programme de combat
+	SDL_Rect pos_tir; pos_tir.x = 100; pos_tir.y = 400; 
+			// postion initial de notre tir a donner au sous programme
+			// combat ()
 		// ========================================= //
 		
 	load_fenetre_option(&fenetre_option);
@@ -95,11 +98,16 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 			update_player_ship(my_ship);
 			update_team(team, ev, my_ship, control);
 				// ====================== TEST BATTLE ==================== //
+
+				// init flip pour changer l'angle du vaisseau ennemi
 				SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
 				
+				// affichage du vaisseau enemy 
 				SDL_QueryTexture(img_enemy, NULL, NULL, &pos_enemy.w, &pos_enemy.h);
 				SDL_RenderCopyEx(renderer, img_enemy, NULL, &pos_enemy, 90, NULL, flip);
-				update_ship(enemy);
+				
+				update_ship(enemy); // petit sous programme qui affiche la barre de vie
+						    // d'une structure ship_t
 				/////////////////////////////////////////////////////////////
 				
 			//affichage du texte 

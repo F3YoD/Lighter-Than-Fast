@@ -237,6 +237,8 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 	SDL_DestroyTexture(curseur);
 }
 
+
+
 //void shop(){
 
 //}
