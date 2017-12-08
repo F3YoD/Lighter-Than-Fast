@@ -66,7 +66,7 @@ void update_player_ship(player_ship_t * pS){
 
 	// ====================== UPDATE LIFE PLAYER ================== //
 	// juste pour le test de defaite du joueur
-//	if(pS->ship.hp > 0){ pS->ship.hp--; }
+	//if(pS->ship.hp > 0){ pS->ship.hp--; }
 
 	if(pS->ship.hp <= 0){
 		if(pS->img.pos.x > -1000)
@@ -87,3 +87,37 @@ void free_player_ship(player_ship_t * pS){
 //	file=fopen("ships_stats.txt","r")	
 //}
 
+void load_ship(ship_t * pS){
+// role : initialise un player_ship_t
+	printf("chargement du vaisseau ennemi\n");
+	
+	// ================== INIT STATS PLAYER ================== //
+	pS->hp = 100;
+	pS->shield = 50;
+	sprintf(pS->name,"Vaisseau de ennemi");
+	pS->damage_min = 5;
+	pS->damage_max = 10;
+
+	pS->belongings = (belongings_t*)malloc(sizeof(belongings_t));
+	
+	pS->belongings->plasma = 10;
+	pS->belongings->money = 10;
+	pS->belongings->scraps = 5;
+	/***********************************************************/
+}
+
+void update_ship(ship_t *pS){
+
+	// ====================== DRAW LIFE BAR ======================== /
+	SDL_SetRenderDrawColor(renderer, 200,20,20, 255);	
+	// color green for life bar
+	
+	SDL_Rect bar_hp; // the rectangle of life bar
+	bar_hp.x = 550;
+	bar_hp.y = 30;
+	bar_hp.w = pS->hp * 3;
+	bar_hp.h = 20;
+
+	SDL_RenderFillRect(renderer, &bar_hp); // drawing life bar
+	/****************************************************************/
+}

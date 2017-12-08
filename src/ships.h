@@ -75,4 +75,6 @@ void free_player_ship(player_ship_t *);
 // generate dummy ship for testing purpose
 ship_t * dummy_ship();
 
+void load_ship(ship_t*);
+void update_ship(ship_t*);
 #endif
