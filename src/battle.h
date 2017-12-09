@@ -7,6 +7,7 @@
 #include <math.h>
 
 #include "ships.h"
+#include "tools.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
@@ -31,6 +32,7 @@ void init_menu_combat();
 
 
 // =========================== //
-void combat(player_ship_t*, ship_t*, int*, SDL_Event, bool*, int*, SDL_Rect*);
+void combat(player_ship_t*, ship_t*, int*, SDL_Event, bool*, int*, SDL_Rect*, bool*);
+void attaque_enemy(SDL_Rect*, bool*, player_ship_t*);
 
 #endif

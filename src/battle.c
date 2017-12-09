@@ -1,14 +1,4 @@
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include <math.h>
-
 #include "battle.h"
-#include "ships.h"
-#include "tools.h"
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
 
 void shoot(ship_t *s1, ship_t *s2, const int shoottype)
 {
@@ -128,10 +118,11 @@ void init_menu_combat(){
 	TTF_CloseFont(police);	
 }
 
-
 // ================================================= SOUS PROGRAMME PIERRE PAQ1 =================================================== //
 
-void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, bool *pClique, int *pAction, SDL_Rect *pPos_tir){
+
+
+void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, bool *pClique, int *pAction, SDL_Rect *pPos_tir, bool *pTour){
 // role : ce sous programme doit etre utiliser dans la game c-a-d dans la boucle
 //	  while!
 // parametrage :
@@ -221,6 +212,7 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 
 		if (pPos_tir->x >= 800){
 			pPirate->hp -= 10;
+			*pTour = false;
 		}
 	}
 	else{
@@ -231,14 +223,33 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 	SDL_QueryTexture(curseur, NULL, NULL, &pos_curseur.w, &pos_curseur.h);
 	SDL_RenderCopy(renderer, curseur, NULL, &pos_curseur);
 
-	
+	// ============================== AU TOUR DE L'ENNEMI =========================== //
+	if(!(*pTour)){
+		// pour le moment l'enemi ne sait que attaquer!
+	}
+	// ****************************************************************************** //
 
 	// ====================== liberation ==================== //
 	SDL_DestroyTexture(curseur);
 }
 
-
-
+void attaque_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * player){
+//
+	if(pRayon_enemy->h < 100){
+		pRayon_enemy->h += 2;
+		pRayon_enemy->w -= 20; 
+		pRayon_enemy->y--;
+		SDL_SetRenderDrawColor(renderer, 150,0,255,255);
+		SDL_RenderFillRect(renderer, &(*pRayon_enemy));
+	}
+	else{
+		*pTour = true;
+		pRayon_enemy->h = 10;
+		pRayon_enemy->w = 0;
+		pRayon_enemy->y = 300;
+		player->ship.hp -= 20;
+	}
+}
 //void shop(){
 
 //}

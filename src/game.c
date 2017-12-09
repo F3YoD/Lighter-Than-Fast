@@ -30,6 +30,15 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	SDL_Rect pos_tir; pos_tir.x = 100; pos_tir.y = 400; 
 			// postion initial de notre tir a donner au sous programme
 			// combat ()
+
+	bool my_turn = true;
+
+	// on cree un rayon enemy
+	SDL_Rect rayon_enemy;
+	rayon_enemy.x = 800;
+	rayon_enemy.y = 300;
+	rayon_enemy.w = 0;
+	rayon_enemy.h = 10;
 		// ========================================= //
 		
 	load_fenetre_option(&fenetre_option);
@@ -90,7 +99,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 		}
 		// ======================= GESTION DU TEMPS ==================== //
 		temps_actuel = SDL_GetTicks();
-		if (temps_actuel - temps_precedent > 2){	
+		//if (temps_actuel - temps_precedent > 2){	
 			// ==================== UPDATE ================== //
 			update_fond(&fond);
 			//update_barre_vie(&life);
@@ -115,14 +124,17 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 			//SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
 			afficher_stat_ship(my_ship);
 			init_menu_combat();
-			combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir);
+			combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir, &my_turn);
+			if(!my_turn){
+				attaque_enemy(&rayon_enemy, &my_turn, my_ship);
+			}
 			update_fenetre_option(&fenetre_option);
 			SDL_RenderPresent(renderer);
 			SDL_RenderClear(renderer);
 			/**************************************************/
 			
-			temps_precedent = temps_actuel;
-		}
+			//temps_precedent = temps_actuel;
+		//}
 		/******************************************************************/
 	}
 	
