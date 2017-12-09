@@ -67,21 +67,21 @@ int main(int argc, char * argv[]){
     // on lance notre menu le joueur va donc faire un choix dans ce menu
     // il sera diriger soit dans le jeu, soit dans un tuto, option, ..etc
     // ou bien quitter directement
-//    menu(&State);
-//    switch(State){
-//    case ETAT_GAME :
+    menu(&State);
+    switch(State){
+    case ETAT_GAME :
         printf("***** DEBUT DE PARTIE *****\n\n\n");
         game(ecran, nom);
-//        break;
-//   case ETAT_QUIT:
+        break;
+   case ETAT_QUIT:
         // le programme se ferme !
         printf("***** FERMETURE LTF *****\n");
-//        break;
-//    default :
+        break;
+    default :
         // on quitte le programme egalement
-//        printf("erreur de direction apres le menu\n");
-//        break;
-//    }
+        printf("erreur de direction apres le menu\n");
+        break;
+    }
 
     ///libération mémoire
     //SDL_FreeSurface(ecran); // erreur de segmentation lors de l'utilisation de ce

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <SDL2/SDL.h>
-
+#include <SDL2/SDL_image.h>
 #include "menu.h"
 #include "image.h"
 
@@ -11,7 +11,6 @@ void menu(int * pState){
 	int choix_joueur = 0;
 	int continuer = 1;
 	SDL_Event ev;
-	SDL_Surface * imgMenu;
 	SDL_Texture * texture;
 	SDL_Rect posFond;
 	SDL_Rect posMouse;
@@ -20,10 +19,8 @@ void menu(int * pState){
 	///fin variables
 
 	///affichage menu
-	imgMenu = SDL_LoadBMP("../assets/images/menu.bmp");
-	if (imgMenu == NULL) printf("imgMenu error: %s", SDL_GetError());
-	texture = SDL_CreateTextureFromSurface(renderer, imgMenu);
-	posFond.x = 0; posFond.y = 0;
+	texture = IMG_LoadTexture(renderer, "../assets/images/side_banner.png");
+	posFond.x = 700; posFond.y = 0;
 	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);
 	SDL_RenderCopy(renderer, texture, NULL, &posFond);
 	///fin affichage menu
@@ -66,5 +63,4 @@ void menu(int * pState){
 	///libération texture
 	printf("libération du menu\n");
 	SDL_DestroyTexture(texture);
-	SDL_FreeSurface(imgMenu);
 }
