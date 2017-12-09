@@ -101,7 +101,11 @@ void play_game(void)
         // TODO
         if (show_overlay)
         {
-            
+            // Show transparent background
+
+            // Show actual overlay background
+
+            // Show map or text
         }
 
         SDL_RenderPresent(renderer);
@@ -166,26 +170,28 @@ void show_fake_loading(unsigned int miliseconds)
     SDL_Texture *load_msg = create_txt(font, "Loading...", white);
     SDL_Rect load_rect = rect_from_texture(load_msg, 773, 688);
 
+    int i = 0;
     while (SDL_GetTicks() < endtime)
+    {
+        // Show green background
+        SDL_SetRenderDrawColor(renderer, 0x0A, 0x35, 0x36, SDL_ALPHA_OPAQUE);
+        SDL_RenderClear(renderer);
+
+        // Show shuttle and loading message
+        SDL_RenderCopy(renderer, shuttle, NULL, &shuttle_rect);
+        SDL_RenderCopy(renderer, load_msg, NULL, &load_rect);
+
+        // Show all lines except one
+        SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
         for (int j = 0; j < 4; j++)
-        {
-            // Show green background
-            SDL_SetRenderDrawColor(renderer, 0x0A, 0x35, 0x36, SDL_ALPHA_OPAQUE);
-            SDL_RenderClear(renderer);
+            if (j != i)
+                SDL_RenderDrawLine(renderer, pts[j][0].x, pts[j][0].y, pts[j][1].x, pts[j][1].y);
 
-            // Show shuttle and loading message
-            SDL_RenderCopy(renderer, shuttle, NULL, &shuttle_rect);
-            SDL_RenderCopy(renderer, load_msg, NULL, &load_rect);
+        i = (i + 1) % 4;
 
-            // Show all lines except one
-            SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE);
-            for (int k = 0; k < 4; k++)
-                if (j != k)
-                    SDL_RenderDrawLine(renderer, pts[k][0].x, pts[k][0].y, pts[k][1].x, pts[k][1].y);
-
-            SDL_RenderPresent(renderer);
-            SDL_Delay(100);
-        }
+        SDL_RenderPresent(renderer);
+        SDL_Delay(100);
+    }
 
     SDL_DestroyTexture(shuttle);
     SDL_DestroyTexture(load_msg);
