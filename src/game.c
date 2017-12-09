@@ -10,7 +10,16 @@ void play_game(void)
 #endif
     // Cosmetics
     SDL_Texture *bg_texture = NULL;
-    SDL_Rect health_bar = { 10, 10, 1000, 16 };
+    SDL_Texture *bg_overlay = NULL;
+
+    SDL_Color health_color = { 0xDD, 0x40, 0x25, SDL_ALPHA_OPAQUE };
+    SDL_Rect health_rect = { 10, 610, 100, 16 };
+    char hearts_str[101];
+    for (int i = 0; i < 100; i += 2)
+    {
+        hearts_str[i] = 0xF0;
+        hearts_str[i + 1] = 0x04;
+    }
 
     SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, 0xFF);
     SDL_RenderClear(renderer);
@@ -58,6 +67,7 @@ void play_game(void)
             if (self != NULL)
                 free(self);
             self = gen_self();
+
             if (!self_texture)
                 self_texture = load_img(self->img_path);
 
@@ -91,7 +101,7 @@ void play_game(void)
         // Display life and shield
         // TODO use characters to display life or shield
         SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, SDL_ALPHA_OPAQUE);
-        SDL_RenderFillRect(renderer, &health_bar);
+        SDL_RenderFillRect(renderer, &health_rect);
 
         // Display help
         if (show_help)
@@ -102,8 +112,11 @@ void play_game(void)
         if (show_overlay)
         {
             // Show transparent background
+            if (!bg_overlay)
+                bg_overlay = load_img("../assets/images/1px_overlay.png");
+            SDL_RenderCopy(renderer, bg_overlay, NULL, NULL);
 
-            // Show actual overlay background
+            // Show actual overlay box
 
             // Show map or text
         }
@@ -125,6 +138,10 @@ void play_game(void)
                     break;
                 case SDLK_h:
                     show_help = !show_help;
+                    action = true;
+                    break;
+                case SDLK_o:
+                    show_overlay = !show_overlay;
                     action = true;
                     break;
                 default:
