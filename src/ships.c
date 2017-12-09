@@ -19,19 +19,20 @@ list_t gen_ship_list(int *nb_ships)
     {
         /* puts("*** Read new line from file"); */
         tmp = load_ship_from_line(line);
-        if (tmp == NULL)
+        if (!tmp)
             break;
         *nb_ships += 1;
-        ship_t *new_ship = tmp;
-        ship_stack = cons(new_ship, ship_stack);
+        // Here we used to use an intermediary struct, which seems unnecessary
+        ship_stack = cons(tmp, ship_stack);
         /* printf("Ship %d: ", *nb_ships); */
         /* printf("%s,%d,%d,%d,%d,%d,%d,%d,%f,%d,%s\n\n", tmp->name, tmp->is_shop, tmp->health, tmp->belongings.plasma, tmp->belongings.money, tmp->belongings.scraps, tmp->damage_min, tmp->damage_max, tmp->dodge_score, tmp->shield, tmp->img_path); */
     }
 
     fclose(fp);
     free(line);
-    if (tmp != NULL)
-        free(tmp);
+    // Wouldn't that free the memory for the last ship of the list?
+    /* if (tmp != NULL) */
+    /*     free(tmp); */
 
     return ship_stack;
 }

@@ -1,6 +1,8 @@
 #include "tools.h"
 
-int gen_rand(unsigned int min, unsigned int max)
+// *** Numbers ***
+
+int gen_rand(unsigned short int min, unsigned short int max)
 {
     if (min == max)
         return min;
@@ -13,11 +15,23 @@ int gen_rand(unsigned int min, unsigned int max)
     return rand() % (max - min + 1) + min;
 }
 
+
+// *** SDL recurrent steps ***
+
 SDL_Texture *load_img(char *path)
 {
     SDL_Texture *t;
     t = IMG_LoadTexture(renderer, path);
-    check_IMG(t);
+    if (!t)
+    {
+        fprintf(stderr, "could not write \"%s\": %s\n", path, TTF_GetError());
+        TTF_Quit();
+        IMG_Quit();
+        SDL_Quit(); /* This frees memory for everything SDL-related */
+        exit(EXIT_FAILURE);
+    }
+    else if (PRINT_DEBUG)
+        printf("\"%s\" loaded as surface\n", path);
 
     return t;
 }
@@ -44,7 +58,7 @@ SDL_Texture *create_txt(TTF_Font *font, char *str, SDL_Color color)
     return t;
 }
 
-SDL_Rect rect_from_texture(SDL_Texture *t, unsigned int x, unsigned int y)
+SDL_Rect rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short int y)
 {
     SDL_Rect r;
     r.x = x;
@@ -53,6 +67,9 @@ SDL_Rect rect_from_texture(SDL_Texture *t, unsigned int x, unsigned int y)
 
     return r;
 }
+
+
+// *** Linked lists ***
 
 list_t cons_empty(void)
 {
@@ -65,7 +82,6 @@ list_t cons_empty(void)
 list_t cons(void *elt, list_t next)
 {
     list_t l = (list_t)malloc(sizeof(node_t));
-    /* printf("cons: got %s\n", ((ship_t *)elt)->name); */
     l->value = elt;
     l->next = next;
 
@@ -75,11 +91,6 @@ list_t cons(void *elt, list_t next)
 bool is_empty(list_t l)
 {
     return l->value == NULL;
-}
-
-void *head(list_t l)
-{
-    return l->value;
 }
 
 list_t child(list_t l)
@@ -114,7 +125,7 @@ void free_list(list_t l)
     }
 }
 
-void *pop_nth(list_t l, unsigned int n)
+void *pop_nth(list_t l, unsigned short int n)
 {
     void *res = NULL;
     list_t tmp1 = l;

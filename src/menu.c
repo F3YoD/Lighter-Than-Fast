@@ -9,17 +9,15 @@ enum menu_choice menu(bool can_continue)
     #endif
     // *** Load background ***
     SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, 0x19);
-    SDL_Rect bg = { 0, 0, 1024, 768 };
-    SDL_RenderFillRect(renderer, &bg);
 
-    SDL_Rect banner_pos = { 700, 0, 212, 768 };
-
+    SDL_Rect banner_rect = { 700, 0, 212, 768 };
     SDL_Texture *banner_texture = load_img(BANNER_PATH);
+    SDL_Rect pointer_rect;
     SDL_Texture *pointer = load_img("../assets/images/alien1.png");
-    int pointer_w, pointer_h;
-    SDL_QueryTexture(pointer, NULL, NULL, &pointer_w, &pointer_h);
+    SDL_QueryTexture(pointer, NULL, NULL, &pointer_rect.w, &pointer_rect.h);
 
     // *** Load text ***
+    SDL_Rect base_txt_box = { 100, 620, 1, 1 };
     SDL_Color white = { 0xFF, 0xFF, 0xFF, 0xFF };
     SDL_Color gray = { 0x20, 0x20, 0x20, 0xFF };
 
@@ -41,77 +39,75 @@ enum menu_choice menu(bool can_continue)
     while (!quit)
     {
         // Show interface
-        SDL_RenderCopy(renderer, banner_texture, NULL, &banner_pos);
+        SDL_RenderClear(renderer);
+        SDL_RenderCopy(renderer, banner_texture, NULL, &banner_rect);
 
-        SDL_Rect txt_box = { 100, 620, 1, 1 };
+        base_txt_box.y = 620;
         for (int i = NB_CHOICES - 1; i >= 0; i--)
         {
             tmp_tex = choices_textures[i];
             if (choice == i)
             {
                 // Display alien as pointer
-                SDL_Rect pointer_pos = { txt_box.x - pointer_w - 8, txt_box.y + (TTF_FontHeight(font) - pointer_h) / 2, pointer_w, pointer_h };
-                SDL_RenderCopy(renderer, pointer, NULL, &pointer_pos);
+                pointer_rect.x = base_txt_box.x - pointer_rect.w - 8;
+                pointer_rect.y = base_txt_box.y + (TTF_FontHeight(font) - pointer_rect.h) / 2;
+                SDL_RenderCopy(renderer, pointer, NULL, &pointer_rect);
             }
-            SDL_QueryTexture(tmp_tex, NULL, NULL, &txt_box.w, &txt_box.h);
-            SDL_RenderCopy(renderer, tmp_tex, NULL, &txt_box);
-            txt_box.y -= txt_box.h * 2;
+            SDL_QueryTexture(tmp_tex, NULL, NULL, &base_txt_box.w, &base_txt_box.h);
+            SDL_RenderCopy(renderer, tmp_tex, NULL, &base_txt_box);
+            base_txt_box.y -= base_txt_box.h * 2;
         }
 
         SDL_RenderPresent(renderer);
 
         // Get user input
-        while (SDL_PollEvent(&event))
+        SDL_WaitEvent(&event);
+        switch (event.type)
         {
-            switch (event.type)
+        case SDL_KEYUP:
+            switch (event.key.keysym.sym)
             {
-            case SDL_KEYUP:
-                switch (event.key.keysym.sym)
+            case SDLK_RETURN:
+            case SDLK_RETURN2:
+            case SDLK_KP_ENTER:
+            case SDLK_SPACE:
+            case SDLK_KP_SPACE:
+                quit = true;
+                break;
+            case SDLK_ESCAPE:
+            case SDLK_TAB:
+                if (can_continue)
                 {
-                case SDLK_RETURN:
-                case SDLK_RETURN2:
-                case SDLK_KP_ENTER:
-                case SDLK_SPACE:
-                case SDLK_KP_SPACE:
+                    choice = CONTINUE_GAME;
                     quit = true;
-                    break;
-                case SDLK_ESCAPE:
-                case SDLK_TAB:
-                    if (can_continue)
-                    {
-                        choice = CONTINUE_GAME;
-                        quit = true;
-                    }
-                    break;
-                case SDLK_DOWN:
-                case SDLK_j:
-                    choice = (choice + 1) % NB_CHOICES;
-                    if (!can_continue && choice == CONTINUE_GAME)
-                        choice = (choice + 1) % NB_CHOICES;
-                    break;
-                case SDLK_UP:
-                case SDLK_k:
-                    choice = (choice + NB_CHOICES - 1) % NB_CHOICES;
-                    if (!can_continue && choice == CONTINUE_GAME)
-                        choice = (choice + NB_CHOICES - 1) % NB_CHOICES;
-                    break;
-                case SDLK_q:
-                    choice = QUIT_GAME;
-                    quit = true;
-                default:
-                    break;
                 }
                 break;
-            case SDL_MOUSEBUTTONDOWN:
-                choice = NEW_GAME;
-            case SDL_QUIT:
+            case SDLK_DOWN:
+            case SDLK_j:
+                choice = (choice + 1) % NB_CHOICES;
+                if (!can_continue && choice == CONTINUE_GAME)
+                    choice = (choice + 1) % NB_CHOICES;
+                break;
+            case SDLK_UP:
+            case SDLK_k:
+                choice = (choice + NB_CHOICES - 1) % NB_CHOICES;
+                if (!can_continue && choice == CONTINUE_GAME)
+                    choice = (choice + NB_CHOICES - 1) % NB_CHOICES;
+                break;
+            case SDLK_q:
+                choice = QUIT_GAME;
                 quit = true;
             default:
                 break;
             }
+            break;
+        case SDL_MOUSEBUTTONDOWN:
+            choice = NEW_GAME;
+        case SDL_QUIT:
+            quit = true;
+        default:
+            break;
         }
-
-        SDL_RenderClear(renderer);
     }
 
     // *** Cleaning ***

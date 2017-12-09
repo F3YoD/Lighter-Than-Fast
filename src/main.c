@@ -19,7 +19,7 @@ SDL_Renderer *renderer = NULL;
 TTF_Font *font = NULL;
 TTF_Font *big_symbol_font = NULL;
 
-int main(int argc, char *argv[])
+int main(void)
 {
     srand(time(NULL));
     // *** Init SDL ***
@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     check_SDL(window);
 
     // Create renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
     check_SDL(renderer);
 
     // Load fonts
