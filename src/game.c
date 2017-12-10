@@ -19,6 +19,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	player_ship_t * my_ship = (player_ship_t *)malloc(sizeof(player_ship_t));
 
 		// =============== TEST BATTLE ============= //
+	// on cree un ennemi
 	ship_t *enemy = (ship_t*)malloc(sizeof(ship_t));
 	load_ship(enemy);
 	SDL_Texture *img_enemy = IMG_LoadTexture(renderer, "../assets/images/ship1.png");	
@@ -31,7 +32,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 			// postion initial de notre tir a donner au sous programme
 			// combat ()
 
-	bool my_turn = true;
+	bool my_turn = true; // est mit a vrai si c'est au tour du joueur
 
 	// on cree un rayon enemy
 	SDL_Rect rayon_enemy;
@@ -51,13 +52,8 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	load_team(team);
 	/**************************************************************/	
 
-	// =========================== TTF =========================== //
-		
-	
-	/***************************************************************/
-
 	// ====================  GESTION DU TEMPS ==================== //
-	int temps_precedent = 0, temps_actuel = 0;
+	//int temps_precedent = 0, temps_actuel = 0;
 	/***************************************************************/ 
 
 	int control = 0;
@@ -98,7 +94,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				break;
 		}
 		// ======================= GESTION DU TEMPS ==================== //
-		temps_actuel = SDL_GetTicks();
+		//temps_actuel = SDL_GetTicks();
 		//if (temps_actuel - temps_precedent > 2){	
 			// ==================== UPDATE ================== //
 			update_fond(&fond);
@@ -126,7 +122,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 			init_menu_combat();
 			combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir, &my_turn);
 			if(!my_turn){
-				attaque_enemy(&rayon_enemy, &my_turn, my_ship);
+				attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship);
 			}
 			update_fenetre_option(&fenetre_option);
 			SDL_RenderPresent(renderer);

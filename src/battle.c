@@ -120,13 +120,12 @@ void init_menu_combat(){
 
 // ================================================= SOUS PROGRAMME PIERRE PAQ1 =================================================== //
 
-
-
 void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, bool *pClique, int *pAction, SDL_Rect *pPos_tir, bool *pTour){
 // role : ce sous programme doit etre utiliser dans la game c-a-d dans la boucle
 //	  while!
-// parametrage :
-//
+// parametrage : 
+//		- si *pTour est mit à faut alors c'est au tour de l'ennemi d'agir 
+//		- 
 //
 	/// on cree un curseur (qui sera supprimer a la fin de ce sous programme)
 	SDL_Texture *curseur = IMG_LoadTexture(renderer, "../assets/images/alien1.png");
@@ -145,14 +144,9 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 	
 	int choi = *pChoi;
 
-	/// initialisation de l'action
-	bool attaque = false;
-	bool defense = false;
-	bool fuite = false;
-
 	/// initialisation de l'attaque
 	SDL_Texture *tir = IMG_LoadTexture(renderer, "../assets/images/alien1.png");
-
+	
 	switch(choi){
 		case CHOI_ATTAQUE:
 			pos_curseur = pos_curseur_attaque;
@@ -223,19 +217,13 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 	SDL_QueryTexture(curseur, NULL, NULL, &pos_curseur.w, &pos_curseur.h);
 	SDL_RenderCopy(renderer, curseur, NULL, &pos_curseur);
 
-	// ============================== AU TOUR DE L'ENNEMI =========================== //
-	if(!(*pTour)){
-		// pour le moment l'enemi ne sait que attaquer!
-	}
-	// ****************************************************************************** //
-
 	// ====================== liberation ==================== //
 	SDL_DestroyTexture(curseur);
 }
 
-void attaque_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * player){
+void attaque_rayon_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * player){
 //
-	if(pRayon_enemy->h < 100){
+	if(pRayon_enemy->h < 200){
 		pRayon_enemy->h += 2;
 		pRayon_enemy->w -= 20; 
 		pRayon_enemy->y--;
@@ -250,7 +238,4 @@ void attaque_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * player){
 		player->ship.hp -= 20;
 	}
 }
-//void shop(){
-
-//}
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
