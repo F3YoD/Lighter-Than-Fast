@@ -9,9 +9,8 @@ void play_game(void)
     puts("* Launching game");
 #endif
     // Cosmetics
-    SDL_Texture *bg_texture = NULL;
-    SDL_Texture *bg_overlay = NULL;
-    SDL_Texture *continue_texture = NULL;
+    SDL_Texture *bg_texture, *bg_overlay, *continue_texture;
+    bg_texture = bg_overlay = continue_texture = NULL;
     SDL_Rect base_overlay_rect = { WINDOW_WIDTH / 8, WINDOW_HEIGHT / 4, 3 * WINDOW_WIDTH / 4, WINDOW_WIDTH / 2 };
     SDL_Rect continue_msg_rect = { 5 * WINDOW_WIDTH / 6, 3 * WINDOW_HEIGHT / 4, 1, 1 };
 
@@ -21,10 +20,14 @@ void play_game(void)
     SDL_Color white = { 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE };
 
     // Map
+    SDL_Texture *red_dot_texture, *blue_dot_texture, *gray_dot_texture, *dot_texture;
+    red_dot_texture = blue_dot_texture = gray_dot_texture = dot_texture = NULL;
     map_t map = NULL;
     int map_length = 6;
     int map_max_height = 4;
     int height_index[map_length];
+    SDL_Rect icon_rect;
+    unsigned int step_x, step_y;
 
     // Create player's ship
     SDL_Texture *self_texture = NULL;
@@ -32,10 +35,8 @@ void play_game(void)
     ship_t *self = NULL;
 
     // Bars
-    SDL_Texture *health_texture = NULL;
-    SDL_Texture *health_bg_texture = NULL;
-    SDL_Texture *shield_texture = NULL;
-    SDL_Texture *shield_bg_texture = NULL;
+    SDL_Texture *health_texture, *health_bg_texture, *shield_texture, *shield_bg_texture;
+    health_texture = health_bg_texture = shield_texture = shield_bg_texture = NULL;
     SDL_Rect health_bg_rect = { 70, 620, 1, 1 };
     SDL_Rect shield_bg_rect = { 70, 640, 1, 1 };
     SDL_Rect health_clip = { 0, 0, 1, 1 };
@@ -44,8 +45,9 @@ void play_game(void)
 
     // Help box
     SDL_Texture *help_texture = NULL;
-    char help_txt[] = "Aide :\n"
+    char help_txt[] = "Aide\n"
         "ESC : Menu\n"
+        "M : Map\n"
         "H : Aide";
     SDL_Rect help_rect = { WINDOW_WIDTH - 224, WINDOW_HEIGHT - 128, 1, 1 };
 
@@ -119,6 +121,11 @@ void play_game(void)
                 free(map);
             map = (map_t)malloc(map_length * sizeof(map_col_t));
             gen_map(map, height_index, map_length, map_max_height);
+            red_dot_texture = load_img("../assets/images/red_dot.png");   // Images must be same size
+            blue_dot_texture = load_img("../assets/images/blue_dot.png"); // Use transparency to deal with different visible sizes
+            gray_dot_texture = load_img("../assets/images/gray_dot.png");
+            SDL_QueryTexture(red_dot_texture, NULL, NULL, &icon_rect.w, &icon_rect.h);
+            step_x = base_overlay_rect.w / (map_length + 1);
 #ifdef DEBUG
             for (int i = 0; i < map_length; i++)
                 for (int j = 0; j < height_index[i]; j++)
@@ -174,16 +181,7 @@ void play_game(void)
         {
             SDL_RenderCopy(renderer, bg_overlay, NULL, NULL);
 
-            // All images must be the same size, use transparency to deal with different-sized icons
-            SDL_Texture *red_dot_tex = load_img("../assets/images/red_dot.png");
-            SDL_Texture *blue_dot_tex = load_img("../assets/images/blue_dot.png");
-            SDL_Texture *gray_dot_tex = load_img("../assets/images/gray_dot.png");
-            SDL_Texture *dot_tex = NULL;
-            SDL_Rect icon_rect;
-            SDL_QueryTexture(red_dot_tex, NULL, NULL, &icon_rect.w, &icon_rect.h);
             icon_rect.x = base_overlay_rect.x - icon_rect.w / 2;
-            unsigned int step_x, step_y;
-            step_x = base_overlay_rect.w / (map_length + 1);
 
             for (int i = 0; i < map_length; i++)
             {
@@ -196,8 +194,8 @@ void play_game(void)
                 {
                     icon_rect.y += step_y;
                     printf(" line %d:  y = %d\n", j, icon_rect.y);
-                    dot_tex = map[i][j]->is_shop ? blue_dot_tex : red_dot_tex;
-                    SDL_RenderCopy(renderer, dot_tex, NULL, &icon_rect);
+                    dot_texture = map[i][j]->is_shop ? blue_dot_texture : red_dot_texture;
+                    SDL_RenderCopy(renderer, dot_texture, NULL, &icon_rect);
                 }
             }
 
@@ -248,12 +246,12 @@ void play_game(void)
                 break;
             }
 
-        #ifndef DEBUG
+#ifndef DEBUG
         if (choice == QUIT_GAME)
         {
             // TODO show dialog asking if user is sure
         }
-        #endif
+#endif
     }
 
     /* Leave game */
