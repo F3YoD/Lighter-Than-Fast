@@ -1,6 +1,7 @@
 # Discard binary files
 obj/
 bin/
+*.swp
 
 # Discard separate files
 assets/fonts/
