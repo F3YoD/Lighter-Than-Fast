@@ -1,5 +1,5 @@
-#ifndef _GAME_
-#define _GAME_
+#ifndef _GAME_H
+#define _GAME_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -12,7 +12,5 @@
 
 void play_game(void);
 void show_fake_loading(unsigned int);
-
-ship_t *gen_self(void);
 
 #endif

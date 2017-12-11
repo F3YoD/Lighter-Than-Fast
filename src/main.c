@@ -8,9 +8,6 @@
 #include "game.h"
 #include "tools.h"
 
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 768
-
 #define FIRAMONO_PATH "../assets/fonts/firamono.ttf"
 #define FONTAWESOME_PATH "../assets/fonts/fontawesome.ttf"
 

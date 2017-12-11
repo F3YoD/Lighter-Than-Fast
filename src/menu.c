@@ -60,7 +60,7 @@ enum menu_choice menu(bool can_continue)
 
         SDL_RenderPresent(renderer);
 
-        // Get user input
+        // Listen to key strokes
         SDL_WaitEvent(&event);
         switch (event.type)
         {
