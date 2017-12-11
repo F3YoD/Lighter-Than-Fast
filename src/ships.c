@@ -1,107 +1,118 @@
 #include "ships.h"
 
 #define SHIPS_STATS_FILE "../assets/ships/ships_stats.txt"
+#define SELF_SHIP_IMAGE "../assets/images/ship2.png"
+#define BOSS_SHIP_IMAGE ""
+
+ship_t *gen_self(void)
+{
+    ship_t *self = (ship_t *)malloc(sizeof(ship_t));
+
+    sprintf(self->name, "UNSC Yvan");
+    self->is_shop = false;
+    self->health = 100;
+    self->shield = 50;
+    self->belongings.plasma = 100;
+    self->belongings.money = 100;
+    self->belongings.scraps = 20;
+    self->damage_min = 10;
+    self->damage_max = 30;
+    self->dodge_score = 0.1;
+    sprintf(self->img_path, SELF_SHIP_IMAGE);
+
+    return self;
+}
+
+ship_t *gen_boss(void)
+{
+    ship_t *boss = (ship_t *)malloc(sizeof(ship_t));
+
+    sprintf(boss->name, "Herr FRAUFRAU");
+    boss->is_shop = false;
+    boss->health = 100;
+    boss->shield = 50;
+    boss->belongings.plasma = 100;
+    boss->belongings.money = 100;
+    boss->belongings.scraps = 20;
+    boss->damage_min = 10;
+    boss->damage_max = 30;
+    boss->dodge_score = 0.1;
+    sprintf(boss->img_path, BOSS_SHIP_IMAGE); // TODO
+
+    return boss;
+}
 
 list_t gen_ship_list(int *nb_ships)
 {
     #ifdef DEBUG
     printf("** Loading ships from %s\n", SHIPS_STATS_FILE);
     #endif
+    list_t ship_stack = cons_empty();
     FILE *fp = fopen(SHIPS_STATS_FILE, "r");
     ship_t *tmp = NULL;
-
     *nb_ships = 0;
-    list_t ship_stack = cons_empty();
 
     char *line = (char *)malloc(100 * sizeof(char));
 
     while (fgets(line, 100, fp) != NULL)
     {
-        /* puts("*** Read new line from file"); */
         tmp = load_ship_from_line(line);
         if (!tmp)
             break;
         *nb_ships += 1;
-        // Here we used to use an intermediary struct, which seems unnecessary
         ship_stack = cons(tmp, ship_stack);
-        /* printf("Ship %d: ", *nb_ships); */
-        /* printf("%s,%d,%d,%d,%d,%d,%d,%d,%f,%d,%s\n\n", tmp->name, tmp->is_shop, tmp->health, tmp->belongings.plasma, tmp->belongings.money, tmp->belongings.scraps, tmp->damage_min, tmp->damage_max, tmp->dodge_score, tmp->shield, tmp->img_path); */
     }
 
     fclose(fp);
     free(line);
-    // Wouldn't that free the memory for the last ship of the list?
-    /* if (tmp != NULL) */
-    /*     free(tmp); */
 
     return ship_stack;
 }
 
 ship_t *load_ship_from_line(char *line)
 {
-    ship_t *tmp = (ship_t *)malloc(sizeof(ship_t));
+    ship_t *s = (ship_t *)malloc(sizeof(ship_t));
     char *token = NULL;
-    char sep[] = ",\n\r";
+    char sep[] = ",";
+    char *str, *tofree;
+    tofree = str = strdup(line);
     // Name
-    token = strtok(line, sep);
-    if (token == NULL)
-        goto Failure;
-    sprintf(tmp->name, "%s", token); // TODO use function allowing to control nb of copied characters and avoid overflows
+    if ((token = strsep(&str, sep)) != NULL)
+        strcpy(s->name, token);
     // Shop
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->is_shop = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->is_shop = atoi(token);
     // HP
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->health = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->health = atoi(token);
     // Plasma
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->belongings.plasma = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->belongings.plasma = atoi(token);
     // Money
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->belongings.money = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->belongings.money = atoi(token);
     // Scraps
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->belongings.scraps = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->belongings.scraps = atoi(token);
     // Damage min
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->damage_min = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->damage_min = atoi(token);
     // Damage max
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->damage_max = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->damage_max = atoi(token);
     // Dodge score
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->dodge_score = atof(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->dodge_score = atof(token);
     // Shield
-    token = strtok(NULL, sep);
-    if (token == NULL)
-        goto Failure;
-    tmp->shield = atoi(token);
+    if ((token = strsep(&str, sep)) != NULL)
+        s->shield = atoi(token);
     // Image path
-    token = strtok(NULL, sep);
+    if ((token = strsep(&str, sep)) != NULL)
+        sprintf(s->img_path, "%s", token);
+
+    free(tofree);
     if (token == NULL)
-        goto Failure;
-    sprintf(tmp->img_path, "%s", token);
+        free(s);
 
-    return tmp;
-
-Failure:
-    /* puts("Stopped looking for ships"); */
-    free(tmp);
-    return NULL;
+    return token != NULL ? s : NULL;
 }

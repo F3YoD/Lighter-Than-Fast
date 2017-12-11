@@ -1,5 +1,5 @@
-#ifndef _SHIP_
-#define _SHIP_
+#ifndef _SHIP_H
+#define _SHIP_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,8 +8,6 @@
 #include <SDL2/SDL_image.h>
 
 #include "tools.h"
-
-#define load_value()
 
 struct belongings
 {
@@ -29,6 +27,7 @@ typedef struct
     char img_path[50];
 } ship_t, *map_node_t, **map_col_t, ***map_t;
 
+ship_t *gen_self(void);
 ship_t **load_all_ships(int *);
 list_t gen_ship_list(int *);
 ship_t *load_ship_from_line(char *);
