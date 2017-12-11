@@ -26,11 +26,15 @@ typedef struct node
     struct node *next;
 } node_t, *list_t;
 
+enum align_code { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT };
+
 int gen_rand(unsigned short int, unsigned short int);
 
+void wait_key_press(unsigned int timeout);
 SDL_Texture *create_txt(TTF_Font *, char *, SDL_Color);
 SDL_Texture *load_img(char *);
 SDL_Rect rect_from_texture(SDL_Texture *, unsigned short int, unsigned short int);
+SDL_Texture *texture_from_text(TTF_Font *, unsigned short int, SDL_Rect, char *, SDL_Color, int align);
 
 list_t cons_empty(void);
 list_t cons(void *, list_t);
