@@ -65,7 +65,7 @@ void play_game(void)
     {
         if (show_menu)
             choice = menu(can_continue);
-        if (choice == QUIT_GAME)
+        if (!can_continue && choice == QUIT_GAME)
             break;
         else if (!can_continue || choice == NEW_GAME)
         {
@@ -109,23 +109,26 @@ void play_game(void)
 
             if (!shield_texture)
             {
-                health_texture = load_img("../assets/images/shield.png");
+                shield_texture = load_img("../assets/images/shield.png");
                 SDL_QueryTexture(shield_texture, NULL, NULL, &shield_bg_rect.w, &shield_bg_rect.h);
                 shield_rect = shield_bg_rect;
                 shield_clip.h = shield_rect.h;
             }
             if (!shield_bg_texture)
-                health_bg_texture = load_img("../assets/images/shield_gray.png");
+                shield_bg_texture = load_img("../assets/images/shield_gray.png");
 
+            if (!red_dot_texture)
+            {
+                red_dot_texture = load_img("../assets/images/red_dot.png");   // Images must be same size
+                blue_dot_texture = load_img("../assets/images/blue_dot.png"); // Use transparency to deal with different visible sizes
+                gray_dot_texture = load_img("../assets/images/gray_dot.png");
+                SDL_QueryTexture(red_dot_texture, NULL, NULL, &icon_rect.w, &icon_rect.h);
+                step_x = base_overlay_rect.w / (map_length + 1);
+            }
             if (map != NULL)
                 free(map);
             map = (map_t)malloc(map_length * sizeof(map_col_t));
             gen_map(map, height_index, map_length, map_max_height);
-            red_dot_texture = load_img("../assets/images/red_dot.png");   // Images must be same size
-            blue_dot_texture = load_img("../assets/images/blue_dot.png"); // Use transparency to deal with different visible sizes
-            gray_dot_texture = load_img("../assets/images/gray_dot.png");
-            SDL_QueryTexture(red_dot_texture, NULL, NULL, &icon_rect.w, &icon_rect.h);
-            step_x = base_overlay_rect.w / (map_length + 1);
 #ifdef DEBUG
             for (int i = 0; i < map_length; i++)
                 for (int j = 0; j < height_index[i]; j++)
@@ -145,11 +148,16 @@ void play_game(void)
         SDL_RenderCopy(renderer, self_texture, NULL, &self_pos);
 
         // Display life and shield
-        SDL_RenderCopy(renderer, shield_bg_texture, NULL, &health_bg_rect);
+        SDL_RenderCopy(renderer, health_bg_texture, NULL, &health_bg_rect);
         // TODO Add ability to track max health?
         health_rect.w = self->health * health_bg_rect.w / 100;
         health_clip.w = health_rect.w;
         SDL_RenderCopy(renderer, health_texture, &health_clip, &health_rect);
+
+        SDL_RenderCopy(renderer, shield_bg_texture, NULL, &shield_bg_rect);
+        shield_rect.w = self->shield * shield_bg_rect.w / 50;
+        shield_clip.w = shield_rect.w;
+        SDL_RenderCopy(renderer, shield_texture, &shield_clip, &shield_rect);
 
         // Display help
         if (show_help)
@@ -186,14 +194,12 @@ void play_game(void)
             for (int i = 0; i < map_length; i++)
             {
                 icon_rect.x += step_x;
-                printf("column %d: x = %d\n", i, icon_rect.x);
 
                 icon_rect.y = base_overlay_rect.y - icon_rect.h / 2;
                 step_y = base_overlay_rect.h / (height_index[i] + 1);
                 for (int j = 0; j < height_index[i]; j++)
                 {
                     icon_rect.y += step_y;
-                    printf(" line %d:  y = %d\n", j, icon_rect.y);
                     dot_texture = map[i][j]->is_shop ? blue_dot_texture : red_dot_texture;
                     SDL_RenderCopy(renderer, dot_texture, NULL, &icon_rect);
                 }
@@ -245,11 +251,37 @@ void play_game(void)
             default:
                 break;
             }
-
 #ifndef DEBUG
-        if (choice == QUIT_GAME)
+        if (choice == QUIT_GAME && can_continue)
         {
-            // TODO show dialog asking if user is sure
+            SDL_Texture *confirm_quit_texture = texture_from_text(font, 1, base_overlay_rect, "Voulez-vous vraiment quitter ?", white, ALIGN_LEFT);
+            SDL_Texture *quit_choice_texture = texture_from_text(font, 1, continue_msg_rect, "(O)ui / (N)on", white, ALIGN_RIGHT);
+
+            SDL_RenderCopy(renderer, bg_overlay, NULL, NULL);
+            SDL_RenderCopy(renderer, confirm_quit_texture, NULL, NULL);
+            SDL_RenderCopy(renderer, quit_choice_texture, NULL, NULL);
+
+            SDL_RenderPresent(renderer);
+
+            SDL_Event e;
+            bool has_chosen = false;
+            while (SDL_WaitEvent(&e) && !has_chosen)
+            {
+                switch (e.type)
+                {
+                case SDL_KEYUP:
+                    if (e.key.keysym.sym == SDLK_o)
+                        has_chosen = true;
+                    else if (e.key.keysym.sym == SDLK_n)
+                    {
+                        choice = CONTINUE_GAME;
+                        has_chosen = true;
+                    }
+                    break;
+                default:
+                    break;
+                }
+            }
         }
 #endif
     }
@@ -259,7 +291,17 @@ void play_game(void)
         free(self); // or let it go, go, go
     if (map != NULL)
         free(map);
+    SDL_DestroyTexture(help_texture);
+    SDL_DestroyTexture(health_texture);
+    SDL_DestroyTexture(health_bg_texture);
+    SDL_DestroyTexture(shield_texture);
+    SDL_DestroyTexture(shield_bg_texture);
     SDL_DestroyTexture(self_texture);
+    SDL_DestroyTexture(red_dot_texture);
+    SDL_DestroyTexture(blue_dot_texture);
+    SDL_DestroyTexture(gray_dot_texture);
+    SDL_DestroyTexture(continue_texture);
+    SDL_DestroyTexture(bg_overlay);
     SDL_DestroyTexture(bg_texture);
     SDL_RenderClear(renderer);
 }
