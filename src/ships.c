@@ -47,7 +47,7 @@ list_t gen_ship_list(int *nb_ships)
     #ifdef DEBUG
     printf("** Loading ships from %s\n", SHIPS_STATS_FILE);
     #endif
-    list_t ship_stack = cons_empty();
+    list_t ship_stack = create_empty_list();
     FILE *fp = fopen(SHIPS_STATS_FILE, "r");
     ship_t *tmp = NULL;
     *nb_ships = 0;
@@ -60,7 +60,7 @@ list_t gen_ship_list(int *nb_ships)
         if (!tmp)
             break;
         *nb_ships += 1;
-        ship_stack = cons(tmp, ship_stack);
+        ship_stack = push(tmp, ship_stack);
     }
 
     fclose(fp);
@@ -108,7 +108,7 @@ ship_t *load_ship_from_line(char *line)
         s->shield = atoi(token);
     // Image path
     if ((token = strsep(&str, sep)) != NULL)
-        sprintf(s->img_path, "%s", token);
+        strcpy(s->img_path, token);
 
     free(tofree);
     if (token == NULL)

@@ -36,8 +36,8 @@ SDL_Texture *load_img(char *);
 SDL_Rect rect_from_texture(SDL_Texture *, unsigned short int, unsigned short int);
 SDL_Texture *texture_from_text(TTF_Font *, unsigned short int, SDL_Rect, char *, SDL_Color, int align);
 
-list_t cons_empty(void);
-list_t cons(void *, list_t);
+list_t create_empty_list(void);
+list_t push(void *, list_t);
 void *head(list_t);
 list_t son(list_t);
 void print_list(list_t);

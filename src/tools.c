@@ -118,7 +118,7 @@ SDL_Rect rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short 
 
 // *** Linked lists ***
 
-list_t cons_empty(void)
+list_t create_empty_list(void)
 {
     list_t tmp = (list_t)malloc(sizeof(node_t));
     tmp->value = NULL;
@@ -126,7 +126,7 @@ list_t cons_empty(void)
     return tmp;
 }
 
-list_t cons(void *elt, list_t next)
+list_t push(void *elt, list_t next)
 {
     list_t l = (list_t)malloc(sizeof(node_t));
     l->value = elt;

@@ -145,6 +145,7 @@ void play_game(void)
         SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
 
         // Display player's ship
+        // TODO add a slight tilt to the ship to make it more lively
         SDL_RenderCopy(renderer, self_texture, NULL, &self_pos);
 
         // Display life and shield
