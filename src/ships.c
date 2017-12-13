@@ -8,7 +8,7 @@ ship_t *gen_self(void)
 {
     ship_t *self = (ship_t *)malloc(sizeof(ship_t));
 
-    sprintf(self->name, "UNSC Yvan");
+    strcpy(self->name, "UNSC Yvan");
     self->is_shop = false;
     self->health = 100;
     self->shield = 50;
@@ -18,7 +18,7 @@ ship_t *gen_self(void)
     self->damage_min = 10;
     self->damage_max = 30;
     self->dodge_score = 0.1;
-    sprintf(self->img_path, SELF_SHIP_IMAGE);
+    strcpy(self->img_path, SELF_SHIP_IMAGE);
 
     return self;
 }
@@ -27,7 +27,7 @@ ship_t *gen_boss(void)
 {
     ship_t *boss = (ship_t *)malloc(sizeof(ship_t));
 
-    sprintf(boss->name, "Herr FRAUFRAU");
+    strcpy(boss->name, "Herr FRAUFRAU");
     boss->is_shop = false;
     boss->health = 100;
     boss->shield = 50;
@@ -37,7 +37,7 @@ ship_t *gen_boss(void)
     boss->damage_min = 10;
     boss->damage_max = 30;
     boss->dodge_score = 0.1;
-    sprintf(boss->img_path, BOSS_SHIP_IMAGE); // TODO
+    strcpy(boss->img_path, BOSS_SHIP_IMAGE); // TODO
 
     return boss;
 }
