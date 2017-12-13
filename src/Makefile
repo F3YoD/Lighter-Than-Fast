@@ -1,4 +1,4 @@
-SHELL = /usr/bin/env bash  # Allow brace expansion TODO maybe useless
+SHELL = /usr/bin/env bash
 NAME = lighter_than_fast
 
 CC = gcc
