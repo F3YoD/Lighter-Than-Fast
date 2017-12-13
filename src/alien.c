@@ -32,10 +32,10 @@ void update_alien(alien_t * pA, SDL_Event pEv, player_ship_t * pShip, int pContr
 //	  sinon on se contente d'afficher l'alien!
 // parametrage : si controle = pA->id alors on peut bouger le perso! 
 	if(pControl == pA->id && pShip->ship.hp > 0){
-		int murDroit = pShip->img.pos.x + 380;
-		int murGauche = pShip->img.pos.x + 100;
-		int murHaut = pShip->img.pos.y + 100;
-		int murBas = pShip->img.pos.y + 290;	
+		int murDroit = pShip->pos.x + 380;
+		int murGauche = pShip->pos.x + 100;
+		int murHaut = pShip->pos.y + 100;
+		int murBas = pShip->pos.y + 290;	
 		
 		/******TEST DU DEV******/
 		/***********************/

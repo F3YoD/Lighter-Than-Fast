@@ -5,12 +5,20 @@
 #include "image.h"
 #include "ships.h"
 
-void load_player_ship(player_ship_t * pS, char pDest[50], char pNom[20]){
+void load_player_ship(player_ship_t * pS, char pNom[20]){
 // role : initialise un player_ship_t
 	printf("chargement du vaisseau\n");
-	pS->img.tex = IMG_LoadTexture(renderer, pDest);
-	pS->img.pos.x = 20; // 100
-	pS->img.pos.y = 215; // 200
+	pS->current_img = 0;
+	pS->tex[0] = IMG_LoadTexture(renderer, 
+		"../assets/images/ship_player/ship_player0.png");
+	pS->tex[1] = IMG_LoadTexture(renderer, 
+		"../assets/images/ship_player/ship_player1.png");
+	pS->tex[2] = IMG_LoadTexture(renderer, 
+		"../assets/images/ship_player/ship_player2.png");
+	pS->tex[3] = IMG_LoadTexture(renderer, 
+		"../assets/images/ship_player/ship_player3.png");
+	pS->pos.x = POS_PLAYER_SHIP_X; // 100
+	pS->pos.y = POS_PLAYER_SHIP_Y; // 200
 	pS->angle = 180.0; // angle ship's image
 	
 	// ================== INIT STATS PLAYER ================== //
@@ -31,11 +39,15 @@ void load_player_ship(player_ship_t * pS, char pDest[50], char pNom[20]){
 void update_player_ship(player_ship_t * pS){
 // role : met a jour, affiche notre ship
 	// ======================= DRAW SHIP PLAYER =================== //
-	SDL_QueryTexture(pS->img.tex,NULL,NULL,&pS->img.pos.w, &pS->img.pos.h);
+	SDL_RenderSetScale(renderer, SCALE_PLAYER, SCALE_PLAYER);
+
+	SDL_QueryTexture(pS->tex[pS->current_img],NULL,NULL,&pS->pos.w,&pS->pos.h);
 	SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
 	SDL_RenderCopyEx(
-		renderer, pS->img.tex, NULL, &pS->img.pos,pS->angle, NULL, flip
+		renderer, pS->tex[pS->current_img], NULL, 
+		&pS->pos,pS->angle, NULL, flip
 	);
+	SDL_RenderSetScale(renderer, 1, 1);
 	
 	/****************************************************************/
 
@@ -44,8 +56,8 @@ void update_player_ship(player_ship_t * pS){
 	// color green for life bar
 	
 	SDL_Rect bar_hp; // the rectangle of life bar
-	bar_hp.x = pS->img.pos.x + pS->img.pos.w - 50;
-	bar_hp.y = pS->img.pos.y + pS->img.pos.h - 100;
+	bar_hp.x = pS->pos.x + (pS->pos.w * SCALE_PLAYER) - 50;
+	bar_hp.y = pS->pos.y + (pS->pos.h * SCALE_PLAYER) - 100;
 	bar_hp.w = pS->ship.hp * 3;
 	bar_hp.h = 20;
 
@@ -56,8 +68,8 @@ void update_player_ship(player_ship_t * pS){
 	// color blue
 	
 	SDL_Rect bar_shield; // the rectangle of life bar
-	bar_shield.x = pS->img.pos.x + pS->img.pos.w - 50;
-	bar_shield.y = pS->img.pos.y + pS->img.pos.h - 75;
+	bar_shield.x = pS->pos.x + (pS->pos.w * SCALE_PLAYER) - 50;
+	bar_shield.y = pS->pos.y + (pS->pos.h * SCALE_PLAYER) - 75;
 	bar_shield.w = pS->ship.shield * 3;
 	bar_shield.h = 20;
 
@@ -69,8 +81,8 @@ void update_player_ship(player_ship_t * pS){
 	//if(pS->ship.hp > 0){ pS->ship.hp--; }
 
 	if(pS->ship.hp <= 0){
-		if(pS->img.pos.x > -1000)
-			pS->img.pos.x--;
+		if(pS->pos.x > -1000)
+			pS->pos.x--;
 			pS->angle--;
 	}
 	/****************************************************************/ 
@@ -80,7 +92,8 @@ void free_player_ship(player_ship_t * pS){
 // role : free notre player_ship_t
 	printf("suppression du vaisseau\n");
 	free(pS->ship.belongings);
-	SDL_DestroyTexture(pS->img.tex);
+	for(int i = 0; i < NB_IMAGE_SHIP_PLAYER; i++)
+		SDL_DestroyTexture(pS->tex[i]);
 }
 
 //void load_stats(int ship[100]){

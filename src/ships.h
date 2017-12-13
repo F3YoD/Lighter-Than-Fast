@@ -9,6 +9,14 @@
 #include "image.h"
 #include "extern.h"
 
+#define NB_IMAGE_SHIP_PLAYER 4
+#define FRAME_TIME 400 // (400 ms)
+#define SCALE_PLAYER 8
+#define POS_X 100
+#define POS_Y 300
+#define POS_PLAYER_SHIP_X POS_X/SCALE_PLAYER
+#define POS_PLAYER_SHIP_Y POS_Y/SCALE_PLAYER
+
 /***
  * TYPES
  */
@@ -56,7 +64,9 @@ ship_t, * map_node_t, ** map_col_t, *** map_t;
 
 typedef struct {
 	ship_t ship;
-	image_t img;
+	int current_img;
+	SDL_Texture *tex[NB_IMAGE_SHIP_PLAYER];
+	SDL_Rect pos;
 	double angle;   // angle de notre vaisseaux sur l'écran
 			// qui sera modifié a la destruction du vaisseau
 }player_ship_t;
@@ -65,7 +75,7 @@ typedef struct {
  * FUNCTIONS
  */
 
-void load_player_ship(player_ship_t *,char *, char *);
+void load_player_ship(player_ship_t *,char *);
 //load a ship from an image
 void update_player_ship(player_ship_t *);
 //update ship 

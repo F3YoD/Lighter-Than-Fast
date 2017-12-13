@@ -46,14 +46,14 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	load_fond(&fond);
 	load_barre_vie(&life, 10, "../assets/images/lifebare2.png");
 	load_bar_shield(&shield, 100, "../assets/images/shieldbare.png");
-	load_player_ship(my_ship, "../assets/images/ship2.png", pNom);
+	load_player_ship(my_ship, pNom);
 	
 	team_t * team = (team_t *)malloc(sizeof(team_t));
 	load_team(team);
 	/**************************************************************/	
 
 	// ====================  GESTION DU TEMPS ==================== //
-	//int temps_precedent = 0, temps_actuel = 0;
+	int temps_precedent = 0, temps_actuel = 0;
 	/***************************************************************/ 
 
 	int control = 0;
@@ -94,8 +94,14 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				break;
 		}
 		// ======================= GESTION DU TEMPS ==================== //
-		//temps_actuel = SDL_GetTicks();
-		//if (temps_actuel - temps_precedent > 2){	
+		temps_actuel = SDL_GetTicks();
+		if (temps_actuel - temps_precedent > FRAME_TIME){
+			if(my_ship->current_img < NB_IMAGE_SHIP_PLAYER - 1)
+				my_ship->current_img++;
+			else
+				my_ship->current_img = 0;
+			temps_precedent = temps_actuel;	
+		}	
 			// ==================== UPDATE ================== //
 			update_fond(&fond);
 			//update_barre_vie(&life);
