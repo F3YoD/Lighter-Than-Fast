@@ -131,6 +131,18 @@ void update_ship(ship_t *pS){
 	bar_hp.w = pS->hp * 3;
 	bar_hp.h = 20;
 
+
 	SDL_RenderFillRect(renderer, &bar_hp); // drawing life bar
-	/****************************************************************/
+	/***************************DRAW SHIELD BAR************************/
+	SDL_SetRenderDrawColor(renderer,0,0,225,255);
+	//color blue
+
+	SDL_Rect shield_bar; //the rectangle of shield bar
+	shield_bar.x=550;
+	shield_bar.y=50;
+	shield_bar.w=pS->shield * 3;
+	shield_bar.h=20;
+
+	SDL_RenderFillRect(renderer,&shield_bar); //drawing shield bar 
+
 }

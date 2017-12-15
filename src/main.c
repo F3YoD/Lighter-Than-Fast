@@ -18,6 +18,7 @@
 #define ETAT_QUIT 2
 
 int main(int argc, char * argv[]){
+	srand(time(NULL));
    	char nom[40];
     	printf("saisir nom (sans espaces) : ");
     	scanf("%s", nom);
