@@ -22,8 +22,16 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	// on cree un ennemi
 	ship_t *enemy = (ship_t*)malloc(sizeof(ship_t));
 	load_ship(enemy);
-	SDL_Texture *img_enemy = IMG_LoadTexture(renderer, "../assets/images/ship1.png");	
-	SDL_Rect pos_enemy; pos_enemy.x = 600; pos_enemy.y = 100;
+	SDL_Texture* img_enemy[15];
+	int nb_img = 3, frame_time = 400, temps_actuel2 = 0, temps_precedent2 = 0;
+	int current_img = 0;
+	float scale = 10;
+
+	img_enemy[0] = IMG_LoadTexture(renderer, "../assets/images/ship_enemy/ship_enemy1.0.png");
+	img_enemy[1] = IMG_LoadTexture(renderer, "../assets/images/ship_enemy/ship_enemy1.1.png");
+	img_enemy[2] = IMG_LoadTexture(renderer, "../assets/images/ship_enemy/ship_enemy1.2.png");
+		
+	SDL_Rect pos_enemy; pos_enemy.x = 690 / scale; pos_enemy.y = 120 / scale;
 
 	int choi = CHOI_ATTAQUE; // le choi ou se pose le curseur en premier dans le
 				 // le sous programme combat()
@@ -94,6 +102,18 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				break;
 		}
 		// ======================= GESTION DU TEMPS ==================== //
+		temps_actuel2 = SDL_GetTicks();
+		if (temps_actuel2 - temps_precedent2 > frame_time){
+			if(current_img == nb_img - 1){
+				current_img = 0;
+			}else{
+				current_img++;
+			}
+			temps_precedent2 = temps_actuel2;
+		}
+
+
+
 		temps_actuel = SDL_GetTicks();
 		if (temps_actuel - temps_precedent > FRAME_TIME){
 			if(my_ship->current_img < NB_IMAGE_SHIP_PLAYER - 1)
@@ -128,8 +148,14 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 			init_menu_combat();
 			combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir, &my_turn);
 			if(!my_turn){
-				attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship);
+				attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship,enemy);
 			}
+
+		SDL_RenderSetScale(renderer, scale, scale);	
+		SDL_QueryTexture(img_enemy[current_img], NULL, NULL, &pos_enemy.w, &pos_enemy.h);
+		SDL_RenderCopy(renderer, img_enemy[current_img], NULL, &pos_enemy);
+		SDL_RenderSetScale(renderer, 1, 1);	
+
 			update_fenetre_option(&fenetre_option);
 			SDL_RenderPresent(renderer);
 			SDL_RenderClear(renderer);

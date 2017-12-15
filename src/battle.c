@@ -11,12 +11,12 @@ void shoot(ship_t *s1, ship_t *s2, const int shoottype)
     // TODO establish realistic rates
     // Maybe:
     // damage_min *= shoottype;
-    if (shoottype == 2)
+    if (shoottype == 1)
     {
         damage_min++;
         damage_max++;
     }
-    else if (shoottype == 3)
+    else if (shoottype == 2)
     {
         damage_min = damage_min+2;
         damage_max = damage_max+2;
@@ -205,7 +205,7 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 		SDL_DestroyTexture(tir);
 
 		if (pPos_tir->x >= 800){
-			pPirate->hp -= 10;
+			shoot(&pPlayer->ship,pPirate,1);
 			*pTour = false;
 		}
 	}
@@ -221,7 +221,7 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 	SDL_DestroyTexture(curseur);
 }
 
-void attaque_rayon_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * player){
+void attaque_rayon_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * player, ship_t* pPirate){
 //
 	if(pRayon_enemy->h < 200){
 		pRayon_enemy->h += 2;
@@ -235,7 +235,7 @@ void attaque_rayon_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * pl
 		pRayon_enemy->h = 10;
 		pRayon_enemy->w = 0;
 		pRayon_enemy->y = 300;
-		player->ship.hp -= 20;
+		shoot(pPirate,&player->ship,1);
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

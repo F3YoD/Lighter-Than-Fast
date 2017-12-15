@@ -33,6 +33,6 @@ void init_menu_combat();
 
 // =========================== //
 void combat(player_ship_t*, ship_t*, int*, SDL_Event, bool*, int*, SDL_Rect*, bool*);
-void attaque_rayon_enemy(SDL_Rect*, bool*, player_ship_t*);
+void attaque_rayon_enemy(SDL_Rect*, bool*, player_ship_t*,ship_t*);
 
 #endif
