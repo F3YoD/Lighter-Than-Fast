@@ -9,14 +9,14 @@ void play_game(void)
 #ifdef DEBUG
     puts("* Launching game");
 #endif
+    SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+
     // Cosmetics
     SDL_Texture *bg_texture, *bg_overlay, *dialog_texture, *continue_texture, *alien_pointer;
     bg_texture = bg_overlay = continue_texture = alien_pointer = NULL;
     SDL_Rect base_overlay_rect = { WINDOW_WIDTH / 8, WINDOW_HEIGHT / 4, 3 * WINDOW_WIDTH / 4, WINDOW_WIDTH / 2 };
     SDL_Rect continue_msg_rect = { 5 * WINDOW_WIDTH / 6, 3 * WINDOW_HEIGHT / 4, 1, 1 };
-
-    SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, SDL_ALPHA_OPAQUE);
-    SDL_RenderClear(renderer);
 
     SDL_Color white = { 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE };
 
@@ -24,47 +24,34 @@ void play_game(void)
     SDL_Texture *red_dot_texture, *blue_dot_texture, *gray_dot_texture, *dot_texture;
     red_dot_texture = blue_dot_texture = gray_dot_texture = dot_texture = NULL;
     map_t map = NULL;
-    int map_length = 6;
-    int map_max_height = 4;
+    int map_length = 6, map_max_height = 4;
     int height_index[map_length];
     SDL_Rect icon_rect, alien_pointer_map_rect;
     unsigned int step_x, step_y;
     int choice_node = 0;
 
-    // Create player's ship
-    SDL_Texture *self_texture = NULL;
+    // Prepare shuttles
+    SDL_Texture *self_texture = NULL, *foe_texture = NULL;
     SDL_Rect self_rect = { WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7, 357, 286 };
-    ship_t *self = NULL;
-    unsigned int self_curr_health;
+    SDL_Rect foe_rect = { 19 * WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7, 1, 1 };
+    ship_t *self = NULL, *foe = NULL;
+    int self_curr_health, foe_curr_health;
 
-    // Create foe's ship
-    SDL_Texture *foe_texture = NULL;
-    // TODO change to be right-aligned
-    SDL_Rect foe_rect = { 4 * WINDOW_WIDTH / 5, 2 * WINDOW_HEIGHT / 7, 1, 1 };
-    ship_t *foe = NULL;
-    unsigned int foe_curr_health;
-
-    // Self bars
+    // Self and foe's health and shield bars
     SDL_Texture *health_texture, *health_bg_texture, *shield_texture, *shield_bg_texture;
     health_texture = health_bg_texture = shield_texture = shield_bg_texture = NULL;
     SDL_Rect health_bg_rect, shield_bg_rect, health_rect, shield_rect, health_clip, shield_clip;
     health_bg_rect.x = health_rect.x = shield_bg_rect.x = shield_rect.x = self_rect.x;
     health_clip.x = health_clip.y = shield_clip.x = shield_clip.y = 0;
 
-    // Self bars
-    SDL_Texture *foe_health_texture, *foe_health_bg_texture, *foe_shield_texture, *foe_shield_bg_texture;
-    foe_health_texture = foe_health_bg_texture = foe_shield_texture = foe_shield_bg_texture = NULL;
+    // Foe bars
     SDL_Rect foe_health_bg_rect, foe_shield_bg_rect, foe_health_rect, foe_shield_rect, foe_health_clip, foe_shield_clip;
     foe_health_bg_rect.x = foe_health_rect.x = foe_shield_bg_rect.x = foe_shield_rect.x = foe_rect.x;
     foe_health_clip.x = foe_health_clip.y = foe_shield_clip.x = foe_shield_clip.y = 0;
 
     // Help box
     SDL_Texture *help_texture = NULL;
-    char help_txt[] = "Aide\n"
-        "ESC : Menu\n"
-        "M : Map\n"
-        "H : Aide";
-    SDL_Rect help_rect = { WINDOW_WIDTH - 224, WINDOW_HEIGHT - 128, 1, 1 };
+    SDL_Rect help_rect = { WINDOW_WIDTH - 224, WINDOW_HEIGHT - 64, 1, 1 };
 
     // Gameplay
     enum menu_choice choice = NEW_GAME;
@@ -77,13 +64,13 @@ void play_game(void)
     bool action = false;
 
     while (choice != QUIT_GAME)
-    {
+    { // Game loop, everything happens here
         if (show_menu)
             choice = menu(can_continue);
         if (!can_continue && choice == QUIT_GAME)
             break;
         else if (!can_continue || choice == NEW_GAME)
-        {
+        { // Load textures if not done, (re)gen map, reset messages counter
             show_fake_loading(1500);
 
             msg_counter = 0;
@@ -168,8 +155,7 @@ void play_game(void)
         show_menu = false;
         action = false;
 
-        // Display background
-        SDL_RenderCopy(renderer, bg_texture, NULL, NULL);
+        SDL_RenderCopy(renderer, bg_texture, NULL, NULL); // Background
 
         // Display life and shield
         SDL_RenderCopy(renderer, health_bg_texture, NULL, &health_bg_rect);
@@ -195,16 +181,14 @@ void play_game(void)
 
         // Manage foe's attack
 
-        // Display help
         if (show_help)
-        {
+        { // Display help
             SDL_RenderCopy(renderer, bg_overlay, NULL, &help_rect);
             SDL_RenderCopy(renderer, help_texture, NULL, NULL);
         }
 
-        // Display overlay
         if (msg_counter < NB_DIALOGS)
-        {
+        { // Display overlay
             dialog_texture = texture_from_text(font, 10, base_overlay_rect, dialogs[msg_counter], white, ALIGN_LEFT);
 
             SDL_RenderCopy(renderer, bg_overlay, NULL, NULL);
@@ -222,17 +206,14 @@ void play_game(void)
             action = true;
         }
         else if (show_map)
-        {
-            // Display map
+        { // Display map
             SDL_RenderCopy(renderer, bg_overlay, NULL, NULL);
 
             // Reset icon's position if the map has already been shown
             icon_rect.x = base_overlay_rect.x - icon_rect.w / 2;
 
-            // Display all dots
             for (int i = 0; i < map_length; i++)
-            {
-                // Increment dot's position
+            { // Display all dots
                 icon_rect.x += step_x;
 
                 icon_rect.y = base_overlay_rect.y - icon_rect.h / 2;
@@ -245,8 +226,7 @@ void play_game(void)
                     SDL_RenderCopy(renderer, dot_texture, NULL, &icon_rect);
 
                     if (i == current_col && j == choice_node)
-                    {
-                        // Display pointer on node
+                    { // Display pointer on node
                         alien_pointer_map_rect = rect_from_texture(alien_pointer, icon_rect.x, icon_rect.y);
                         alien_pointer_map_rect.x -= alien_pointer_map_rect.w + 5;
                         SDL_RenderCopy(renderer, alien_pointer, NULL, &alien_pointer_map_rect);
@@ -258,16 +238,15 @@ void play_game(void)
             action = true;
 
             // Choose a node
-            SDL_Event e;
             bool node_chosen = false;
             bool valid_input = false;
             while (!valid_input)
             {
-                SDL_WaitEvent(&e);
-                if (e.type != SDL_KEYUP)
+                SDL_WaitEvent(&event);
+                if (event.type != SDL_KEYUP)
                     continue;
                 valid_input = true;
-                switch (e.key.keysym.sym)
+                switch (event.key.keysym.sym)
                 {
                 case SDLK_RETURN:
                 case SDLK_RETURN2:
@@ -308,9 +287,9 @@ void play_game(void)
         if (!action) // the rendering must be done when an action is done
             SDL_RenderPresent(renderer);
 
-        // Get user input
         // TODO try with SDL_WaitEvent once this is more complete
         while (SDL_PollEvent(&event) && !action)
+        { // Get user input
             switch (event.type)
             {
             case SDL_KEYUP:
@@ -345,9 +324,10 @@ void play_game(void)
             default:
                 break;
             }
+        }
 #ifndef DEBUG
         if (choice == QUIT_GAME && can_continue)
-        {
+        { // Ask for user's confirmation to quit
             SDL_Texture *confirm_quit_texture = texture_from_text(font, 1, base_overlay_rect, "Voulez-vous vraiment quitter ?", white, ALIGN_LEFT);
             SDL_Texture *quit_choice_texture = texture_from_text(font, 1, continue_msg_rect, "(O)ui / (N)on", white, ALIGN_RIGHT);
 
@@ -357,23 +337,18 @@ void play_game(void)
 
             SDL_RenderPresent(renderer);
 
-            SDL_Event e;
             bool has_chosen = false;
-            while (SDL_WaitEvent(&e) && !has_chosen)
+            while (!has_chosen)
             {
-                switch (e.type)
+                SDL_WaitEvent(&event);
+                if (event.type != SDL_KEYUP)
+                    continue;
+                if (event.key.keysym.sym == SDLK_o)
+                    has_chosen = true;
+                else if (event.key.keysym.sym == SDLK_n)
                 {
-                case SDL_KEYUP:
-                    if (e.key.keysym.sym == SDLK_o)
-                        has_chosen = true;
-                    else if (e.key.keysym.sym == SDLK_n)
-                    {
-                        choice = CONTINUE_GAME;
-                        has_chosen = true;
-                    }
-                    break;
-                default:
-                    break;
+                    choice = CONTINUE_GAME;
+                    has_chosen = true;
                 }
             }
         }

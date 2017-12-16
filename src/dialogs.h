@@ -30,4 +30,9 @@ char hello_cctv[] = "Les capteurs vous rememorent du chaos a bord il y a trois j
 #define NB_DIALOGS 3
 char *dialogs[] = { hello1, hello2, hello3 };
 
+char help_txt[] = "Aide\n"
+    "ESC : Menu\n"
+    "M : Map\n"
+    "H : Aide";
+
 #endif /* _DIALOG_H */
