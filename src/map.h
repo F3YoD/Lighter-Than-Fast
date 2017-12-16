@@ -7,5 +7,6 @@
 #include "ships.h"
 
 void gen_map(map_t, int[], int, int);
+void free_map(map_t, int[], int);
 
 #endif

@@ -41,3 +41,25 @@ void gen_map(map_t map, int height_index[], int length, int max_height)
 
     free_list(ship_stack);
 }
+
+void free_map(map_t map, int index_height[], int length)
+{
+#ifdef DEBUG
+    int k = 0;
+#endif
+    for (int i = 0; i < length; i++)
+    {
+        for (int j = 0; j < index_height[i]; j++)
+        {
+            free(map[i][j]);
+#ifdef DEBUG
+            k++;
+#endif
+        }
+        free(map[i]);
+    }
+    free(map);
+#ifdef DEBUG
+    printf("Deleted %d ships\n", k);
+#endif
+}

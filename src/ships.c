@@ -1,8 +1,23 @@
 #include "ships.h"
 
 #define SHIPS_STATS_FILE "../assets/ships/ships_stats.txt"
-#define SELF_SHIP_IMAGE "../assets/images/ship2.png"
+#define SELF_SHIP_IMAGE "../assets/images/ship_player0.png"
 #define BOSS_SHIP_IMAGE ""
+
+#define SHIPS_SCALE 6
+
+ship_t *load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
+{
+    ship_t *s = map[col][line];
+
+    for (unsigned i = 0; i < col_height; i++)
+        if (i != line)
+            free(map[col][i]);
+
+    free(map[col]);
+
+    return s;
+}
 
 ship_t *gen_self(void)
 {
@@ -42,7 +57,7 @@ ship_t *gen_boss(void)
     return boss;
 }
 
-list_t gen_ship_list(int *nb_ships)
+list_t gen_ship_list(unsigned *nb_ships)
 {
     #ifdef DEBUG
     printf("** Loading ships from %s\n", SHIPS_STATS_FILE);
@@ -73,7 +88,7 @@ ship_t *load_ship_from_line(char *line)
 {
     ship_t *s = (ship_t *)malloc(sizeof(ship_t));
     char *token = NULL;
-    char sep[] = ",";
+    char sep[] = ",\n";
     char *str, *tofree;
     tofree = str = strdup(line);
     // Name

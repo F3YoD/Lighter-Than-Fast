@@ -35,6 +35,7 @@ SDL_Texture *create_txt(TTF_Font *, char *, SDL_Color);
 SDL_Texture *load_img(char *);
 SDL_Rect rect_from_texture(SDL_Texture *, unsigned short int, unsigned short int);
 SDL_Texture *texture_from_text(TTF_Font *, unsigned short int, SDL_Rect, char *, SDL_Color, int align);
+void rect_scale(SDL_Rect *, unsigned);
 
 list_t create_empty_list(void);
 list_t push(void *, list_t);

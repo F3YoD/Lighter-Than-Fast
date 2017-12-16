@@ -115,6 +115,12 @@ SDL_Rect rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short 
     return r;
 }
 
+void rect_scale(SDL_Rect *rect, unsigned factor)
+{
+    rect->w *= factor;
+    rect->h *= factor;
+}
+
 
 // *** Linked lists ***
 
