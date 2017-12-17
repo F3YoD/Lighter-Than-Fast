@@ -16,6 +16,8 @@
 #define POS_Y 300
 #define POS_PLAYER_SHIP_X POS_X/SCALE_PLAYER
 #define POS_PLAYER_SHIP_Y POS_Y/SCALE_PLAYER
+#define POS_X_SHIELD -30/SCALE_PLAYER
+#define POS_Y_SHIELD 200/SCALE_PLAYER
 
 /***
  * TYPES
@@ -24,11 +26,14 @@
 typedef struct belongings
 {
     // Each ship has some amount of belongings, and some of it can be looted
-    // The most important belonging is plasma, it can be used to move the ship and to shoot
+    // The most important belonging is plasma, it can be used to move the ship
+    //  and to shoot
     int plasma;
-    // People onboard have intergalactic money that can be traded for services or other kind of belongings
+    // People onboard have intergalactic money that can be traded for services 
+    // or other kind of belongings
     int money;
-    // Some vessels have spare scraps to repair itself, but it's hard to store because it's quite large
+    // Some vessels have spare scraps to repair itself, but it's hard to store 
+    // because it's quite large
     // Some parts of a destructed ship can sometimes become scraps
     int scraps;
 }belongings_t;
@@ -55,7 +60,8 @@ typedef struct
     int shield;
     /* IDEAS */
     // int crew_size;
-    // Enemy and self level, to balance gameplay, e.g. having more enemies of class X if player is class X
+    // Enemy and self level, to balance gameplay, e.g. having more 
+    // enemies of class X if player is class X
     // int level;
     char img_path[50];
     //Image of the ship
@@ -77,7 +83,7 @@ typedef struct {
 
 void load_player_ship(player_ship_t *,char *);
 //load a ship from an image
-void update_player_ship(player_ship_t *);
+void update_player_ship(player_ship_t *, int*);
 //update ship 
 void free_player_ship(player_ship_t *);
 //Free the memory when the ship is useless

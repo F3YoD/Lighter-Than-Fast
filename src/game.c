@@ -27,7 +27,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	fenetre_option_t fenetre_option;
 	fond_t fond;
 	player_ship_t * my_ship = (player_ship_t *)malloc(sizeof(player_ship_t));
-
+	int img_current_shield = 0;
 		// =============== TEST BATTLE ============= //
 	// on cree un ennemi
 	ship_t *enemy = (ship_t*)malloc(sizeof(ship_t));
@@ -132,11 +132,16 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				my_ship->current_img++;
 			else
 				my_ship->current_img = 0;
+
+			if(img_current_shield < 3)
+				img_current_shield++;
+			else
+				img_current_shield = 0;  
 			temps_precedent = temps_actuel;	
 		}	
 
 		update_fond(&fond);
-		update_player_ship(my_ship);
+		update_player_ship(my_ship, &img_current_shield);
 		//update_team(team, ev, my_ship, control);
 		update_ship(enemy); // petit sous programme qui affiche la barre de vie
 				    // d'une structure ship_t

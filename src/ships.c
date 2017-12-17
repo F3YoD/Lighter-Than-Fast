@@ -36,7 +36,7 @@ void load_player_ship(player_ship_t * pS, char pNom[20]){
 	/***********************************************************/
 }
 
-void update_player_ship(player_ship_t * pS){
+void update_player_ship(player_ship_t * pS, int *pCurrent){
 // role : met a jour, affiche notre ship
 	// ======================= DRAW SHIP PLAYER =================== //
 	SDL_RenderSetScale(renderer, SCALE_PLAYER, SCALE_PLAYER);
@@ -86,6 +86,43 @@ void update_player_ship(player_ship_t * pS){
 			pS->angle -= 2;
 	}
 	/****************************************************************/ 
+
+	// ============================================================= //
+	// 				BOUCLIER                         //
+	// ============================================================= //
+////	
+	if(pS->ship.shield > 0){
+		SDL_Texture *sprite_shield[4];
+		sprite_shield[0] = IMG_LoadTexture(renderer,
+			"../assets/images/ship_player/bouclier0.png"
+		);
+		sprite_shield[1] = IMG_LoadTexture(renderer,
+			"../assets/images/ship_player/bouclier1.png"
+		);
+		sprite_shield[2] = IMG_LoadTexture(renderer,
+			"../assets/images/ship_player/bouclier2.png"
+		);
+		sprite_shield[3] = IMG_LoadTexture(renderer,
+			"../assets/images/ship_player/bouclier3.png"
+		);
+	
+	 	SDL_Rect pos_shield; 
+		pos_shield.x = POS_X_SHIELD; 
+		pos_shield.y = POS_Y_SHIELD;
+		SDL_RenderSetScale(renderer, SCALE_PLAYER, SCALE_PLAYER);	
+		SDL_QueryTexture(sprite_shield[(*pCurrent)],
+			NULL, NULL, &pos_shield.w,
+			&pos_shield.h
+		);
+		SDL_RenderCopyEx(renderer, sprite_shield[(*pCurrent)],
+			NULL, &pos_shield, 90, NULL, flip
+		);
+		SDL_RenderSetScale(renderer, 1, 1);	
+	
+		for(int i = 0; i < 4; i++){
+			SDL_DestroyTexture(sprite_shield[i]);
+		}
+	}
 }
 
 void free_player_ship(player_ship_t * pS){
