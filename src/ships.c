@@ -19,7 +19,7 @@ ship_t *load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
     return s;
 }
 
-ship_t *gen_self(void)
+ship_t *load_self(void)
 {
     ship_t *self = (ship_t *)malloc(sizeof(ship_t));
 
@@ -38,7 +38,7 @@ ship_t *gen_self(void)
     return self;
 }
 
-ship_t *gen_boss(void)
+ship_t *load_boss(void)
 {
     ship_t *boss = (ship_t *)malloc(sizeof(ship_t));
 
@@ -59,9 +59,6 @@ ship_t *gen_boss(void)
 
 list_t gen_ship_list(unsigned *nb_ships)
 {
-    #ifdef DEBUG
-    printf("** Loading ships from %s\n", SHIPS_STATS_FILE);
-    #endif
     list_t ship_stack = create_empty_list();
     FILE *fp = fopen(SHIPS_STATS_FILE, "r");
     ship_t *tmp = NULL;
@@ -75,7 +72,7 @@ list_t gen_ship_list(unsigned *nb_ships)
         if (!tmp)
             break;
         *nb_ships += 1;
-        ship_stack = push(tmp, ship_stack);
+        push(tmp, &ship_stack);
     }
 
     fclose(fp);

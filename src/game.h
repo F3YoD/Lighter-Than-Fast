@@ -11,6 +11,7 @@
 #include "menu.h"
 
 void play_game(void);
-void show_fake_loading(unsigned int);
+void render_bars(ship_t *, SDL_Rect *, int, int, bool);
+void display_fake_loading(unsigned int);
 
-#endif
+#endif /* _GAME_H */

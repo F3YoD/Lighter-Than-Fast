@@ -1,5 +1,5 @@
-#ifndef _MENU_
-#define _MENU_
+#ifndef _MENU_H
+#define _MENU_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,9 +11,8 @@
 #include "shared.h"
 #include "macros.h"
 
-// NB_CHOICES allows to know the boundary of the enum
-enum menu_choice { CONTINUE_GAME, NEW_GAME, QUIT_GAME, NB_CHOICES };
+enum menu_choice { CONTINUE_GAME, NEW_GAME, QUIT_GAME, NB_CHOICES_MENU };
 
 enum menu_choice menu(bool);
 
-#endif
+#endif /* _MENU_H */

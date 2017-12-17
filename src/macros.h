@@ -1,5 +1,5 @@
-#ifndef _PROJ_TOOLS_
-#define _PROJ_TOOLS_
+#ifndef _MACROS_H
+#define _MACROS_H
 
 #ifndef DEBUG
 #define PRINT_DEBUG 0
@@ -53,4 +53,4 @@
             printf("%s initialization success\n", #variable);           \
     }
 
-#endif
+#endif /* _MACROS_H */

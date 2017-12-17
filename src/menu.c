@@ -21,14 +21,14 @@ enum menu_choice menu(bool can_continue)
     SDL_Color white = { 0xFF, 0xFF, 0xFF, 0xFF };
     SDL_Color gray = { 0x20, 0x20, 0x20, 0xFF };
 
-    char **menu_txt = (char **)malloc(NB_CHOICES * sizeof(char *));
+    char **menu_txt = (char **)malloc(NB_CHOICES_MENU * sizeof(char *));
     menu_txt[CONTINUE_GAME] = "Continuer";
     menu_txt[NEW_GAME] = "Nouvelle partie";
     menu_txt[QUIT_GAME] = "Quitter";
 
     SDL_Texture *tmp_tex = NULL;
-    SDL_Texture **choices_textures = (SDL_Texture **)malloc(NB_CHOICES * sizeof(SDL_Texture *));
-    for (int i = 0; i < NB_CHOICES; i++)
+    SDL_Texture **choices_textures = (SDL_Texture **)malloc(NB_CHOICES_MENU * sizeof(SDL_Texture *));
+    for (int i = 0; i < NB_CHOICES_MENU; i++)
         choices_textures[i] = create_txt(font, menu_txt[i],
                                          ((i != CONTINUE_GAME || can_continue) ? white : gray));
 
@@ -43,7 +43,7 @@ enum menu_choice menu(bool can_continue)
         SDL_RenderCopy(renderer, banner_texture, NULL, &banner_rect);
 
         base_txt_box.y = 620;
-        for (int i = NB_CHOICES - 1; i >= 0; i--)
+        for (int i = NB_CHOICES_MENU - 1; i >= 0; i--)
         {
             tmp_tex = choices_textures[i];
             if (choice == i)
@@ -84,15 +84,15 @@ enum menu_choice menu(bool can_continue)
                 break;
             case SDLK_DOWN:
             case SDLK_j:
-                choice = (choice + 1) % NB_CHOICES;
+                choice = (choice + 1) % NB_CHOICES_MENU;
                 if (!can_continue && choice == CONTINUE_GAME)
-                    choice = (choice + 1) % NB_CHOICES;
+                    choice = (choice + 1) % NB_CHOICES_MENU;
                 break;
             case SDLK_UP:
             case SDLK_k:
-                choice = (choice + NB_CHOICES - 1) % NB_CHOICES;
+                choice = (choice + NB_CHOICES_MENU - 1) % NB_CHOICES_MENU;
                 if (!can_continue && choice == CONTINUE_GAME)
-                    choice = (choice + NB_CHOICES - 1) % NB_CHOICES;
+                    choice = (choice + NB_CHOICES_MENU - 1) % NB_CHOICES_MENU;
                 break;
             case SDLK_q:
                 choice = QUIT_GAME;
@@ -111,7 +111,7 @@ enum menu_choice menu(bool can_continue)
     }
 
     // *** Cleaning ***
-    for (int i = 0; i < NB_CHOICES; i++)
+    for (int i = 0; i < NB_CHOICES_MENU; i++)
         SDL_DestroyTexture(choices_textures[i]);
     free(choices_textures);
     free(menu_txt);

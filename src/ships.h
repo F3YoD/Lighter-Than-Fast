@@ -8,6 +8,7 @@
 #include <SDL2/SDL_image.h>
 
 #include "tools.h"
+#include "list.h"
 
 struct belongings
 {
@@ -28,8 +29,8 @@ typedef struct
 } ship_t, *map_node_t, **map_col_t, ***map_t;
 
 ship_t *load_foe(map_t, unsigned, unsigned, unsigned);
-ship_t *gen_self(void);
-ship_t *gen_boss(void);
+ship_t *load_self(void);
+ship_t *load_boss(void);
 list_t gen_ship_list(unsigned *);
 ship_t *load_ship_from_line(char *);
 

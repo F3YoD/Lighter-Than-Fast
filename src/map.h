@@ -1,7 +1,5 @@
-#ifndef _MAP_
-#define _MAP_
-
-#include <stdio.h>
+#ifndef _MAP_H
+#define _MAP_H
 
 #include "tools.h"
 #include "ships.h"
@@ -9,4 +7,4 @@
 void gen_map(map_t, int[], int, int);
 void free_map(map_t, int[], int);
 
-#endif
+#endif /* _MAP_H */

@@ -4,11 +4,10 @@
 #define SHIPS_SCALE 6
 #define BACKGROUND_IMAGE "../assets/images/gameFond1.jpg"
 
+SDL_Texture *health_texture, *health_bg_texture, *shield_texture, *shield_bg_texture;
+
 void play_game(void)
 {
-#ifdef DEBUG
-    puts("* Launching game");
-#endif
     SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
 
@@ -24,7 +23,7 @@ void play_game(void)
     SDL_Texture *red_dot_texture, *blue_dot_texture, *gray_dot_texture, *dot_texture;
     red_dot_texture = blue_dot_texture = gray_dot_texture = dot_texture = NULL;
     map_t map = NULL;
-    int map_length = 6, map_max_height = 4;
+    unsigned short map_length = 6, map_max_height = 4;
     int height_index[map_length];
     SDL_Rect icon_rect, alien_pointer_map_rect;
     unsigned int step_x, step_y;
@@ -33,21 +32,12 @@ void play_game(void)
     // Prepare shuttles
     SDL_Texture *self_texture = NULL, *foe_texture = NULL;
     SDL_Rect self_rect = { WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7, 357, 286 };
-    SDL_Rect foe_rect = { 19 * WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7, 1, 1 };
+    SDL_Rect foe_rect, base_foe_rect = { 19 * WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7, 1, 1 };
     ship_t *self = NULL, *foe = NULL;
-    int self_curr_health, foe_curr_health;
+    int self_curr_health, foe_curr_health, self_curr_shield, foe_curr_shield;
 
     // Self and foe's health and shield bars
-    SDL_Texture *health_texture, *health_bg_texture, *shield_texture, *shield_bg_texture;
     health_texture = health_bg_texture = shield_texture = shield_bg_texture = NULL;
-    SDL_Rect health_bg_rect, shield_bg_rect, health_rect, shield_rect, health_clip, shield_clip;
-    health_bg_rect.x = health_rect.x = shield_bg_rect.x = shield_rect.x = self_rect.x;
-    health_clip.x = health_clip.y = shield_clip.x = shield_clip.y = 0;
-
-    // Foe bars
-    SDL_Rect foe_health_bg_rect, foe_shield_bg_rect, foe_health_rect, foe_shield_rect, foe_health_clip, foe_shield_clip;
-    foe_health_bg_rect.x = foe_health_rect.x = foe_shield_bg_rect.x = foe_shield_rect.x = foe_rect.x;
-    foe_health_clip.x = foe_health_clip.y = foe_shield_clip.x = foe_shield_clip.y = 0;
 
     // Help box
     SDL_Texture *help_texture = NULL;
@@ -55,7 +45,8 @@ void play_game(void)
 
     // Gameplay
     enum menu_choice choice = NEW_GAME;
-    int msg_counter;
+    unsigned msg_counter, current_col;
+    int next_loop_delay, next_loop_time;
     SDL_Event event;
     bool show_menu = true;
     bool show_help = false;
@@ -65,15 +56,23 @@ void play_game(void)
 
     while (choice != QUIT_GAME)
     { // Game loop, everything happens here
+        SDL_RenderClear(renderer);
+        next_loop_time = SDL_GetTicks() + 25; // 40 fps
+        action = false;
+
         if (show_menu)
+        { // Display user menu
             choice = menu(can_continue);
-        if (!can_continue && choice == QUIT_GAME)
-            break;
-        else if (!can_continue || choice == NEW_GAME)
+            show_menu = false;
+            if (!can_continue && choice == QUIT_GAME)
+                break;
+        }
+        if (!can_continue || choice == NEW_GAME)
         { // Load textures if not done, (re)gen map, reset messages counter
-            show_fake_loading(1500);
+            display_fake_loading(1500);
 
             msg_counter = 0;
+            current_col = 0;
             can_continue = true;
 
             if (!bg_texture)
@@ -91,14 +90,18 @@ void play_game(void)
             }
 
             if (!continue_texture)
-                continue_texture = texture_from_text(font, 1, continue_msg_rect, "Appuyez sur une touche pour continuer...", white, ALIGN_RIGHT);
+                continue_texture = texture_from_text(font, 1, continue_msg_rect,
+                                                     "Appuyez sur une touche pour continuer...", white, ALIGN_RIGHT);
 
             if (!alien_pointer)
                 alien_pointer = load_img("../assets/images/alien1.png");
 
             if (self != NULL)
                 free(self);
-            self = gen_self();
+            self = load_self();
+            self_curr_health = self->health;
+            self_curr_shield = self->shield;
+
             if (!self_texture)
             {
                 self_texture = load_img(self->img_path);
@@ -106,17 +109,9 @@ void play_game(void)
                 rect_scale(&self_rect, SHIPS_SCALE);
             }
 
-            if (foe != NULL)
-            {}
-                // TODO
-            // foe_texture is loaded when a new ennemy is loaded
-
             if (!health_texture)
             {
                 health_texture = load_img("../assets/images/health.png");
-                health_bg_rect = health_rect = rect_from_texture(health_texture, health_rect.x, health_rect.y);
-                health_bg_rect.y = health_rect.y = self_rect.y + self_rect.h + 10;
-                health_clip.h = health_rect.h;
             }
             if (!health_bg_texture)
                 health_bg_texture = load_img("../assets/images/health_gray.png");
@@ -124,9 +119,6 @@ void play_game(void)
             if (!shield_texture)
             {
                 shield_texture = load_img("../assets/images/shield.png");
-                shield_rect = shield_bg_rect = rect_from_texture(shield_texture, shield_rect.x, shield_rect.y);
-                shield_bg_rect.y = shield_rect.y = self_rect.y + self_rect.h + health_rect.h + 10;
-                shield_clip.h = shield_rect.h;
             }
             if (!shield_bg_texture)
                 shield_bg_texture = load_img("../assets/images/shield_gray.png");
@@ -144,40 +136,26 @@ void play_game(void)
             map = (map_t)malloc(map_length * sizeof(map_col_t));
             gen_map(map, height_index, map_length, map_max_height);
 #ifdef DEBUG
-            for (int i = 0; i < map_length; i++)
+            for (unsigned i = 0; i < map_length; i++)
                 for (int j = 0; j < height_index[i]; j++)
                     printf("%d%s", j, (j == height_index[i] - 1) ? "\n" : " ");
 #endif
         }
 
-        SDL_RenderClear(renderer);
-
-        show_menu = false;
-        action = false;
-
         SDL_RenderCopy(renderer, bg_texture, NULL, NULL); // Background
 
-        // Display life and shield
-        SDL_RenderCopy(renderer, health_bg_texture, NULL, &health_bg_rect);
-        // TODO Add ability to track max health?
-        health_rect.w = health_clip.w = self->health * health_bg_rect.w / 100;
-        SDL_RenderCopy(renderer, health_texture, &health_clip, &health_rect);
-
-        SDL_RenderCopy(renderer, shield_bg_texture, NULL, &shield_bg_rect);
-        shield_rect.w = self->shield * shield_bg_rect.w / 50;
-        shield_clip.w = shield_rect.w;
-        SDL_RenderCopy(renderer, shield_texture, &shield_clip, &shield_rect);
-
-        // TODO Manage combat here
-        int current_col = 0;
+        // FIXME Manage combat here
         // Display player's ship
         SDL_RenderCopy(renderer, self_texture, NULL, &self_rect);
-        // Display foe
-        SDL_RenderCopy(renderer, foe_texture, NULL, &foe_rect);
+        render_bars(self, &self_rect, self_curr_health, self_curr_shield, false);
 
-        // Display foe's health/shield
-
+        if (foe != NULL)
+        { // Display foe
+            SDL_RenderCopy(renderer, foe_texture, NULL, &foe_rect);
+            render_bars(foe, &foe_rect, foe_curr_health, foe_curr_shield, true);
+        }
         // Display combat choice box
+        // TODO flip a coin to know whether the foe or the player starts
 
         // Manage foe's attack
 
@@ -188,8 +166,8 @@ void play_game(void)
         }
 
         if (msg_counter < NB_DIALOGS)
-        { // Display overlay
-            dialog_texture = texture_from_text(font, 10, base_overlay_rect, dialogs[msg_counter], white, ALIGN_LEFT);
+        { // Display dialog
+            dialog_texture = texture_from_text(font, 10, base_overlay_rect, dialogs[msg_counter++], white, ALIGN_LEFT);
 
             SDL_RenderCopy(renderer, bg_overlay, NULL, NULL);
             SDL_RenderCopy(renderer, dialog_texture, NULL, NULL);
@@ -200,7 +178,6 @@ void play_game(void)
             SDL_DestroyTexture(dialog_texture);
 
             wait_key_press(-1);
-            msg_counter++;
             choice = CONTINUE_GAME;
             show_map = true;
             action = true;
@@ -212,13 +189,13 @@ void play_game(void)
             // Reset icon's position if the map has already been shown
             icon_rect.x = base_overlay_rect.x - icon_rect.w / 2;
 
-            for (int i = 0; i < map_length; i++)
+            for (unsigned short i = 0; i < map_length; i++)
             { // Display all dots
                 icon_rect.x += step_x;
 
                 icon_rect.y = base_overlay_rect.y - icon_rect.h / 2;
                 step_y = base_overlay_rect.h / (height_index[i] + 1);
-                for (int j = 0; j < height_index[i]; j++)
+                for (unsigned short j = 0; j < height_index[i]; j++)
                 {
                     icon_rect.y += step_y;
                     // TODO prepare special dot for the boss
@@ -241,7 +218,7 @@ void play_game(void)
             bool node_chosen = false;
             bool valid_input = false;
             while (!valid_input)
-            {
+            { // Wait till a node is chosen
                 SDL_WaitEvent(&event);
                 if (event.type != SDL_KEYUP)
                     continue;
@@ -271,20 +248,24 @@ void play_game(void)
             }
 
             if (node_chosen)
-            {
+            { // Get foe from chosen map node
                 foe = load_foe(map, choice_node, current_col, height_index[current_col]);
-                // foe is right-aligned
+                foe_curr_health = foe->health;
+                foe_curr_shield = foe->shield;
+
+                // Load new foe's texture
                 if (foe_texture != NULL)
                     SDL_DestroyTexture(foe_texture);
                 foe_texture = load_img(foe->img_path);
-                foe_rect = rect_from_texture(foe_texture, foe_rect.x, foe_rect.y);
-                rect_scale(&foe_rect, SHIPS_SCALE);
-                foe_health_bg_rect.x = foe_health_rect.x = foe_rect.x;
+
+                // Define rectangles to show the foe in
+                foe_rect = rect_from_texture(foe_texture, base_foe_rect.x, base_foe_rect.y);
+                rect_scale(&foe_rect, 8);
                 foe_rect.x -= foe_rect.w;
             }
         }
 
-        if (!action) // the rendering must be done when an action is done
+        if (!action) // the rendering must be done only once a loop
             SDL_RenderPresent(renderer);
 
         // TODO try with SDL_WaitEvent once this is more complete
@@ -325,6 +306,7 @@ void play_game(void)
                 break;
             }
         }
+
 #ifndef DEBUG
         if (choice == QUIT_GAME && can_continue)
         { // Ask for user's confirmation to quit
@@ -352,7 +334,12 @@ void play_game(void)
                 }
             }
         }
+
 #endif
+        // Wait before rendering next frame
+        next_loop_delay = next_loop_time - SDL_GetTicks();
+        if (next_loop_delay > 0)
+            SDL_Delay(next_loop_delay);
     }
 
     /* Leave game */
@@ -375,8 +362,55 @@ void play_game(void)
     SDL_RenderClear(renderer);
 }
 
-void show_fake_loading(unsigned int miliseconds)
-{
+void render_bars(ship_t *ship, SDL_Rect *ship_rect, int health, int shield, bool reversed)
+{ // Health and shield bars rendering
+    static bool first_run = true;
+    static SDL_Rect health_bg_rect, shield_bg_rect, health_rect, shield_rect, health_clip, shield_clip;
+
+    if (first_run)
+    { // Init rect
+        SDL_QueryTexture(health_bg_texture, NULL, NULL, &health_bg_rect.w, &health_bg_rect.h);
+        SDL_QueryTexture(shield_bg_texture, NULL, NULL, &shield_bg_rect.w, &shield_bg_rect.h);
+        health_rect.h = health_clip.h = health_bg_rect.h;
+        shield_rect.h = shield_clip.h = shield_bg_rect.h;
+        first_run = false;
+    }
+
+    // Define bars positions
+    if (reversed)
+        health_bg_rect.x = health_rect.x = shield_bg_rect.x = shield_rect.x = ship_rect->x + ship_rect->w;
+    else
+        health_bg_rect.x = health_rect.x = shield_bg_rect.x = shield_rect.x = ship_rect->x;
+    health_bg_rect.y = health_rect.y = ship_rect->y + ship_rect->h + 10;
+    shield_bg_rect.y = shield_rect.y = health_bg_rect.y + health_bg_rect.h + 2;
+
+    // Define clipping
+    health_rect.w = health_clip.w = health * health_bg_rect.w / ship->health;
+    shield_rect.w = shield_clip.w = shield * shield_bg_rect.w / ship->shield;
+
+    if (reversed)
+    { // Move bars aside
+        health_rect.x = health_bg_rect.x -= health_bg_rect.w;
+        shield_rect.x = shield_bg_rect.x -= shield_bg_rect.w;
+        health_clip.x = health_bg_rect.w - health_clip.w;
+        shield_clip.x = shield_bg_rect.w - shield_clip.w;
+        health_rect.x += health_clip.x;
+        shield_rect.x += shield_clip.x;
+    }
+    else
+        health_clip.x = health_clip.y = shield_clip.x = shield_clip.y = 0;
+
+    // Render bars background
+    SDL_RenderCopy(renderer, health_bg_texture, NULL, &health_bg_rect);
+    SDL_RenderCopy(renderer, shield_bg_texture, NULL, &shield_bg_rect);
+
+    // Render bars foreground
+    SDL_RenderCopy(renderer, health_texture, &health_clip, &health_rect);
+    SDL_RenderCopy(renderer, shield_texture, &shield_clip, &shield_rect);
+}
+
+void display_fake_loading(unsigned int miliseconds)
+{ //  A fake loading screen
     SDL_Color white = { 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE };
     SDL_Point pts[][2] = {
         { { 438, 459 }, { 438, 522 } },
