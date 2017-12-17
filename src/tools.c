@@ -42,7 +42,7 @@ void afficher_stat_ship(player_ship_t* ps){
 	SDL_Color couleur = { 20, 200, 20};
 	SDL_Rect position;
 	position.x = 15; position.y = 15;
-	char * ecrire = malloc(60 * sizeof(char));
+	char *ecrire = malloc(60 * sizeof(char));
 
 	//ecriture des stats
 	sprintf(ecrire,"Nom du vaisseau : %s",ps->ship.name);

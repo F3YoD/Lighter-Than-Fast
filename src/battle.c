@@ -202,7 +202,6 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 		pPos_tir->x += 10;
 		SDL_QueryTexture(tir, NULL, NULL, &pPos_tir->w, &pPos_tir->h);
 		SDL_RenderCopy(renderer, tir, NULL, &(*pPos_tir));
-		SDL_DestroyTexture(tir);
 
 		if (pPos_tir->x >= 800){
 			shoot(&pPlayer->ship,pPirate,1);
@@ -214,6 +213,7 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 		pPos_tir->x = 100;
 	}
 
+	SDL_DestroyTexture(tir);
 	SDL_QueryTexture(curseur, NULL, NULL, &pos_curseur.w, &pos_curseur.h);
 	SDL_RenderCopy(renderer, curseur, NULL, &pos_curseur);
 
