@@ -64,15 +64,16 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	load_fond(&fond);
 	load_player_ship(my_ship, pNom);
 	
-	team_t * team = (team_t *)malloc(sizeof(team_t));
-	load_team(team);
+	//team_t * team = (team_t *)malloc(sizeof(team_t));
+	//load_team(team);
 	/**************************************************************/	
 
 	// ====================  GESTION DU TEMPS ==================== //
 	int temps_precedent = 0, temps_actuel = 0;
 	/***************************************************************/ 
 
-	int control = 0;
+	// int control = 0;
+	
 	while(continuer){
 		SDL_PollEvent(&ev);
 		switch(ev.type){
@@ -82,10 +83,10 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 						continuer = 0;
 						break;
 					case SDLK_SPACE:
-						if(control < team->taille - 1)
-							control++;
-						else 
-							control = 0;
+						//if(control < team->taille - 1)
+						//	control++;
+						//else 
+						//	control = 0;
 						break;
 					case SDLK_TAB:
 						clique = true;
@@ -136,7 +137,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 
 		update_fond(&fond);
 		update_player_ship(my_ship);
-		update_team(team, ev, my_ship, control);
+		//update_team(team, ev, my_ship, control);
 		update_ship(enemy); // petit sous programme qui affiche la barre de vie
 				    // d'une structure ship_t
 				
@@ -160,7 +161,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	
 	///libération	
 	TTF_Quit();
-	freeTeam(team);
+	//freeTeam(team);
 	
 	free(enemy);	
 	free_fond(&fond);
@@ -171,5 +172,5 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	for(int i = 0; i < 3; i++)
 		SDL_DestroyTexture(img_enemy[i]);
 
-	free(team);
+	//free(team);
 } 
