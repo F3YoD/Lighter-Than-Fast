@@ -17,8 +17,8 @@ void load_player_ship(player_ship_t * pS, char pNom[20]){
 		"../assets/images/ship_player/ship_player2.png");
 	pS->tex[3] = IMG_LoadTexture(renderer, 
 		"../assets/images/ship_player/ship_player3.png");
-	pS->pos.x = POS_PLAYER_SHIP_X; // 100
-	pS->pos.y = POS_PLAYER_SHIP_Y; // 200
+	pS->pos.x = POS_PLAYER_SHIP_X; 
+	pS->pos.y = POS_PLAYER_SHIP_Y; 
 	pS->angle = 180.0; // angle ship's image
 	
 	// ================== INIT STATS PLAYER ================== //
@@ -54,7 +54,7 @@ void update_player_ship(player_ship_t * pS){
 	// ====================== DRAW LIFE BAR ======================== /
 	SDL_SetRenderDrawColor(renderer, 20,200,20, 255);	
 	// color green for life bar
-	
+		
 	SDL_Rect bar_hp; // the rectangle of life bar
 	bar_hp.x = pS->pos.x + (pS->pos.w * SCALE_PLAYER) - 50;
 	bar_hp.y = pS->pos.y + (pS->pos.h * SCALE_PLAYER) - 100;
@@ -83,7 +83,7 @@ void update_player_ship(player_ship_t * pS){
 	if(pS->ship.hp <= 0){
 		if(pS->pos.x > -1000)
 			pS->pos.x--;
-			pS->angle--;
+			pS->angle -= 2;
 	}
 	/****************************************************************/ 
 }
