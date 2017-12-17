@@ -14,8 +14,6 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	// ========================= LOADING ======================== //
 	fenetre_option_t fenetre_option;
 	fond_t fond;
-	barre_vie_t life;
-	bar_shield_t shield;
 	player_ship_t * my_ship = (player_ship_t *)malloc(sizeof(player_ship_t));
 
 		// =============== TEST BATTLE ============= //
@@ -52,8 +50,6 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 		
 	load_fenetre_option(&fenetre_option);
 	load_fond(&fond);
-	load_barre_vie(&life, 10, "../assets/images/lifebare2.png");
-	load_bar_shield(&shield, 100, "../assets/images/shieldbare.png");
 	load_player_ship(my_ship, pNom);
 	
 	team_t * team = (team_t *)malloc(sizeof(team_t));
@@ -101,7 +97,9 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				continuer = 0;
 				break;
 		}
-		// ======================= GESTION DU TEMPS ==================== //
+		//////////////////////////////////
+		// animation du vaisseau ennemi //
+		//////////////////////////////////
 		temps_actuel2 = SDL_GetTicks();
 		if (temps_actuel2 - temps_precedent2 > frame_time){
 			if(current_img == nb_img - 1){
@@ -112,8 +110,9 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 			temps_precedent2 = temps_actuel2;
 		}
 
-
-
+		/////////////////////////////////////
+		// animation du vaisseau du joueur //
+		/////////////////////////////////////
 		temps_actuel = SDL_GetTicks();
 		if (temps_actuel - temps_precedent > FRAME_TIME){
 			if(my_ship->current_img < NB_IMAGE_SHIP_PLAYER - 1)
@@ -122,63 +121,43 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				my_ship->current_img = 0;
 			temps_precedent = temps_actuel;	
 		}	
-			// ==================== UPDATE ================== //
-			update_fond(&fond);
-			//update_barre_vie(&life);
-			//update_bar_shield(&shield);
-			update_player_ship(my_ship);
-			update_team(team, ev, my_ship, control);
-				// ====================== TEST BATTLE ==================== //
 
-				// init flip pour changer l'angle du vaisseau ennemi
-				SDL_RendererFlip flip = SDL_FLIP_HORIZONTAL | SDL_FLIP_VERTICAL;
+		update_fond(&fond);
+		update_player_ship(my_ship);
+		update_team(team, ev, my_ship, control);
+		update_ship(enemy); // petit sous programme qui affiche la barre de vie
+				    // d'une structure ship_t
 				
-				// affichage du vaisseau enemy 
-				SDL_QueryTexture(img_enemy, NULL, NULL, &pos_enemy.w, &pos_enemy.h);
-				SDL_RenderCopyEx(renderer, img_enemy, NULL, &pos_enemy, 90, NULL, flip);
-				
-				update_ship(enemy); // petit sous programme qui affiche la barre de vie
-						    // d'une structure ship_t
-				/////////////////////////////////////////////////////////////
-				
-			//affichage du texte 
-			//AfficherTexte("Bienvenue",police,couleur,posTexte);
-			//SDL_RenderCopy( renderer, texturetexte, NULL, &posTexte);
-			afficher_stat_ship(my_ship);
-			init_menu_combat();
-			combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir, &my_turn);
-			if(!my_turn){
-				attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship,enemy);
-			}
+		afficher_stat_ship(my_ship);
+		init_menu_combat();
+		combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir, &my_turn);
+		if(!my_turn){
+			attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship,enemy);
+		}
 
 		SDL_RenderSetScale(renderer, scale, scale);	
 		SDL_QueryTexture(img_enemy[current_img], NULL, NULL, &pos_enemy.w, &pos_enemy.h);
 		SDL_RenderCopy(renderer, img_enemy[current_img], NULL, &pos_enemy);
 		SDL_RenderSetScale(renderer, 1, 1);	
 
-			update_fenetre_option(&fenetre_option);
-			SDL_RenderPresent(renderer);
-			SDL_RenderClear(renderer);
-			/**************************************************/
+		update_fenetre_option(&fenetre_option);
+		SDL_RenderPresent(renderer);
+		SDL_RenderClear(renderer);
 			
-			//temps_precedent = temps_actuel;
-		//}
-		/******************************************************************/
 	}
 	
 	///libération	
 	TTF_Quit();
-	//SDL_DestroyTexture(texturetexte);
-	//printf("libération du ttf \n");
 	freeTeam(team);
 	
-	SDL_DestroyTexture(img_enemy);
 	free(enemy);	
 	free_fond(&fond);
-	free_barre_vie(&life);
-	free_bar_shield(&shield);
 	free_player_ship(my_ship);
 	free_fenetre_option(&fenetre_option);
+
+	printf("suppression images vaisseau ennemi /!/ dans game.c");	
+	for(int i = 0; i < 3; i++)
+		SDL_DestroyTexture(img_enemy[i]);
 
 	free(team);
 } 
