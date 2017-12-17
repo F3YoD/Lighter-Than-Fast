@@ -1,5 +1,17 @@
 #include "game.h"
 
+/*********************************************
+	CONSTANTES DU VAISSEAU ENNEMI
+		A METTRE DANS 
+            SHIP.C APRES LES TESTS
+
+					PIERRE
+**********************************************/
+#define SCALE_ENEMY 10
+#define FRAME_TIME_ENEMY 400
+#define POS_X_ENEMY 690/SCALE_ENEMY
+#define POS_Y_ENEMY 120/SCALE_ENEMY
+
 void game(SDL_Surface * pEcran, char pNom[20]){
 // role : gere la partie jouable du jeu
 //
@@ -21,15 +33,15 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	ship_t *enemy = (ship_t*)malloc(sizeof(ship_t));
 	load_ship(enemy);
 	SDL_Texture* img_enemy[15];
-	int nb_img = 3, frame_time = 400, temps_actuel2 = 0, temps_precedent2 = 0;
+	int nb_img = 3, frame_time = FRAME_TIME_ENEMY, temps_actuel2 = 0, temps_precedent2 = 0;
 	int current_img = 0;
-	float scale = 10;
+	float scale = SCALE_ENEMY;
 
 	img_enemy[0] = IMG_LoadTexture(renderer, "../assets/images/ship_enemy/ship_enemy1.0.png");
 	img_enemy[1] = IMG_LoadTexture(renderer, "../assets/images/ship_enemy/ship_enemy1.1.png");
 	img_enemy[2] = IMG_LoadTexture(renderer, "../assets/images/ship_enemy/ship_enemy1.2.png");
 		
-	SDL_Rect pos_enemy; pos_enemy.x = 690 / scale; pos_enemy.y = 120 / scale;
+	SDL_Rect pos_enemy; pos_enemy.x = POS_X_ENEMY; pos_enemy.y = POS_Y_ENEMY;
 
 	int choi = CHOI_ATTAQUE; // le choi ou se pose le curseur en premier dans le
 				 // le sous programme combat()
@@ -155,7 +167,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	free_player_ship(my_ship);
 	free_fenetre_option(&fenetre_option);
 
-	printf("suppression images vaisseau ennemi /!/ dans game.c");	
+	printf("suppression images vaisseau ennemi /!/ dans game.c\n");	
 	for(int i = 0; i < 3; i++)
 		SDL_DestroyTexture(img_enemy[i]);
 
