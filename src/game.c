@@ -28,7 +28,7 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	fond_t fond;
 	player_ship_t * my_ship = (player_ship_t *)malloc(sizeof(player_ship_t));
 	int img_current_shield = 0;
-		// =============== TEST BATTLE ============= //
+	// =============== TEST BATTLE ============= //
 	// on cree un ennemi
 	ship_t *enemy = (ship_t*)malloc(sizeof(ship_t));
 	load_ship(enemy);
@@ -59,21 +59,13 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 	rayon_enemy.w = 0;
 	rayon_enemy.h = 10;
 		// ========================================= //
-		
 	load_fenetre_option(&fenetre_option);
 	load_fond(&fond);
 	load_player_ship(my_ship, pNom);
-	
-	//team_t * team = (team_t *)malloc(sizeof(team_t));
-	//load_team(team);
 	/**************************************************************/	
-
 	// ====================  GESTION DU TEMPS ==================== //
 	int temps_precedent = 0, temps_actuel = 0;
 	/***************************************************************/ 
-
-	// int control = 0;
-	
 	while(continuer){
 		SDL_PollEvent(&ev);
 		switch(ev.type){
@@ -147,11 +139,16 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 				    // d'une structure ship_t
 				
 		afficher_stat_ship(my_ship);
+
 		init_menu_combat();
 		combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir, &my_turn);
-		if(!my_turn){
+		if(!my_turn && enemy->hp > 0){
 			attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship,enemy);
 		}
+		if(enemy->hp <= 0){
+			pos_enemy.x++;
+		}
+		
 
 		SDL_RenderSetScale(renderer, scale, scale);	
 		SDL_QueryTexture(img_enemy[current_img], NULL, NULL, &pos_enemy.w, &pos_enemy.h);
