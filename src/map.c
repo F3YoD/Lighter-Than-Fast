@@ -1,6 +1,6 @@
 #include "map.h"
 
-void gen_map(map_t map, int height_index[], int length, int max_height)
+void gen_map(map_t map, unsigned short height_index[], int length, int max_height)
 {
     int height;
     unsigned int nb_ships;
@@ -31,7 +31,7 @@ void gen_map(map_t map, int height_index[], int length, int max_height)
     free_list(ship_stack);
 }
 
-void free_map(map_t map, int index_height[], int length)
+void free_map(map_t map, unsigned short index_height[], int length)
 {
 #ifdef DEBUG
     int k = 0;

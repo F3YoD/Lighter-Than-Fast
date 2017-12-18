@@ -39,7 +39,7 @@ ship_t *load_self(void)
 }
 
 ship_t *load_boss(void)
-{
+{ // Create boos ship
     ship_t *boss = (ship_t *)malloc(sizeof(ship_t));
 
     strcpy(boss->name, "Herr FRAUFRAU");
@@ -58,7 +58,7 @@ ship_t *load_boss(void)
 }
 
 list_t gen_ship_list(unsigned *nb_ships)
-{
+{ // Create stack of ships to be used in the map
     list_t ship_stack = create_empty_list();
     FILE *fp = fopen(SHIPS_STATS_FILE, "r");
     ship_t *tmp = NULL;
@@ -82,7 +82,7 @@ list_t gen_ship_list(unsigned *nb_ships)
 }
 
 ship_t *load_ship_from_line(char *line)
-{
+{ // Fill ship_t fields from a formatted string
     ship_t *s = (ship_t *)malloc(sizeof(ship_t));
     char *token = NULL;
     char sep[] = ",\n";

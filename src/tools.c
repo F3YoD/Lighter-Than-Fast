@@ -43,7 +43,7 @@ SDL_Texture *load_img(char *path)
         exit(EXIT_FAILURE);
     }
     else if (PRINT_DEBUG)
-        printf("\"%s\" loaded as surface\n", path);
+        printf("\"%s\" loaded as texture\n", path);
 
     return t;
 }

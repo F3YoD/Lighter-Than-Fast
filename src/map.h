@@ -4,7 +4,7 @@
 #include "tools.h"
 #include "ships.h"
 
-void gen_map(map_t, int[], int, int);
-void free_map(map_t, int[], int);
+void gen_map(map_t, unsigned short[], int, int);
+void free_map(map_t, unsigned short[], int);
 
 #endif /* _MAP_H */
