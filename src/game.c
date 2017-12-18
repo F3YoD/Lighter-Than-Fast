@@ -57,6 +57,8 @@ play_game(void)
             self_curr_health = self->health;
             self_curr_shield = self->shield;
 
+            if (foe) free(foe);
+
             if (map != NULL)
                 free_map(map, height_index, map_length);
             map = (map_t)malloc(map_length * sizeof(map_col_t));

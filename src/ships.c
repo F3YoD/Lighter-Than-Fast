@@ -15,6 +15,7 @@ ship_t *load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
             free(map[col][i]);
 
     free(map[col]);
+    map[col] = NULL;
 
     return s;
 }

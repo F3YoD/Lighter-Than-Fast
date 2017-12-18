@@ -40,10 +40,13 @@ void free_map(map_t map, unsigned short index_height[], int length)
     {
         for (int j = 0; j < index_height[i]; j++)
         {
-            free(map[i][j]);
+            if (map[i] && map[i][j])
+            {
+                free(map[i][j]);
 #ifdef DEBUG
-            k++;
+                k++;
 #endif
+            }
         }
         free(map[i]);
     }

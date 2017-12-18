@@ -228,7 +228,7 @@ render_foe(ship_t *foe, short health, short shield)
     static ship_t *prev_foe = NULL;
 
     if (foe != prev_foe)
-    {
+    { // If the foe changed, load its sprite
         if (prev_foe)
             SDL_DestroyTexture(foe_texture);
 
@@ -245,7 +245,7 @@ render_foe(ship_t *foe, short health, short shield)
 }
 
 void
-render_bars(ship_t *ship, SDL_Rect *ship_rect, int health, int shield, bool reversed)
+render_bars(ship_t *ship, SDL_Rect *ship_rect, short health, short shield, bool reversed)
 { // Health and shield bars rendering
     static bool first_run = true;
     static SDL_Rect health_bg_rect, shield_bg_rect, health_rect, shield_rect, health_clip, shield_clip;
