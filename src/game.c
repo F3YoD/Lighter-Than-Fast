@@ -51,15 +51,19 @@ play_game(void)
             current_col = 0;
             can_continue = true;
 
-            if (self != NULL)
+            if (self)
                 free(self);
             self = load_self();
             self_curr_health = self->health;
             self_curr_shield = self->shield;
 
-            if (foe) free(foe);
+            if (foe)
+            {
+                free(foe);
+                foe = NULL;
+            }
 
-            if (map != NULL)
+            if (map)
                 free_map(map, height_index, map_length);
             map = (map_t)malloc(map_length * sizeof(map_col_t));
             gen_map(map, height_index, map_length, map_max_height);
@@ -76,7 +80,7 @@ play_game(void)
         // Display player's ship
         render_self(self, self_curr_health, self_curr_shield);
 
-        if (foe != NULL)
+        if (foe)
             render_foe(foe, foe_curr_health, foe_curr_shield);
 
         // Display combat choice box
