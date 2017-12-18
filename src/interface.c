@@ -293,6 +293,13 @@ render_bars(ship_t *ship, SDL_Rect *ship_rect, short health, short shield, bool 
 }
 
 void
+render_combat_box(void)
+{
+    // FIXME
+    /* static DSL_Rect rect = { WINDOW_WIDTH / 20, }; */
+}
+
+void
 render_help_box(void)
 {
     render_overlay_bg(&help_rect);

@@ -16,7 +16,8 @@ SDL_Renderer *renderer = NULL;
 TTF_Font *font = NULL;
 TTF_Font *big_symbol_font = NULL;
 
-int main(void)
+int
+main(void)
 {
     srand(time(NULL));
     // *** Init SDL ***

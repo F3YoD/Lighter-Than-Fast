@@ -27,6 +27,7 @@ void display_quit_dialog(void);
 void render_self(ship_t *, short, short);
 void render_foe(ship_t *, short, short);
 void render_bars(ship_t *, SDL_Rect *, short, short, bool);
+void render_combat_box(void);
 void render_help_box(void);
 void render_overlay_bg(SDL_Rect *);
 void render_background(void);

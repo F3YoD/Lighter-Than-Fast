@@ -6,7 +6,8 @@
 
 #define SHIPS_SCALE 6
 
-ship_t *load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
+ship_t
+*load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
 {
     ship_t *s = map[col][line];
 
@@ -20,7 +21,8 @@ ship_t *load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
     return s;
 }
 
-ship_t *load_self(void)
+ship_t
+*load_self(void)
 {
     ship_t *self = (ship_t *)malloc(sizeof(ship_t));
 
@@ -39,7 +41,8 @@ ship_t *load_self(void)
     return self;
 }
 
-ship_t *load_boss(void)
+ship_t
+*load_boss(void)
 { // Create boos ship
     ship_t *boss = (ship_t *)malloc(sizeof(ship_t));
 
@@ -58,7 +61,8 @@ ship_t *load_boss(void)
     return boss;
 }
 
-list_t gen_ship_list(unsigned *nb_ships)
+list_t
+gen_ship_list(unsigned *nb_ships)
 { // Create stack of ships to be used in the map
     list_t ship_stack = create_empty_list();
     FILE *fp = fopen(SHIPS_STATS_FILE, "r");
@@ -82,7 +86,8 @@ list_t gen_ship_list(unsigned *nb_ships)
     return ship_stack;
 }
 
-ship_t *load_ship_from_line(char *line)
+ship_t
+*load_ship_from_line(char *line)
 { // Fill ship_t fields from a formatted string
     ship_t *s = (ship_t *)malloc(sizeof(ship_t));
     char *token = NULL;

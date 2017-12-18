@@ -2,7 +2,8 @@
 
 #define BANNER_PATH "../assets/images/side_banner.png"
 
-enum menu_choice menu(bool can_continue)
+enum menu_choice
+menu(bool can_continue)
 {
     #ifdef DEBUG
     puts("* Loading menu");

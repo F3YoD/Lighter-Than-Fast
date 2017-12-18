@@ -2,7 +2,8 @@
 
 // *** Numbers ***
 
-int gen_rand(unsigned short int min, unsigned short int max)
+int
+gen_rand(unsigned short int min, unsigned short int max)
 {
     if (min == max)
         return min;
@@ -18,7 +19,8 @@ int gen_rand(unsigned short int min, unsigned short int max)
 
 // *** SDL recurrent steps ***
 
-void wait_key_press(unsigned int timeout)
+void
+wait_key_press(unsigned int timeout)
 {
     SDL_Event e;
     do
@@ -30,7 +32,8 @@ void wait_key_press(unsigned int timeout)
     } while (e.type != SDL_KEYUP);
 }
 
-SDL_Texture *load_img(char *path)
+SDL_Texture
+*load_img(char *path)
 {
     SDL_Texture *t;
     t = IMG_LoadTexture(renderer, path);
@@ -48,11 +51,12 @@ SDL_Texture *load_img(char *path)
     return t;
 }
 
-SDL_Texture *create_txt(TTF_Font *font, char *str, SDL_Color color)
+SDL_Texture
+*create_txt(TTF_Font *font, char *str, SDL_Color color)
 {
     SDL_Texture *t;
     SDL_Surface *tmp;
-    tmp = TTF_RenderText_Blended(font, str[0] == '\0' ? " " : str, color);
+    tmp = TTF_RenderText_Blended(font, (str[0] == '\0' ? " " : str), color);
     if (!tmp)
     {
         fprintf(stderr, "could not write \"%s\": %s\n", str, TTF_GetError());
@@ -70,7 +74,8 @@ SDL_Texture *create_txt(TTF_Font *font, char *str, SDL_Color color)
     return t;
 }
 
-SDL_Texture *texture_from_text(TTF_Font *font, unsigned short int line_spacing, SDL_Rect origin, char *str, SDL_Color color, int align)
+SDL_Texture
+*texture_from_text(TTF_Font *font, unsigned short line_spacing, SDL_Rect origin, char *str, SDL_Color color, int align)
 {
     SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_Texture *t = NULL;
@@ -105,7 +110,8 @@ SDL_Texture *texture_from_text(TTF_Font *font, unsigned short int line_spacing, 
     return texture;
 }
 
-SDL_Rect rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short int y)
+SDL_Rect
+rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short int y)
 {
     SDL_Rect r;
     r.x = x;
@@ -115,7 +121,8 @@ SDL_Rect rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short 
     return r;
 }
 
-void rect_scale(SDL_Rect *rect, double factor)
+void
+rect_scale(SDL_Rect *rect, double factor)
 {
     rect->w = (int)(rect->w * factor);
     rect->h = (int)(rect->h * factor);

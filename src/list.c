@@ -1,6 +1,7 @@
 #include "list.h"
 
-list_t create_empty_list(void)
+list_t
+create_empty_list(void)
 {
     list_t tmp = (list_t)malloc(sizeof(node_t));
     tmp->value = NULL;
@@ -8,7 +9,8 @@ list_t create_empty_list(void)
     return tmp;
 }
 
-void push(void *elt, list_t *list)
+void
+push(void *elt, list_t *list)
 {
     list_t l = (list_t)malloc(sizeof(node_t));
     l->value = elt;
@@ -16,12 +18,14 @@ void push(void *elt, list_t *list)
     *list = l;
 }
 
-bool is_empty(list_t l)
+bool
+is_empty(list_t l)
 {
     return l->value == NULL && l->next == NULL;
 }
 
-void free_list(list_t l)
+void
+free_list(list_t l)
 {
     list_t tmp1 = l;
     list_t tmp2 = NULL;
@@ -34,7 +38,8 @@ void free_list(list_t l)
     }
 }
 
-void *pop_nth(list_t l, unsigned short n)
+void
+*pop_nth(list_t l, unsigned short n)
 {
     void *res = NULL;
     list_t tmp1 = l;
