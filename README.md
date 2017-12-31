@@ -12,7 +12,7 @@ You need SDL2, SDL2 Image and SDL2 TTF.
 sudo apt-get update
 sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
 ```
-- On macOS (with [http://brew.sh/](Homebrew))
+- On macOS (with [Homebrew](http://brew.sh/))
 ```sh
 brew install sdl2 sdl2_image sdl2_ttf
 ```
