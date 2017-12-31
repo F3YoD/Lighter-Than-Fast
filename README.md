@@ -2,7 +2,7 @@
 
 "Programmation nécessaire" project; Université de Lorraine, 2017.
 
-This repo will contain the source for a C program, aiming to be a SDL game inspired by Faster Than Light.
+This repo will contain the source for a C program, aiming to be a SDL2 game *inspired* by Faster Than Light.
 
 ## Dependencies
 You need SDL2, SDL2 Image and SDL2 TTF.
@@ -35,7 +35,7 @@ make     # `make debug` to get a more talkative (through stdout) binary
 - Multiple language support
 
 ## Description
-- You play a spaceship desparately crawling through the universe. You lack ressources and need to fight hostile vessels to steal *plasma*, a form of energy used to fuel weapons and engines
+- You play a spaceship desperately crawling through the universe. You lack ressources and need to fight hostile vessels to steal *plasma*, a form of energy used to fuel weapons and engines
 
 ## Technical side
 - We're using the `extern` keyword on two types of variables: the renderer and the fonts. We want both to stay in memory and to be accessible everywhere given the need to use them everywhere.
