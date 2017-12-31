@@ -19,8 +19,14 @@ brew install sdl2 sdl2_image sdl2_ttf
 
 ## Build
 ```sh
-cd src/  # Optional
+cd src/
 make     # `make debug` to get a more talkative (through stdout) binary
+```
+
+## Play
+```sh
+# considering you're in src/
+../bin/lighter_than_fast
 ```
 
 ## Goals
