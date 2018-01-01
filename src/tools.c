@@ -32,8 +32,8 @@ wait_key_press(unsigned int timeout)
     } while (e.type != SDL_KEYUP);
 }
 
-SDL_Texture
-*load_img(char *path)
+SDL_Texture *
+load_img(char *path)
 {
     SDL_Texture *t;
     t = IMG_LoadTexture(renderer, path);
@@ -51,8 +51,8 @@ SDL_Texture
     return t;
 }
 
-SDL_Texture
-*create_txt(TTF_Font *font, char *str, SDL_Color color)
+SDL_Texture *
+create_txt(TTF_Font *font, char *str, SDL_Color color)
 {
     SDL_Texture *t;
     SDL_Surface *tmp;
@@ -74,8 +74,8 @@ SDL_Texture
     return t;
 }
 
-SDL_Texture
-*texture_from_text(TTF_Font *font, unsigned short line_spacing, SDL_Rect origin, char *str, SDL_Color color, int align)
+SDL_Texture *
+texture_from_text(TTF_Font *font, unsigned short line_spacing, SDL_Rect origin, char *str, SDL_Color color, int align)
 {
     SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_Texture *t = NULL;
@@ -113,9 +113,7 @@ SDL_Texture
 SDL_Rect
 rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short int y)
 {
-    SDL_Rect r;
-    r.x = x;
-    r.y = y;
+    SDL_Rect r = { .x = x, .y = y };
     SDL_QueryTexture(t, NULL, NULL, &r.w, &r.h);
 
     return r;
@@ -124,6 +122,6 @@ rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short int y)
 void
 rect_scale(SDL_Rect *rect, double factor)
 {
-    rect->w = (int)(rect->w * factor);
-    rect->h = (int)(rect->h * factor);
+    rect->w *= factor;
+    rect->h *= factor;
 }

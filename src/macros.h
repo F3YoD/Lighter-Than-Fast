@@ -7,6 +7,8 @@
 #define PRINT_DEBUG 1
 #endif
 
+#define var_name(variable) #variable
+
 /* Allows to check if everything goes well with SDL */
 #define check_SDL(variable)\
     {\

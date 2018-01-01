@@ -1,11 +1,7 @@
 #include "combat.h"
 
-void display_combat_dialog(enum combat_choice *status)
-{ // TODO move this to interface.c
-    
-}
-
-void shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
+void
+shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
 {
     // TODO implement a way to deal more damages
     short touch_score = gen_rand(0, 100);
@@ -23,14 +19,16 @@ void shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
         dst->health -= damage;
     }
 
+    // FIXME move this to play_game
     if (dst->health <= 0)
     {
-        // FIXME destroy dst
-        loot(dst, src);
+        loot(src, dst);
+        destroy(dst);
     }
 }
 
-void exchange(ship_t *dst, ship_t *src, struct belongings exchanged_goods)
+void
+exchange(ship_t *dst, ship_t *src, struct belongings exchanged_goods)
 {
     // TODO be sure the asked exchanged_goods are present in src before calling this function
 
@@ -39,7 +37,19 @@ void exchange(ship_t *dst, ship_t *src, struct belongings exchanged_goods)
     dst->belongings.money += exchanged_goods.money;
 }
 
-void loot(ship_t *dst, ship_t *src)
+void
+loot(ship_t *dst, ship_t *src)
 {
     exchange(dst, src, src->belongings);
+}
+
+void
+destroy(ship_t *s)
+{
+    if (s)
+    {
+        free(s);
+        s = NULL;
+    }
+    // TODO add animation?
 }

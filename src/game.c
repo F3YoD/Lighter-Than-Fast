@@ -13,13 +13,17 @@ play_game(void)
     unsigned short map_length = 6, map_max_height = 4;
     unsigned short height_index[map_length];
     int choice_node = 0;
+    bool node_chosen = false;
+    bool valid_input = false;
 
     // Prepare shuttles
     ship_t *self = NULL, *foe = NULL;
     int self_curr_health, foe_curr_health, self_curr_shield, foe_curr_shield;
 
     // Gameplay
-    enum menu_choice choice = NEW_GAME;
+    enum menu_choice mchoice = NEW_GAME;
+    enum combat_choice cchoice = COMBAT_ATTACK;
+    enum shop_choice schoice = SHOP_HEALTH;
     unsigned msg_counter, current_col;
     int next_loop_delay, next_loop_time;
     SDL_Event event;
@@ -27,24 +31,26 @@ play_game(void)
     bool show_help = false;
     bool show_map = false;
     bool can_continue = false;
-    bool action = false;
 
-    while (choice != QUIT_GAME)
+    while (mchoice != QUIT_GAME)
     { // Game loop, everything happens here
         SDL_RenderClear(renderer);
-        next_loop_time = SDL_GetTicks() + 25; // 40 fps
-        action = false;
+        next_loop_time = SDL_GetTicks() + 20; // 50 fps
 
         if (show_menu)
         { // Display user menu
-            choice = menu(can_continue);
+            mchoice = menu(can_continue);
             show_menu = false;
-            if (!can_continue && choice == QUIT_GAME)
+            if (!can_continue && mchoice == QUIT_GAME)
                 break;
         }
-        if (!can_continue || choice == NEW_GAME)
+        if (!can_continue || mchoice == NEW_GAME)
         { // Load textures if not done, (re)gen map, reset messages counter
-            display_fake_loading(1500);
+#ifdef DEBUG
+            display_fake_loading(500);
+#else
+            display_fake_loading(can_continue ? 500 : 1500);
+#endif
             load_interface_components();
 
             msg_counter = 0;
@@ -59,14 +65,13 @@ play_game(void)
 
             if (foe)
             {
-                free(foe);
+                free(foe); // FIXME isn't it freed in free_map?
                 foe = NULL;
             }
 
             if (map)
                 free_map(map, height_index, map_length);
-            map = (map_t)malloc(map_length * sizeof(map_col_t));
-            gen_map(map, height_index, map_length, map_max_height);
+            map = gen_map(height_index, map_length, map_max_height);
 #ifdef DEBUG
             for (unsigned i = 0; i < map_length; i++)
                 for (int j = 0; j < height_index[i]; j++)
@@ -81,9 +86,21 @@ play_game(void)
         render_self(self, self_curr_health, self_curr_shield);
 
         if (foe)
+        {
             render_foe(foe, foe_curr_health, foe_curr_shield);
+            if (foe->is_shop)
+            {
+                render_shop_box(schoice, self, foe);
+            }
+            else
+            {
+                render_combat_box(cchoice, self);
+            }
 
-        // Display combat choice box
+            if (false) // FIXME foe is dead, actually setting the foe as NULL is enough
+                node_chosen = false;
+        }
+
         // TODO flip a coin to know whether the foe or the player starts
 
         // Manage foe's attack
@@ -92,27 +109,27 @@ play_game(void)
             render_help_box();
 
         if (msg_counter < NB_DIALOGS)
-        { // Display dialog
+        {
             display_dialog(msg_counter++);
 
             wait_key_press(-1);
-            choice = CONTINUE_GAME;
+            mchoice = CONTINUE_GAME;
             show_map = true;
 
             continue;
         }
         else if (show_map)
-        { // Display map
+        {
             display_map(map, map_length, height_index, current_col, choice_node);
 
             // Choose a node
-            bool node_chosen = false;
-            bool valid_input = false;
+            valid_input = false;
             while (!valid_input)
             { // Wait till a node is chosen
                 SDL_WaitEvent(&event);
                 if (event.type != SDL_KEYUP)
                     continue;
+                node_chosen = false;
                 valid_input = true;
                 switch (event.key.keysym.sym)
                 {
@@ -121,16 +138,24 @@ play_game(void)
                 case SDLK_KP_ENTER:
                 case SDLK_SPACE:
                 case SDLK_KP_SPACE:
-                    node_chosen = true;
+                    if (!foe)
+                        node_chosen = true;
                     show_map = false;
                     break;
                 case SDLK_DOWN:
                 case SDLK_j:
-                    choice_node = (choice_node + 1) % height_index[current_col];
+                    if (!foe)
+                        choice_node = (choice_node + 1) % height_index[current_col];
                     break;
                 case SDLK_UP:
                 case SDLK_k:
-                    choice_node = (choice_node + height_index[current_col] - 1) % height_index[current_col];
+                    if (!foe)
+                        choice_node = (choice_node + height_index[current_col] - 1) % height_index[current_col];
+                    break;
+                case SDLK_ESCAPE:
+                case SDLK_m:
+                    if (foe)
+                        show_map = false;
                     break;
                 default:
                     valid_input = false;
@@ -139,7 +164,7 @@ play_game(void)
             }
 
             if (node_chosen)
-            { // Get foe from chosen map node
+            {
                 foe = load_foe(map, choice_node, current_col, height_index[current_col]);
                 foe_curr_health = foe->health;
                 foe_curr_shield = foe->shield;
@@ -151,47 +176,91 @@ play_game(void)
         SDL_RenderPresent(renderer);
 
         // TODO try with SDL_WaitEvent once this is more complete
-        while (SDL_PollEvent(&event) && !action)
-        { // Get user input
-            switch (event.type)
+        while (SDL_PollEvent(&event))
+        {
+            if (event.type == SDL_QUIT)
             {
-            case SDL_KEYUP:
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_ESCAPE:
-                case SDLK_TAB:
-                    show_menu = true;
-                    action = true;
-                    break;
-                case SDLK_m:
-                    show_map = !show_map;
-                    action = true;
-                    break;
-                case SDLK_h:
-                    show_help = !show_help;
-                    action = true;
-                    break;
-#ifdef DEBUG
-                case SDLK_q:
-                    choice = QUIT_GAME;
-                    action = true;
-                    break;
-#endif
-                default:
-                    break;
-                }
-                break;
-            case SDL_QUIT:
-                choice = QUIT_GAME;
-                action = true;
-            default:
+                mchoice = QUIT_GAME;
                 break;
             }
+            else if (event.type != SDL_KEYUP)
+                continue;
+
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_ESCAPE:
+            case SDLK_TAB:
+                show_menu = true;
+                break;
+            case SDLK_m:
+                show_map = !show_map;
+                break;
+            case SDLK_h:
+                show_help = !show_help;
+                break;
+            case SDLK_UP:
+            case SDLK_k:
+                if (foe && foe->is_shop)
+                    schoice = (schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
+                else if (foe)
+                    cchoice = (cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
+                break;
+            case SDLK_DOWN:
+            case SDLK_j:
+                if (foe && foe->is_shop)
+                    schoice = (schoice + 1) % NB_CHOICES_SHOP;
+                else if (foe)
+                    cchoice = (cchoice + 1) % NB_CHOICES_COMBAT;
+                break;
+            case SDLK_RETURN:
+            case SDLK_RETURN2:
+            case SDLK_KP_ENTER:
+            case SDLK_SPACE:
+            case SDLK_KP_SPACE:
+                if (foe && foe->is_shop)
+                    switch (schoice)
+                    {
+                    case SHOP_HEALTH:
+                        break;
+                    case SHOP_SCRAPS:
+                        break;
+                    case SHOP_LEAVE:
+                        break;
+                    default:
+                        break;
+                    }
+                else if (foe)
+                    switch (cchoice)
+                    {
+                    case COMBAT_ATTACK:
+                        shoot(foe, self, 0);
+                        break;
+                    case COMBAT_REPAIR:
+                        break;
+                    case COMBAT_FLEE:
+                        break;
+                    default:
+                        break;
+                    }
+                break;
+#ifdef DEBUG
+            case SDLK_q:
+                mchoice = QUIT_GAME;
+                break;
+            case SDLK_n:
+                mchoice = NEW_GAME;
+                break;
+#endif
+            default:
+                continue;
+            }
+            break;
         }
 
 #ifndef DEBUG
-        if (choice == QUIT_GAME && can_continue)
-        { // Ask for user's confirmation to quit
+        // Ask for user's confirmation to quit
+        if (mchoice == QUIT_GAME && can_continue)
+        {
             display_quit_dialog();
 
             bool has_chosen = false;
@@ -204,7 +273,7 @@ play_game(void)
                     has_chosen = true;
                 else if (event.key.keysym.sym == SDLK_n)
                 {
-                    choice = CONTINUE_GAME;
+                    mchoice = CONTINUE_GAME;
                     has_chosen = true;
                 }
             }
@@ -217,7 +286,8 @@ play_game(void)
             SDL_Delay(next_loop_delay);
     }
 
-    /* Leave game */
+    // Leave game
+    // TODO create goodbye screen
     if (self != NULL)
         free(self); // or let it go, go, go
     if (map != NULL)

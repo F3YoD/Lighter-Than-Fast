@@ -14,7 +14,14 @@ struct belongings
 {
     // Plasma is an energy, used to move the ship and fire
     // Scraps are used to repair the ship on the go
-    int plasma, money, scraps;
+    union
+    {
+        struct
+        {
+            int plasma, money, scraps;
+        };
+        int all[3];
+    };
 };
 
 typedef struct

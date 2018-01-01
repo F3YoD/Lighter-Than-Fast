@@ -11,8 +11,8 @@ menu(bool can_continue)
     // *** Load background ***
     SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, 0x19);
 
-    SDL_Rect banner_rect = { 700, 0, 212, 768 };
     SDL_Texture *banner_texture = load_img(BANNER_PATH);
+    SDL_Rect banner_rect = rect_from_texture(banner_texture, 3 * WINDOW_WIDTH / 5, 0);
     SDL_Rect pointer_rect;
     SDL_Texture *pointer = load_img("../assets/images/alien1.png");
     SDL_QueryTexture(pointer, NULL, NULL, &pointer_rect.w, &pointer_rect.h);
@@ -41,8 +41,9 @@ menu(bool can_continue)
     {
         // Show interface
         SDL_RenderClear(renderer);
-        SDL_RenderCopy(renderer, banner_texture, NULL, &banner_rect);
 
+        // TODO this belongs in interface.c, e.g. display_menu()
+        SDL_RenderCopy(renderer, banner_texture, NULL, &banner_rect);
         base_txt_box.y = 620;
         for (int i = NB_CHOICES_MENU - 1; i >= 0; i--)
         {
@@ -63,48 +64,42 @@ menu(bool can_continue)
 
         // Listen to key strokes
         SDL_WaitEvent(&event);
-        switch (event.type)
+        if (event.type == SDL_QUIT)
+            quit = true;
+        if (event.type != SDL_KEYUP)
+            continue;
+
+        switch (event.key.keysym.sym)
         {
-        case SDL_KEYUP:
-            switch (event.key.keysym.sym)
+        case SDLK_RETURN:
+        case SDLK_RETURN2:
+        case SDLK_KP_ENTER:
+        case SDLK_SPACE:
+        case SDLK_KP_SPACE:
+            quit = true;
+            break;
+        case SDLK_ESCAPE:
+        case SDLK_TAB:
+            if (can_continue)
             {
-            case SDLK_RETURN:
-            case SDLK_RETURN2:
-            case SDLK_KP_ENTER:
-            case SDLK_SPACE:
-            case SDLK_KP_SPACE:
+                choice = CONTINUE_GAME;
                 quit = true;
-                break;
-            case SDLK_ESCAPE:
-            case SDLK_TAB:
-                if (can_continue)
-                {
-                    choice = CONTINUE_GAME;
-                    quit = true;
-                }
-                break;
-            case SDLK_DOWN:
-            case SDLK_j:
-                choice = (choice + 1) % NB_CHOICES_MENU;
-                if (!can_continue && choice == CONTINUE_GAME)
-                    choice = (choice + 1) % NB_CHOICES_MENU;
-                break;
-            case SDLK_UP:
-            case SDLK_k:
-                choice = (choice + NB_CHOICES_MENU - 1) % NB_CHOICES_MENU;
-                if (!can_continue && choice == CONTINUE_GAME)
-                    choice = (choice + NB_CHOICES_MENU - 1) % NB_CHOICES_MENU;
-                break;
-            case SDLK_q:
-                choice = QUIT_GAME;
-                quit = true;
-            default:
-                break;
             }
             break;
-        case SDL_MOUSEBUTTONDOWN:
-            choice = NEW_GAME;
-        case SDL_QUIT:
+        case SDLK_DOWN:
+        case SDLK_j:
+            choice = (choice + 1) % NB_CHOICES_MENU;
+            if (!can_continue && choice == CONTINUE_GAME)
+                choice = (choice + 1) % NB_CHOICES_MENU;
+            break;
+        case SDLK_UP:
+        case SDLK_k:
+            choice = (choice + NB_CHOICES_MENU - 1) % NB_CHOICES_MENU;
+            if (!can_continue && choice == CONTINUE_GAME)
+                choice = (choice + NB_CHOICES_MENU - 1) % NB_CHOICES_MENU;
+            break;
+        case SDLK_q:
+            choice = QUIT_GAME;
             quit = true;
         default:
             break;

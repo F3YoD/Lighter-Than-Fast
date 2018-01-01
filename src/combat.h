@@ -8,12 +8,12 @@
 #include "tools.h"
 #include "ships.h"
 
-enum combat_choice { COMBAT_ATTACK, COMBAT_FLEE, NB_CHOICES_COMBAT };
-
-void display_combat_dialog(enum combat_choice *);
+enum combat_choice { COMBAT_ATTACK, COMBAT_REPAIR, COMBAT_FLEE, NB_CHOICES_COMBAT };
+enum shop_choice { SHOP_HEALTH, SHOP_SCRAPS, SHOP_LEAVE, NB_CHOICES_SHOP };
 
 void shoot(ship_t *, ship_t *, unsigned short);
 void exchange(ship_t *, ship_t *, struct belongings);
 void loot(ship_t *, ship_t *);
+void destroy(ship_t *);
 
 #endif /* _COMBAT_H */

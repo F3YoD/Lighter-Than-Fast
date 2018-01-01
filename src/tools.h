@@ -18,8 +18,6 @@
 #define PRINT_DEBUG 0
 #endif
 
-#define var_name(variable) #variable
-
 enum align_code { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT };
 
 int gen_rand(unsigned short int, unsigned short int);

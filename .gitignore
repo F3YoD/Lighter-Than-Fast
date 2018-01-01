@@ -10,6 +10,7 @@ assets/midi/
 # Emacs/test/OS files/folders
 .DS_Store
 .#*
+*.afphoto
 localtests/
 
 # Development-related folders
