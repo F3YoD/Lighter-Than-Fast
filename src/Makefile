@@ -15,6 +15,11 @@ DEBUG_MARKER = $(O)/.DEBUG_MARKER
 RELEASE_MARKER = $(O)/.RELEASE_MARKER
 
 
+# Run
+run:
+	@$(B)/$(NAME)
+
+
 # Manage debugging
 all: $(RELEASE_MARKER) binary
 
