@@ -10,7 +10,11 @@ You need SDL2, SDL2 Image and SDL2 TTF.
 - On Debian-based distros
 ```sh
 sudo apt-get update
-sudo apt-get install libsdl2-dev libsdl2-image-dev libsdl2-ttf-dev
+sudo apt-get install libsdl2-{,image-,ttf-}{2.0-0,dev}
+```
+- On Arch-based distros
+```sh
+pacman -S sdl2 sdl2_image sdl2_ttf
 ```
 - On macOS (with [Homebrew](http://brew.sh/))
 ```sh
@@ -18,15 +22,15 @@ brew install sdl2 sdl2_image sdl2_ttf
 ```
 
 ## Build
+An internet connection is needed on build to fetch custom fonts. Use `make cleanobj` to clean while keeping the downloaded material.
 ```sh
-cd src/
+cd src/  # Optional
 make     # `make debug` to get a more talkative (through stdout) binary
 ```
 
 ## Play
 ```sh
-# considering you're in src/
-../bin/lighter_than_fast
+make run
 ```
 
 ## Goals
@@ -38,14 +42,15 @@ make     # `make debug` to get a more talkative (through stdout) binary
 - Relying too much on [FTL](http://subsetgames.com/): we're driven towards spaceships combats and ressources management, and the way we see it might evolve through time
 
 ## Optional
-- Multiple language support
+- Multiple languages support
 
 ## Description
 - You play a spaceship desperately crawling through the universe. You lack ressources and need to fight hostile vessels to steal *plasma*, a form of energy used to fuel weapons and engines
 
 ## Technical side
-- We're using the `extern` keyword on two types of variables: the renderer and the fonts. We want both to stay in memory and to be accessible everywhere given the need to use them everywhere.
+- We're using the `extern` keyword on two types of variables: the renderer and the fonts. We want both to stay in memory and to be accessible everywhere given their omnipresence in SDL functions.
 - Macros have been defined in order to be able to use the `#variable` notation to assert the good creation of SDL elements.
+- `interface.c` is home to many `static` variables. We made this choice in order to keep important data in memory while avoiding verbose.
 
 ## Data structure
 We define game entities such as ships, as types.
