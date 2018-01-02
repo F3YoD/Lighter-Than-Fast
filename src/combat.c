@@ -3,7 +3,7 @@
 void
 shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
 {
-    // TODO implement a way to deal more damages
+    // TODO implement a way to deal more damages w/ shoot_type
     short touch_score = gen_rand(0, 100);
     unsigned short damage = gen_rand(src->damage_min, src->damage_max);
 
@@ -17,13 +17,6 @@ shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
         damage -= dst->shield;
         dst->shield = 0;
         dst->health -= damage;
-    }
-
-    // FIXME move this to play_game
-    if (dst->health <= 0)
-    {
-        loot(src, dst);
-        destroy(dst);
     }
 }
 
@@ -44,12 +37,12 @@ loot(ship_t *dst, ship_t *src)
 }
 
 void
-destroy(ship_t *s)
+destroy(ship_t **s)
 {
-    if (s)
+    if (*s)
     {
-        free(s);
-        s = NULL;
+        free(*s);
+        *s = NULL;
     }
     // TODO add animation?
 }

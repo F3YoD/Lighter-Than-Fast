@@ -1,10 +1,11 @@
-#ifndef _TOOLS_
-#define _TOOLS_
+#ifndef _TOOLS_H
+#define _TOOLS_H
 
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdarg.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <SDL2/SDL_image.h>
@@ -29,4 +30,6 @@ SDL_Rect rect_from_texture(SDL_Texture *, unsigned short int, unsigned short int
 SDL_Texture *texture_from_text(TTF_Font *, unsigned short int, SDL_Rect, char *, SDL_Color, int align);
 void rect_scale(SDL_Rect *, double);
 
-#endif
+bool cmpnval(unsigned, unsigned, ...);
+
+#endif /* _TOOLS_H */

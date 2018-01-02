@@ -18,7 +18,7 @@ play_game(void)
 
     // Prepare shuttles
     ship_t *self = NULL, *foe = NULL;
-    int self_curr_health, foe_curr_health, self_curr_shield, foe_curr_shield;
+    int self_max_health, foe_max_health, self_max_shield, foe_max_shield;
 
     // Gameplay
     enum menu_choice mchoice = NEW_GAME;
@@ -60,8 +60,8 @@ play_game(void)
             if (self)
                 free(self);
             self = load_self();
-            self_curr_health = self->health;
-            self_curr_shield = self->shield;
+            self_max_health = self->health;
+            self_max_shield = self->shield;
 
             if (foe)
             {
@@ -83,12 +83,20 @@ play_game(void)
 
         // FIXME Manage combat here
         // Display player's ship
-        render_self(self, self_curr_health, self_curr_shield);
+        render_self(self, self_max_health, self_max_shield);
 
         if (foe)
         {
-            render_foe(foe, foe_curr_health, foe_curr_shield);
-            if (foe->is_shop)
+            render_foe(foe, foe_max_health, foe_max_shield);
+            if (foe->health <= 0)
+            {
+                loot(self, foe);
+                destroy(&foe);
+                show_map = true;
+                node_chosen = false;
+                current_col += 1;
+            }
+            else if (foe->is_shop)
             {
                 render_shop_box(schoice, self, foe);
             }
@@ -96,14 +104,10 @@ play_game(void)
             {
                 render_combat_box(cchoice, self);
             }
+            // TODO flip a coin to know whether the foe or the player starts
 
-            if (false) // FIXME foe is dead, actually setting the foe as NULL is enough
-                node_chosen = false;
+            // TODO Manage foe's attack
         }
-
-        // TODO flip a coin to know whether the foe or the player starts
-
-        // Manage foe's attack
 
         if (show_help)
             render_help_box();
@@ -166,8 +170,8 @@ play_game(void)
             if (node_chosen)
             {
                 foe = load_foe(map, choice_node, current_col, height_index[current_col]);
-                foe_curr_health = foe->health;
-                foe_curr_shield = foe->shield;
+                foe_max_health = foe->health;
+                foe_max_shield = foe->shield;
             }
 
             continue;

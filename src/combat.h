@@ -14,6 +14,6 @@ enum shop_choice { SHOP_HEALTH, SHOP_SCRAPS, SHOP_LEAVE, NB_CHOICES_SHOP };
 void shoot(ship_t *, ship_t *, unsigned short);
 void exchange(ship_t *, ship_t *, struct belongings);
 void loot(ship_t *, ship_t *);
-void destroy(ship_t *);
+void destroy(ship_t **);
 
 #endif /* _COMBAT_H */

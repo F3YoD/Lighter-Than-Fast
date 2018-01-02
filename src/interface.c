@@ -363,8 +363,8 @@ render_bars(ship_t *ship, SDL_Rect *ship_rect, short health, short shield, bool 
     shield_bg_rect.y = shield_rect.y = health_bg_rect.y + health_bg_rect.h + 2;
 
     // Define clipping
-    health_rect.w = health_clip.w = health * health_bg_rect.w / ship->health;
-    shield_rect.w = shield_clip.w = shield * shield_bg_rect.w / ship->shield;
+    health_rect.w = health_clip.w = ship->health * health_bg_rect.w / health;
+    shield_rect.w = shield_clip.w = ship->shield * shield_bg_rect.w / shield;
 
     // Move bars aside if rendering foe
     if (reversed)

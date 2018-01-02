@@ -1,7 +1,5 @@
 #include "tools.h"
 
-// *** Numbers ***
-
 int
 gen_rand(unsigned short int min, unsigned short int max)
 {
@@ -15,9 +13,6 @@ gen_rand(unsigned short int min, unsigned short int max)
     }
     return rand() % (max - min + 1) + min;
 }
-
-
-// *** SDL recurrent steps ***
 
 void
 wait_key_press(unsigned int timeout)
@@ -124,4 +119,18 @@ rect_scale(SDL_Rect *rect, double factor)
 {
     rect->w *= factor;
     rect->h *= factor;
+}
+
+bool
+cmpnval(unsigned val, unsigned n, ...)
+{
+    va_list l;
+
+    va_start(l, n);
+    for (unsigned i = 0; i < n; i++)
+        if (val == va_arg(l, unsigned))
+            return true;
+    va_end(l);
+
+    return false;
 }
