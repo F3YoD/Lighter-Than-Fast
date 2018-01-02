@@ -7,7 +7,7 @@ shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
     short touch_score = gen_rand(0, 100);
     unsigned short damage = gen_rand(src->damage_min, src->damage_max);
 
-    if (touch_score < dst->dodge_score)
+    if (touch_score < dst->dodge_score || src->belongings.plasma < RULE_COMBAT_ATTACK_COST)
         return;
 
     if (dst->shield >= damage)
@@ -18,6 +18,29 @@ shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
         dst->shield = 0;
         dst->health -= damage;
     }
+
+    src->belongings.plasma -= RULE_COMBAT_ATTACK_COST;
+}
+
+void
+repair(ship_t *src, int max_health)
+{
+    // TODO add a chance to fail?
+    if (src->belongings.scraps < RULE_COMBAT_REPAIR_COST || src->health == max_health)
+        return;
+
+    src->health += RULE_COMBAT_REPAIR_COST;
+    src->belongings.scraps -= RULE_COMBAT_REPAIR_COST;
+}
+
+void
+flee(ship_t *src)
+{
+    // TODO add a chance to fail?
+    if (src->belongings.plasma < RULE_COMBAT_FLEE_COST)
+        return;
+
+    src->belongings.plasma -= RULE_COMBAT_FLEE_COST;
 }
 
 void

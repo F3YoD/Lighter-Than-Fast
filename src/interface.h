@@ -30,6 +30,7 @@ void render_self(ship_t *, short, short);
 void render_foe(ship_t *, short, short);
 void render_bars(ship_t *, SDL_Rect *, short, short, bool);
 void render_choices(SDL_Rect *, short, char *[], short, short, short, short);
+void render_belongings(ship_t *);
 void render_combat_box(enum combat_choice, ship_t *);
 void render_shop_box(enum shop_choice, ship_t *, ship_t *);
 void render_help_box(void);

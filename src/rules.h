@@ -1,0 +1,8 @@
+#ifndef _RULES_H
+#define _RULES_H
+
+#define RULE_COMBAT_ATTACK_COST 5
+#define RULE_COMBAT_REPAIR_COST 1
+#define RULE_COMBAT_FLEE_COST 10
+
+#endif /* _RULES_H */

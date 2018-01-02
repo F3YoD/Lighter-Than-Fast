@@ -12,12 +12,14 @@ static SDL_Texture *choices_texture;
 static SDL_Texture *combat_box_texture;
 static SDL_Texture *help_texture;
 static SDL_Texture *self_texture, *foe_texture;
+static SDL_Texture *belongings_texture;
 
 /* Rendering zones (i.e. rectangles) */
 static SDL_Rect inner_overlay_rect, continue_msg_rect;
 static SDL_Rect icon_rect, alien_pointer_map_rect, alien_cursor_r;
 static SDL_Rect help_rect;
 static SDL_Rect self_rect, foe_rect;
+static SDL_Rect belongings_r;
 
 static int font_height;
 
@@ -75,6 +77,7 @@ free_interface_components(void)
     SDL_DestroyTexture(choices_texture);
     SDL_DestroyTexture(combat_box_texture);
     SDL_DestroyTexture(help_texture);
+    SDL_DestroyTexture(belongings_texture);
 
     SDL_DestroyTexture(self_texture);
     SDL_DestroyTexture(foe_texture);
@@ -111,6 +114,8 @@ init_rectangles(void)
     SDL_QueryTexture(alien_pointer, NULL, NULL, &alien_cursor_r.w, &alien_cursor_r.h);
 
     SDL_QueryTexture(red_dot_texture, NULL, NULL, &icon_rect.w, &icon_rect.h);
+
+    belongings_r = (SDL_Rect){ .x = 60, .y = 60 };
 
     initiated = true;
 }
@@ -389,6 +394,30 @@ render_bars(ship_t *ship, SDL_Rect *ship_rect, short health, short shield, bool 
 }
 
 void
+render_belongings(ship_t *s)
+{
+    // TODO move the rect to render in in the parameters to be able to render foe's?
+    struct belongings *b = &s->belongings;
+    static struct belongings prev_b;
+
+    if (b->plasma != prev_b.plasma || b->scraps != prev_b.scraps || b->money != prev_b.money)
+    {
+        char strrepr[128];
+        snprintf(strrepr, 128, "Plasma: %d\nScraps: %d\nMoney: %d", b->plasma, b->scraps, b->money);
+
+        if (belongings_texture)
+            SDL_DestroyTexture(belongings_texture);
+        belongings_texture = texture_from_text(font, 10, belongings_r, strrepr, white, ALIGN_LEFT);
+
+        prev_b.plasma = b->plasma;
+        prev_b.scraps = b->scraps;
+        prev_b.money = b->money;
+    }
+
+    SDL_RenderCopy(renderer, belongings_texture, NULL, NULL);
+}
+
+void
 render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], short current_choice, short mask, short line_spacing, short overlay_padding)
 /**
  * Render a set of choices (expressed by the strings in `choices_text[]') with a cursor.
@@ -491,9 +520,9 @@ render_combat_box(enum combat_choice choice, ship_t *self)
     short mask = 0;
 
     short prices[NB_CHOICES_COMBAT]; // TODO define prices
-    prices[COMBAT_ATTACK] = 5;
-    prices[COMBAT_REPAIR] = 1;
-    prices[COMBAT_FLEE] = 10;
+    prices[COMBAT_ATTACK] = RULE_COMBAT_ATTACK_COST;
+    prices[COMBAT_REPAIR] = RULE_COMBAT_REPAIR_COST;
+    prices[COMBAT_FLEE] = RULE_COMBAT_FLEE_COST;
 
     const size_t max_size = 32;
     char *choices_text[NB_CHOICES_SHOP];
@@ -513,6 +542,11 @@ render_combat_box(enum combat_choice choice, ship_t *self)
     snprintf(choices_text[COMBAT_FLEE], max_size, "Fuir le combat (%d plasma)", prices[COMBAT_FLEE]);
 
     render_choices(&combat_r, NB_CHOICES_SHOP, choices_text, choice, mask, line_spacing, 20);
+
+    for (int i = 0; i < NB_CHOICES_SHOP; i++)
+    {
+        free(choices_text[i]);
+    }
 }
 
 void

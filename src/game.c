@@ -84,6 +84,7 @@ play_game(void)
         // FIXME Manage combat here
         // Display player's ship
         render_self(self, self_max_health, self_max_shield);
+        render_belongings(self);
 
         if (foe)
         {
@@ -95,6 +96,8 @@ play_game(void)
                 show_map = true;
                 node_chosen = false;
                 current_col += 1;
+
+                continue;
             }
             else if (foe->is_shop)
             {
@@ -229,6 +232,10 @@ play_game(void)
                     case SHOP_SCRAPS:
                         break;
                     case SHOP_LEAVE:
+                        destroy(&foe);
+                        show_map = true;
+                        node_chosen = false;
+                        current_col += 1;
                         break;
                     default:
                         break;
@@ -240,8 +247,14 @@ play_game(void)
                         shoot(foe, self, 0);
                         break;
                     case COMBAT_REPAIR:
+                        repair(self, self_max_health);
                         break;
                     case COMBAT_FLEE:
+                        flee(self);
+                        destroy(&foe);
+                        show_map = true;
+                        node_chosen = false;
+                        current_col += 1;
                         break;
                     default:
                         break;
