@@ -175,6 +175,7 @@ play_game(void)
                 foe = load_foe(map, choice_node, current_col, height_index[current_col]);
                 foe_max_health = foe->health;
                 foe_max_shield = foe->shield;
+                choice_node = 0;
             }
 
             continue;
