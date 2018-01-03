@@ -127,6 +127,8 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 //		- si *pTour est mit à faut alors c'est au tour de l'ennemi d'agir 
 //		- 
 //
+
+	static bool mon_tour = true;
 	/// on cree un curseur (qui sera supprimer a la fin de ce sous programme)
 	SDL_Texture *curseur = IMG_LoadTexture(renderer, "../assets/images/alien1.png");
 	SDL_Rect pos_curseur;
@@ -205,12 +207,25 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 
 		if (pPos_tir->x >= 800){
 			shoot(&pPlayer->ship,pPirate,1);
-			*pTour = false;
+			mon_tour = false;
+			//*pTour = false;
 		}
 	}
 	else{
 		*pAction = NE_FAIT_RIEN;
 		pPos_tir->x = 100;
+	}
+	
+	/// attaque ennemi
+	static SDL_Rect rayon_enemy;
+	rayon_enemy.x = 500;
+	rayon_enemy.y = 0;
+
+	if (!mon_tour && pPirate->ship.hp > 0){
+		attaque_rayon_enemy(&rayon_enemy, &mon_tour, pPlayer, pPirate);
+	}else{
+		// on affiche le vaisseau a:wq
+		//
 	}
 
 	SDL_DestroyTexture(tir);
