@@ -14,45 +14,45 @@
     {\
         if (variable == NULL)\
         {\
-            fprintf(stderr, "%s initialization failed: %s\n",\
-                    #variable, SDL_GetError());\
+            fprintf(stderr, "[!] %s initialization failed (%s:%d): %s\n",\
+                    #variable, __FILE__, __LINE__, SDL_GetError());     \
             TTF_Quit();                                                 \
             IMG_Quit();                                                 \
             SDL_Quit(); /* This frees memory for everything SDL-related */\
             exit(EXIT_FAILURE);\
         }\
         else if (PRINT_DEBUG)\
-            printf("%s initialization success\n", #variable);\
+            printf("[+] %s initialization success\n", #variable);\
     }
 
 #define check_IMG(variable)                                             \
     {                                                                   \
         if (variable == NULL)                                           \
         {                                                               \
-            fprintf(stderr, "%s initialization failed: %s\n",           \
-                    #variable, IMG_GetError());                         \
+            fprintf(stderr, "[!] %s initialization failed (%s:%d): %s\n",   \
+                    #variable, __FILE__, __LINE__, IMG_GetError()); \
             TTF_Quit();                                                 \
             IMG_Quit();                                                 \
             SDL_Quit(); /* This frees memory for everything SDL-related */ \
             exit(EXIT_FAILURE);                                         \
         }                                                               \
         else if (PRINT_DEBUG)                                           \
-            printf("%s initialization success\n", #variable);           \
+            printf("[+] %s initialization success\n", #variable);           \
     }
 
 #define check_TTF(variable)                                             \
     {                                                                   \
         if (variable == NULL)                                           \
         {                                                               \
-            fprintf(stderr, "%s initialization failed: %s\n",           \
-                    #variable, TTF_GetError());                         \
+            fprintf(stderr, "[!] %s initialization failed (%s:%d): %s\n",   \
+                    #variable, __FILE__, __LINE__, TTF_GetError());     \
             TTF_Quit();                                                 \
             IMG_Quit();                                                 \
             SDL_Quit(); /* This frees memory for everything SDL-related */ \
             exit(EXIT_FAILURE);                                         \
         }                                                               \
         else if (PRINT_DEBUG)                                           \
-            printf("%s initialization success\n", #variable);           \
+            printf("[+] %s initialization success\n", #variable);           \
     }
 
 #endif /* _MACROS_H */

@@ -44,8 +44,9 @@ play_game(void)
             if (!can_continue && mchoice == QUIT_GAME)
                 break;
         }
+        // Load textures if not done, (re)gen map, reset messages counter
         if (!can_continue || mchoice == NEW_GAME)
-        { // Load textures if not done, (re)gen map, reset messages counter
+        {
 #ifdef DEBUG
             display_fake_loading(500);
 #else
@@ -132,7 +133,7 @@ play_game(void)
             // Choose a node
             valid_input = false;
             while (!valid_input)
-            { // Wait till a node is chosen
+            {
                 SDL_WaitEvent(&event);
                 if (event.type != SDL_KEYUP)
                     continue;
@@ -183,7 +184,7 @@ play_game(void)
 
         SDL_RenderPresent(renderer);
 
-        // TODO try with SDL_WaitEvent once this is more complete
+        // Main interactions treatment
         while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
@@ -256,6 +257,7 @@ play_game(void)
                         show_map = true;
                         node_chosen = false;
                         current_col += 1;
+                        cchoice = COMBAT_ATTACK;
                         break;
                     default:
                         break;
