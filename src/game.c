@@ -74,9 +74,15 @@ play_game(void)
                 free_map(map, height_index, map_length);
             map = gen_map(height_index, map_length, map_max_height);
 #ifdef DEBUG
+            puts("[+] Map generated:");
             for (unsigned i = 0; i < map_length; i++)
+            {
+                printf("    %d: ", i);
                 for (int j = 0; j < height_index[i]; j++)
+                {
                     printf("%d%s", j, (j == height_index[i] - 1) ? "\n" : " ");
+                }
+            }
 #endif
         }
 
@@ -274,7 +280,6 @@ play_game(void)
             default:
                 continue;
             }
-            break;
         }
 
 #ifndef DEBUG

@@ -9,6 +9,7 @@
 
 #include "tools.h"
 #include "list.h"
+#include "image.h"
 
 struct belongings
 {
@@ -32,7 +33,7 @@ typedef struct
     struct belongings belongings;
     int damage_min, damage_max;
     float dodge_score;
-    char img_path[50];
+    image *img;
 } ship_t, *map_node_t, **map_col_t, ***map_t;
 
 ship_t *load_foe(map_t, unsigned, unsigned, unsigned);
@@ -40,5 +41,6 @@ ship_t *load_self(void);
 ship_t *load_boss(void);
 list_t gen_ship_list(unsigned *);
 ship_t *load_ship_from_line(char *);
+void free_ship(ship_t **);
 
 #endif

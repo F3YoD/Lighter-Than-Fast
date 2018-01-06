@@ -28,46 +28,46 @@ load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
 ship_t *
 load_self(void)
 {
-    ship_t *self = (ship_t *)malloc(sizeof(ship_t));
+    ship_t *s = (ship_t *)malloc(sizeof(ship_t));
 
-    strlcpy(self->name, "UNSC Yvan", 50);
-    self->is_shop = false;
-    self->health = 100;
-    self->shield = 50;
-    self->belongings.plasma = 100;
-    self->belongings.money = 100;
-    self->belongings.scraps = 20;
-    self->damage_min = 10;
-    self->damage_max = 30;
-    self->dodge_score = 0.1;
-    strlcpy(self->img_path, SELF_SHIP_IMAGE, 50);
+    strlcpy(s->name, "UNSC Yvan", 50);
+    s->is_shop = false;
+    s->health = 100;
+    s->shield = 50;
+    s->belongings.plasma = 100;
+    s->belongings.money = 100;
+    s->belongings.scraps = 20;
+    s->damage_min = 10;
+    s->damage_max = 30;
+    s->dodge_score = 0.1;
+    s->img = load_image(SELF_SHIP_IMAGE, 200);
 
-    return self;
+    return s;
 }
 
 ship_t *
 load_boss(void)
-{ // Create boos ship
-    ship_t *boss = (ship_t *)malloc(sizeof(ship_t));
+{
+    ship_t *s = (ship_t *)malloc(sizeof(ship_t));
 
-    strlcpy(boss->name, "Herr FRAUFRAU", 50);
-    boss->is_shop = false;
-    boss->health = 100;
-    boss->shield = 50;
-    boss->belongings.plasma = 100;
-    boss->belongings.money = 100;
-    boss->belongings.scraps = 20;
-    boss->damage_min = 10;
-    boss->damage_max = 30;
-    boss->dodge_score = 0.1;
-    strlcpy(boss->img_path, BOSS_SHIP_IMAGE, 50); // TODO
+    strlcpy(s->name, "Herr FRAUFRAU", 50);
+    s->is_shop = false;
+    s->health = 100;
+    s->shield = 50;
+    s->belongings.plasma = 100;
+    s->belongings.money = 100;
+    s->belongings.scraps = 20;
+    s->damage_min = 10;
+    s->damage_max = 30;
+    s->dodge_score = 0.1;
+    s->img = load_image(BOSS_SHIP_IMAGE, 300);
 
-    return boss;
+    return s;
 }
 
 list_t
 gen_ship_list(unsigned *nb_ships)
-{ // Create stack of ships to be used in the map
+{
     list_t ship_stack = create_empty_list();
     FILE *fp = fopen(SHIPS_STATS_FILE, "r");
     ship_t *tmp = NULL;
@@ -130,11 +130,19 @@ load_ship_from_line(char *line)
         s->shield = atoi(token);
     // Image path
     if ((token = strsep(&str, sep)) != NULL)
-        strlcpy(s->img_path, token, 50);
+        s->img = load_image(token, 200);
 
     free(tofree);
     if (token == NULL)
         free(s);
 
     return token != NULL ? s : NULL;
+}
+
+void
+free_ship(ship_t **s)
+{
+    free_image(&(*s)->img);
+    free(*s);
+    *s = NULL;
 }

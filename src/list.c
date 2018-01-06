@@ -44,12 +44,15 @@ void
     void *res = NULL;
     list_t tmp1 = l;
     list_t tmp2 = NULL;
+
     while (n-- > 1 && !is_empty(tmp1))
         tmp1 = tmp1->next;
+
     res = tmp1->value;
     tmp2 = tmp1->next;
     tmp1->value = tmp2->value;
     tmp1->next = tmp2->next;
     free(tmp2);
+
     return res;
 }

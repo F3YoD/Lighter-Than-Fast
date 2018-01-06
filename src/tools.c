@@ -114,13 +114,6 @@ rect_from_texture(SDL_Texture *t, unsigned short int x, unsigned short int y)
     return r;
 }
 
-void
-rect_scale(SDL_Rect *rect, double factor)
-{
-    rect->w *= factor;
-    rect->h *= factor;
-}
-
 bool
 cmpnval(unsigned val, unsigned n, ...)
 {

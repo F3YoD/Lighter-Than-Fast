@@ -5,7 +5,7 @@ static SDL_Color white, gray;
 
 /* Global textures */
 static SDL_Texture *bg_texture, *bg_overlay, *dialog_texture, *continue_texture, *alien_pointer;
-static SDL_Texture *health_texture, *health_bg_texture, *shield_texture, *shield_bg_texture;
+static image *health_bar_bg_img, *health_bar_img, *shield_bar_bg_img, *shield_bar_img;
 static SDL_Texture *map_texture;
 static SDL_Texture *red_dot_texture, *blue_dot_texture, *gray_dot_texture, *dot_texture;
 static SDL_Texture *choices_texture;
@@ -18,10 +18,12 @@ static SDL_Texture *belongings_texture;
 static SDL_Rect inner_overlay_rect, continue_msg_rect;
 static SDL_Rect icon_rect, alien_pointer_map_rect, alien_cursor_r;
 static SDL_Rect help_rect;
-static SDL_Rect self_rect, foe_rect;
+static SDL_Rect self_r, foe_rect;
 static SDL_Rect belongings_r;
 
 static int font_height;
+
+// TODO introduce ennemies the Broforce way
 
 void
 load_interface_components(void)
@@ -40,6 +42,12 @@ load_interface_components(void)
     red_dot_texture = load_img("../assets/images/red_dot.png");
     blue_dot_texture = load_img("../assets/images/blue_dot.png");
     gray_dot_texture = load_img("../assets/images/gray_dot.png");
+
+    health_bar_bg_img = load_image("../assets/images/health_gray.png", 0);
+    health_bar_img = load_image("../assets/images/health.png", 0);
+    shield_bar_bg_img = load_image("../assets/images/shield_gray.png", 0);
+    shield_bar_img = load_image("../assets/images/shield.png", 0);
+    preload_first_frame(health_bar_bg_img);
 
     self_texture = foe_texture = NULL;
 
@@ -63,10 +71,10 @@ free_interface_components(void)
     SDL_DestroyTexture(continue_texture);
     SDL_DestroyTexture(alien_pointer);
 
-    SDL_DestroyTexture(health_bg_texture);
-    SDL_DestroyTexture(health_texture);
-    SDL_DestroyTexture(shield_bg_texture);
-    SDL_DestroyTexture(shield_texture);
+    free_image(&health_bar_bg_img);
+    free_image(&health_bar_img);
+    free_image(&shield_bar_bg_img);
+    free_image(&shield_bar_img);
 
     SDL_DestroyTexture(map_texture);
 
@@ -114,6 +122,8 @@ init_rectangles(void)
     SDL_QueryTexture(alien_pointer, NULL, NULL, &alien_cursor_r.w, &alien_cursor_r.h);
 
     SDL_QueryTexture(red_dot_texture, NULL, NULL, &icon_rect.w, &icon_rect.h);
+
+    self_r = (SDL_Rect){ .x = WINDOW_WIDTH / 20, .y = 2 * WINDOW_HEIGHT / 7 };
 
     belongings_r = (SDL_Rect){ .x = 60, .y = 60 };
 
@@ -293,45 +303,37 @@ display_quit_dialog(void)
 }
 
 void
-render_self(ship_t *self, short health, short shield)
+render_self(ship_t *s, short health, short shield)
 /**
  * Render the ship representing the player.
  */
 {
-    if (!self_texture)
+    static bool scaled;
+    if (!scaled)
     {
-        self_texture = load_img(self->img_path);
-        self_rect = rect_from_texture(self_texture, WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7);
-        rect_scale(&self_rect, 6);
+        permanently_scale_image(s->img, 6, 6);
+        scaled = true;
     }
 
-    SDL_RenderCopy(renderer, self_texture, NULL, &self_rect);
-    render_bars(self, &self_rect, health, shield, false);
+    render_image(s->img, self_r.x, self_r.y, 1, 1);
+    render_bars(s, &self_r, health, shield, false);
 }
 
 void
-render_foe(ship_t *foe, short health, short shield)
+render_foe(ship_t *s, short health, short shield)
 /**
  * Render the ship representing the ennemy.
  */
 {
-    static ship_t *prev_foe;
-
-    if (foe != prev_foe)
+    static bool scaled;
+    if (!scaled)
     {
-        if (prev_foe)
-            SDL_DestroyTexture(foe_texture);
-
-        foe_texture = load_img(foe->img_path);
-        foe_rect = rect_from_texture(foe_texture, 19 * WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7);
-        rect_scale(&foe_rect, 8);
-        foe_rect.x -= foe_rect.w;
-
-        prev_foe = foe;
+        permanently_scale_image(s->img, 8, 8);
+        scaled = true;
     }
 
-    SDL_RenderCopy(renderer, foe_texture, NULL, &foe_rect);
-    render_bars(foe, &foe_rect, health, shield, true);
+    render_image(s->img, 19 * WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7, -1, 1);
+    render_bars(s, &foe_rect, health, shield, true);
 }
 
 void
@@ -342,55 +344,34 @@ render_bars(ship_t *ship, SDL_Rect *ship_rect, short health, short shield, bool 
  * TODO regenerate the texture only if needed (i.e. health or shield change)
  */
 {
-    static SDL_Rect health_bg_rect, shield_bg_rect, health_rect, shield_rect, health_clip, shield_clip;
 
-    // Load textures and create their rectangles
-    if (!health_bg_texture)
+    if (!health_bar_bg_img)
     {
-        health_bg_texture = load_img("../assets/images/health_gray.png");
-        health_texture = load_img("../assets/images/health.png");
-        shield_bg_texture = load_img("../assets/images/shield_gray.png");
-        shield_texture = load_img("../assets/images/shield.png");
-
-        SDL_QueryTexture(health_bg_texture, NULL, NULL, &health_bg_rect.w, &health_bg_rect.h);
-        SDL_QueryTexture(shield_bg_texture, NULL, NULL, &shield_bg_rect.w, &shield_bg_rect.h);
-        health_rect.h = health_clip.h = health_bg_rect.h;
-        shield_rect.h = shield_clip.h = shield_bg_rect.h;
     }
+
+    SDL_Rect health_clip, shield_clip;
+    int health_x, health_y, shield_x, shield_y;
 
     // Define bars positions
-    if (reversed)
-        health_bg_rect.x = health_rect.x = shield_bg_rect.x = shield_rect.x = ship_rect->x + ship_rect->w;
-    else
-        health_bg_rect.x = health_rect.x = shield_bg_rect.x = shield_rect.x = ship_rect->x;
+    health_x = ship_rect->x;
+    health_y = ship_rect->y + ship->img->height + 10;
 
-    health_bg_rect.y = health_rect.y = ship_rect->y + ship_rect->h + 10;
-    shield_bg_rect.y = shield_rect.y = health_bg_rect.y + health_bg_rect.h + 2;
+    shield_x = ship_rect->x;
+    shield_y = health_y + health_bar_bg_img->height + 2;
 
     // Define clipping
-    health_rect.w = health_clip.w = ship->health * health_bg_rect.w / health;
-    shield_rect.w = shield_clip.w = ship->shield * shield_bg_rect.w / shield;
+    health_clip.w = ship->health * health_bar_bg_img->width / health;
+    shield_clip.w = ship->shield * shield_bar_bg_img->width / shield;
 
-    // Move bars aside if rendering foe
-    if (reversed)
-    {
-        health_rect.x = health_bg_rect.x -= health_bg_rect.w;
-        shield_rect.x = shield_bg_rect.x -= shield_bg_rect.w;
-        health_clip.x = health_bg_rect.w - health_clip.w;
-        shield_clip.x = shield_bg_rect.w - shield_clip.w;
-        health_rect.x += health_clip.x;
-        shield_rect.x += shield_clip.x;
-    }
-    else
-        health_clip.x = health_clip.y = shield_clip.x = shield_clip.y = 0;
+    int scale_x = reversed ? -1 : 1;
 
     // Render bars background
-    SDL_RenderCopy(renderer, health_bg_texture, NULL, &health_bg_rect);
-    SDL_RenderCopy(renderer, shield_bg_texture, NULL, &shield_bg_rect);
+    render_image(health_bar_bg_img, health_x, health_y, scale_x, 1);
+    render_image(shield_bar_bg_img, shield_x, shield_y, scale_x, 1);
 
     // Render bars foreground
-    SDL_RenderCopy(renderer, health_texture, &health_clip, &health_rect);
-    SDL_RenderCopy(renderer, shield_texture, &shield_clip, &shield_rect);
+    render_image(health_bar_img, health_x, health_y, scale_x, 1);
+    render_image(shield_bar_img, shield_x, shield_y, scale_x, 1);
 }
 
 void
