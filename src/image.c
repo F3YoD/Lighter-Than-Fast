@@ -79,13 +79,7 @@ load_frame(image *img, int n)
 }
 
 void
-preload_first_frame(image *img)
-{
-    load_frame(img, 0);
-}
-
-void
-permanently_scale_image(image *img, int scale_x, int scale_y)
+permanently_scale_image(image *img, float scale_x, float scale_y)
 {
     preload_first_frame(img);
 
@@ -94,7 +88,7 @@ permanently_scale_image(image *img, int scale_x, int scale_y)
 }
 
 void
-render_image(image *img, int x, int y, int scale_x, int scale_y)
+render_image_scale_clip(image *img, int x, int y, float scale_x, float scale_y, SDL_Rect *clip_r)
 {
     // FIXME images negatively scaled seem not to render, should use SDL_RenderCopyEx
     SDL_Rect r;
@@ -111,7 +105,7 @@ render_image(image *img, int x, int y, int scale_x, int scale_y)
 
     r = (SDL_Rect){ x, y, scale_x * img->width, scale_y * img->height };
 
-    SDL_RenderCopy(renderer, img->textures[img->curr_frame], NULL, &r);
+    SDL_RenderCopy(renderer, img->textures[img->curr_frame], clip_r, &r);
 }
 
 void

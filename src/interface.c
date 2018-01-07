@@ -18,7 +18,7 @@ static SDL_Texture *belongings_texture;
 static SDL_Rect inner_overlay_rect, continue_msg_rect;
 static SDL_Rect icon_rect, alien_pointer_map_rect, alien_cursor_r;
 static SDL_Rect help_rect;
-static SDL_Rect self_r, foe_rect;
+static SDL_Rect self_r, foe_r;
 static SDL_Rect belongings_r;
 
 static int font_height;
@@ -48,6 +48,7 @@ load_interface_components(void)
     shield_bar_bg_img = load_image("../assets/images/shield_gray.png", 0);
     shield_bar_img = load_image("../assets/images/shield.png", 0);
     preload_first_frame(health_bar_bg_img);
+    preload_first_frame(shield_bar_bg_img);
 
     self_texture = foe_texture = NULL;
 
@@ -124,6 +125,8 @@ init_rectangles(void)
     SDL_QueryTexture(red_dot_texture, NULL, NULL, &icon_rect.w, &icon_rect.h);
 
     self_r = (SDL_Rect){ .x = WINDOW_WIDTH / 20, .y = 2 * WINDOW_HEIGHT / 7 };
+
+    foe_r = (SDL_Rect){ .x = 19 * WINDOW_WIDTH / 20, .y = 2 * WINDOW_HEIGHT / 7 };
 
     belongings_r = (SDL_Rect){ .x = 60, .y = 60 };
 
@@ -303,7 +306,7 @@ display_quit_dialog(void)
 }
 
 void
-render_self(ship_t *s, short health, short shield)
+render_self(ship_t *s, int health, int shield)
 /**
  * Render the ship representing the player.
  */
@@ -315,12 +318,12 @@ render_self(ship_t *s, short health, short shield)
         scaled = true;
     }
 
-    render_image(s->img, self_r.x, self_r.y, 1, 1);
+    render_image(s->img, self_r.x, self_r.y);
     render_bars(s, &self_r, health, shield, false);
 }
 
 void
-render_foe(ship_t *s, short health, short shield)
+render_foe(ship_t *s, int health, int shield)
 /**
  * Render the ship representing the ennemy.
  */
@@ -332,46 +335,47 @@ render_foe(ship_t *s, short health, short shield)
         scaled = true;
     }
 
-    render_image(s->img, 19 * WINDOW_WIDTH / 20, 2 * WINDOW_HEIGHT / 7, -1, 1);
-    render_bars(s, &foe_rect, health, shield, true);
+    render_image_scale(s->img, foe_r.x, foe_r.y, -1, 1);
+    render_bars(s, &foe_r, health, shield, true);
 }
 
 void
-render_bars(ship_t *ship, SDL_Rect *ship_rect, short health, short shield, bool reversed)
+render_bars(ship_t *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
 /**
  * Render health and shield bars.
  * If true, the `reversed' parameter will display the bars for the foe rather than the player.
- * TODO regenerate the texture only if needed (i.e. health or shield change)
  */
 {
+    static SDL_Rect health_clip, shield_clip;
 
-    if (!health_bar_bg_img)
+    if (health_clip.h == 0)
     {
+        health_clip.h = health_bar_bg_img->height;
+        shield_clip.h = shield_bar_bg_img->height;
     }
 
-    SDL_Rect health_clip, shield_clip;
     int health_x, health_y, shield_x, shield_y;
 
     // Define bars positions
-    health_x = ship_rect->x;
-    health_y = ship_rect->y + ship->img->height + 10;
+    health_x = ship_r->x;
+    health_y = ship_r->y + s->img->height + 10;
 
-    shield_x = ship_rect->x;
+    shield_x = ship_r->x;
     shield_y = health_y + health_bar_bg_img->height + 2;
 
     // Define clipping
-    health_clip.w = ship->health * health_bar_bg_img->width / health;
-    shield_clip.w = ship->shield * shield_bar_bg_img->width / shield;
+    health_clip.w = s->health * health_bar_bg_img->width / health;
+    shield_clip.w = s->shield * shield_bar_bg_img->width / shield;
 
     int scale_x = reversed ? -1 : 1;
 
     // Render bars background
-    render_image(health_bar_bg_img, health_x, health_y, scale_x, 1);
-    render_image(shield_bar_bg_img, shield_x, shield_y, scale_x, 1);
+    render_image_scale(health_bar_bg_img, health_x, health_y, scale_x, 1);
+    render_image_scale(shield_bar_bg_img, shield_x, shield_y, scale_x, 1);
 
     // Render bars foreground
-    render_image(health_bar_img, health_x, health_y, scale_x, 1);
-    render_image(shield_bar_img, shield_x, shield_y, scale_x, 1);
+    render_image_scale_clip(health_bar_img, health_x, health_y, scale_x, 1, &health_clip);
+    render_image_scale_clip(shield_bar_img, shield_x, shield_y, scale_x, 1, &shield_clip);
 }
 
 void
