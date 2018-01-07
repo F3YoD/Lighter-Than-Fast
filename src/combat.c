@@ -60,6 +60,34 @@ loot(ship_t *dst, ship_t *src)
 }
 
 void
+taunt(ship_t *src)
+{
+    // FIXME
+    // Only a funny function to spit fayah at your opponent
+}
+
+void
+be_sad(ship_t *src)
+{
+    // FIXME
+    // Display sad kaomoji
+}
+
+void
+be_happy(ship_t *src)
+{
+    // FIXME
+    // Display happy kaomoji
+}
+
+void
+be_angry(ship_t *src)
+{
+    // FIXME
+    // Display angry kaomoji
+}
+
+void
 destroy(ship_t **s)
 {
     if (*s)

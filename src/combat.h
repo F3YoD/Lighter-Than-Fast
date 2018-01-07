@@ -19,4 +19,8 @@ void exchange(ship_t *, ship_t *, struct belongings);
 void loot(ship_t *, ship_t *);
 void destroy(ship_t **);
 
+void be_sad(ship_t *);
+void be_happy(ship_t *);
+void be_angry(ship_t *);
+
 #endif /* _COMBAT_H */
