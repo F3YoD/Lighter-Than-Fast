@@ -1,15 +1,15 @@
 #include "ships.h"
 
-ship_t *
-load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
+ship *
+load_foe(map_matrix map, unsigned line, unsigned col, unsigned col_height)
 {
-    static map_t prev_map;
+    static map_matrix prev_map;
     static unsigned prev_line, prev_col;
-    static ship_t *foe;
+    static ship *foe;
 
     if (map != prev_map || col != prev_col || line != prev_line)
     {
-        foe = malloc(sizeof(ship_t));
+        foe = malloc(sizeof(ship));
         *foe = *map[col][line];
     }
 
@@ -25,10 +25,10 @@ load_foe(map_t map, unsigned line, unsigned col, unsigned col_height)
     return foe;
 }
 
-ship_t *
+ship *
 load_self(void)
 {
-    ship_t *s = (ship_t *)malloc(sizeof(ship_t));
+    ship *s = (ship *)malloc(sizeof(ship));
 
     strlcpy(s->name, "UNSC Yvan", 50);
     s->is_shop = false;
@@ -45,10 +45,10 @@ load_self(void)
     return s;
 }
 
-ship_t *
+ship *
 load_boss(void)
 {
-    ship_t *s = (ship_t *)malloc(sizeof(ship_t));
+    ship *s = (ship *)malloc(sizeof(ship));
 
     strlcpy(s->name, "Herr FRAUFRAU", 50);
     s->is_shop = false;
@@ -65,12 +65,12 @@ load_boss(void)
     return s;
 }
 
-list_t
+llist
 gen_ship_list(unsigned *nb_ships)
 {
-    list_t ship_stack = create_empty_list();
+    llist ship_stack = create_empty_list();
     FILE *fp = fopen(SHIPS_STATS_FILE, "r");
-    ship_t *tmp = NULL;
+    ship *tmp = NULL;
     *nb_ships = 0;
 
     char *line = (char *)malloc(100 * sizeof(char));
@@ -90,10 +90,10 @@ gen_ship_list(unsigned *nb_ships)
     return ship_stack;
 }
 
-ship_t *
+ship *
 load_ship_from_line(char *line)
-{ // Fill ship_t fields from a formatted string
-    ship_t *s = (ship_t *)malloc(sizeof(ship_t));
+{ // Fill ship fields from a formatted string
+    ship *s = (ship *)malloc(sizeof(ship));
     char *token = NULL;
     char sep[] = ",\n";
     char *str, *tofree;
@@ -140,7 +140,7 @@ load_ship_from_line(char *line)
 }
 
 void
-free_ship(ship_t **s)
+free_ship(ship **s)
 {
     free_image(&(*s)->img);
     free(*s);

@@ -8,12 +8,12 @@ typedef struct node
 {
     void *value;
     struct node *next;
-} node_t, *list_t;
+} node, *llist;
 
-list_t create_empty_list(void);
-void push(void *, list_t *);
-void *pop_nth(list_t, unsigned short);
-bool is_empty(list_t);
-void free_list(list_t);
+llist create_empty_list(void);
+void push(void *, llist *);
+void *pop_nth(llist, unsigned short);
+bool is_empty(llist);
+void free_list(llist);
 
 #endif /* _LIST_H */

@@ -1,13 +1,13 @@
 #include "map.h"
 
-map_t
+map_matrix
 gen_map(unsigned short height_index[], int length, int max_height)
 {
     int height;
     unsigned int nb_ships;
-    list_t ship_stack = gen_ship_list(&nb_ships);
+    llist ship_stack = gen_ship_list(&nb_ships);
 
-    map_t map = (map_t)malloc(length * sizeof(map_col_t));
+    map_matrix map = (map_matrix)malloc(length * sizeof(map_col));
 
     for (int i = 0; i < length; i++)
     {
@@ -15,14 +15,14 @@ gen_map(unsigned short height_index[], int length, int max_height)
         height = (i > 0 && i < length - 1) ? gen_rand(2, max_height) : 1;
         height_index[i] = height;
 
-        map_col_t column = (map_col_t)malloc(height * sizeof(map_node_t));
+        map_col column = (map_col)malloc(height * sizeof(map_node));
 
         // Populate nodes
         if (i == length - 1)
             column[0] = load_boss();
         else
             for (int j = 0; j < height; j++)
-                column[j] = (ship_t *)pop_nth(ship_stack, gen_rand(1, nb_ships--));
+                column[j] = (ship *)pop_nth(ship_stack, gen_rand(1, nb_ships--));
 
         map[i] = column;
     }
@@ -34,7 +34,7 @@ gen_map(unsigned short height_index[], int length, int max_height)
 }
 
 void
-free_map(map_t map, unsigned short index_height[], int length)
+free_map(map_matrix map, unsigned short index_height[], int length)
 {
 #ifdef DEBUG
     int k = 0;

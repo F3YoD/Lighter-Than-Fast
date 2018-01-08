@@ -1,7 +1,7 @@
 #include "combat.h"
 
 void
-shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
+shoot(ship *dst, ship *src, unsigned short shoot_type)
 {
     // TODO implement a way to deal more damages w/ shoot_type
     short touch_score = gen_rand(0, 100);
@@ -23,7 +23,7 @@ shoot(ship_t *dst, ship_t *src, unsigned short shoot_type)
 }
 
 void
-repair(ship_t *src, int max_health)
+repair(ship *src, int max_health)
 {
     // TODO add a chance to fail?
     if (src->belongings.scraps < RULE_COMBAT_REPAIR_COST || src->health == max_health)
@@ -34,7 +34,7 @@ repair(ship_t *src, int max_health)
 }
 
 void
-flee(ship_t *src)
+flee(ship *src)
 {
     // TODO add a chance to fail?
     if (src->belongings.plasma < RULE_COMBAT_FLEE_COST)
@@ -44,7 +44,7 @@ flee(ship_t *src)
 }
 
 void
-exchange(ship_t *dst, ship_t *src, struct belongings exchanged_goods)
+exchange(ship *dst, ship *src, struct belongings exchanged_goods)
 {
     // TODO be sure the asked exchanged_goods are present in src before calling this function
 
@@ -54,41 +54,41 @@ exchange(ship_t *dst, ship_t *src, struct belongings exchanged_goods)
 }
 
 void
-loot(ship_t *dst, ship_t *src)
+loot(ship *dst, ship *src)
 {
     exchange(dst, src, src->belongings);
 }
 
 void
-taunt(ship_t *src)
+taunt(ship *src)
 {
     // FIXME
     // Only a funny function to spit fayah at your opponent
 }
 
 void
-be_sad(ship_t *src)
+be_sad(ship *src)
 {
     // FIXME
     // Display sad kaomoji
 }
 
 void
-be_happy(ship_t *src)
+be_happy(ship *src)
 {
     // FIXME
     // Display happy kaomoji
 }
 
 void
-be_angry(ship_t *src)
+be_angry(ship *src)
 {
     // FIXME
     // Display angry kaomoji
 }
 
 void
-destroy(ship_t **s)
+destroy(ship **s)
 {
     if (*s)
     {

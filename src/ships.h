@@ -34,13 +34,13 @@ typedef struct
     int damage_min, damage_max;
     float dodge_score;
     image *img;
-} ship_t, *map_node_t, **map_col_t, ***map_t;
+} ship, *map_node, **map_col, ***map_matrix;
 
-ship_t *load_foe(map_t, unsigned, unsigned, unsigned);
-ship_t *load_self(void);
-ship_t *load_boss(void);
-list_t gen_ship_list(unsigned *);
-ship_t *load_ship_from_line(char *);
-void free_ship(ship_t **);
+ship *load_foe(map_matrix, unsigned, unsigned, unsigned);
+ship *load_self(void);
+ship *load_boss(void);
+llist gen_ship_list(unsigned *);
+ship *load_ship_from_line(char *);
+void free_ship(ship **);
 
 #endif

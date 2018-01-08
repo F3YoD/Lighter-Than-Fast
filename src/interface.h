@@ -21,18 +21,18 @@ void init_colors(void);
 void init_rectangles(void);
 
 void display_menu(void);
-void display_map(map_t, unsigned, unsigned short[], unsigned, unsigned);
+void display_map(map_matrix, unsigned, unsigned short[], unsigned, unsigned);
 void display_fake_loading(unsigned);
 void display_dialog(unsigned);
 void display_quit_dialog(void);
 
-void render_self(ship_t *, int, int);
-void render_foe(ship_t *, int, int);
-void render_bars(ship_t *, SDL_Rect *, int, int, bool);
+void render_self(ship *, int, int);
+void render_foe(ship *, int, int);
+void render_bars(ship *, SDL_Rect *, int, int, bool);
 void render_choices(SDL_Rect *, short, char *[], short, short, short, short);
-void render_belongings(ship_t *);
-void render_combat_box(enum combat_choice, ship_t *);
-void render_shop_box(enum shop_choice, ship_t *, ship_t *);
+void render_belongings(ship *);
+void render_combat_box(enum combat_choice, ship *);
+void render_shop_box(enum shop_choice, ship *, ship *);
 void render_help_box(void);
 void render_overlay_bg(SDL_Rect *, short);
 void render_background(void);

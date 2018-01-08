@@ -140,12 +140,12 @@ display_menu(void)
 }
 
 void
-display_map(map_t map, unsigned map_length, unsigned short height_index[], unsigned current_col, unsigned choice_node)
+display_map(map_matrix map, unsigned map_length, unsigned short height_index[], unsigned current_col, unsigned choice_node)
 /**
  * Render the map and display it on an overlay.
  */
 {
-    static map_t prev_map;
+    static map_matrix prev_map;
     static unsigned short prev_col, prev_node;
 
     if (map_texture && map == prev_map && current_col == prev_col && choice_node == prev_node)
@@ -306,7 +306,7 @@ display_quit_dialog(void)
 }
 
 void
-render_self(ship_t *s, int health, int shield)
+render_self(ship *s, int health, int shield)
 /**
  * Render the ship representing the player.
  */
@@ -323,7 +323,7 @@ render_self(ship_t *s, int health, int shield)
 }
 
 void
-render_foe(ship_t *s, int health, int shield)
+render_foe(ship *s, int health, int shield)
 /**
  * Render the ship representing the ennemy.
  */
@@ -340,7 +340,7 @@ render_foe(ship_t *s, int health, int shield)
 }
 
 void
-render_bars(ship_t *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
+render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
 /**
  * Render health and shield bars.
  * If true, the `reversed' parameter will display the bars for the foe rather than the player.
@@ -379,7 +379,7 @@ render_bars(ship_t *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
 }
 
 void
-render_belongings(ship_t *s)
+render_belongings(ship *s)
 {
     // TODO move the rect to render in in the parameters to be able to render foe's?
     struct belongings *b = &s->belongings;
@@ -494,7 +494,7 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], shor
 }
 
 void
-render_combat_box(enum combat_choice choice, ship_t *self)
+render_combat_box(enum combat_choice choice, ship *self)
 /**
  * Render dialog to interact with shops
  */
@@ -535,7 +535,7 @@ render_combat_box(enum combat_choice choice, ship_t *self)
 }
 
 void
-render_shop_box(enum shop_choice choice, ship_t *self, ship_t *shop)
+render_shop_box(enum shop_choice choice, ship *self, ship *shop)
 /**
  * Render dialog to interact with shops
  */

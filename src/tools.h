@@ -19,7 +19,8 @@
 #define PRINT_DEBUG 0
 #endif
 
-enum align_code { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT };
+typedef enum { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT } h_align;
+typedef enum { ALIGN_TOP, ALIGN_MIDDLE, ALIGN_BOTTOM } v_align;
 
 int gen_rand(unsigned short int, unsigned short int);
 
@@ -27,7 +28,7 @@ void wait_key_press(unsigned int timeout);
 SDL_Texture *create_txt(TTF_Font *, char *, SDL_Color);
 SDL_Texture *load_img(char *);
 SDL_Rect rect_from_texture(SDL_Texture *, unsigned short int, unsigned short int);
-SDL_Texture *texture_from_text(TTF_Font *, unsigned short int, SDL_Rect, char *, SDL_Color, int align);
+SDL_Texture *texture_from_text(TTF_Font *, unsigned short int, SDL_Rect, char *, SDL_Color, h_align);
 
 bool cmpnval(unsigned, unsigned, ...);
 
