@@ -88,7 +88,7 @@ permanently_scale_image(image *img, float scale_x, float scale_y)
 }
 
 void
-render_image_scale_clip(image *img, int x, int y, float scale_x, float scale_y, SDL_Rect *clip_r)
+render_image_scale_clip(image *img, int x, int y, float scale_x, float scale_y, SDL_Rect *clip_r, h_align h_al, v_align v_al)
 {
     // FIXME images negatively scaled seem not to render, should use SDL_RenderCopyEx
     SDL_Rect r;
