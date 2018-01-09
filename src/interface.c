@@ -124,7 +124,7 @@ init_rectangles(void)
 
     SDL_QueryTexture(red_dot_texture, NULL, NULL, &icon_rect.w, &icon_rect.h);
 
-    self_r = (SDL_Rect){ .x = WINDOW_WIDTH / 20, .y = 2 * WINDOW_HEIGHT / 7 };
+    self_r = (SDL_Rect){ .x = WINDOW_WIDTH / 20, .y = 4 * WINDOW_HEIGHT / 7 };
 
     foe_r = (SDL_Rect){ .x = 19 * WINDOW_WIDTH / 20, .y = 2 * WINDOW_HEIGHT / 7 };
 
@@ -318,7 +318,7 @@ render_self(ship *s, int health, int shield)
         scaled = true;
     }
 
-    render_image(s->img, self_r.x, self_r.y);
+    render_image_align(s->img, self_r.x, self_r.y, ALIGN_BOTTOM, ALIGN_LEFT);
     render_bars(s, &self_r, health, shield, false);
 }
 
@@ -358,7 +358,7 @@ render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
 
     // Define bars positions
     health_x = ship_r->x;
-    health_y = ship_r->y + s->img->height + 10;
+    health_y = ship_r->y + 10;
 
     shield_x = ship_r->x;
     shield_y = health_y + health_bar_bg_img->height + 2;
