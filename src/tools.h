@@ -24,7 +24,7 @@ typedef enum { ALIGN_TOP, ALIGN_MIDDLE, ALIGN_BOTTOM } v_align;
 
 int gen_rand(unsigned short int, unsigned short int);
 
-void wait_key_press(unsigned int timeout);
+void wait_key_press(unsigned int);
 SDL_Texture *create_txt(TTF_Font *, char *, SDL_Color);
 SDL_Texture *load_img(char *);
 SDL_Rect rect_from_texture(SDL_Texture *, unsigned short int, unsigned short int);
