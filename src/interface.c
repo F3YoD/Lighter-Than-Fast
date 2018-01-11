@@ -59,7 +59,7 @@ render_projectil(bool pType, bool *pTir)
 		SDL_RenderCopy(renderer, tex_m_a, NULL, &pos_m_a);
 		// update missil
 		if(pos_m_a.x < x_limite_a){
-			--pos_m_a.x;
+			++pos_m_a.x;
 		}else{
 			pos_m_a.x = 800;
 			*pTir = false;	
