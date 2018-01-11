@@ -2,7 +2,7 @@ SHELL = /usr/bin/env bash
 NAME = lighter_than_fast
 
 CC = gcc
-CFLAGS = -Wall -std=c99
+CFLAGS = -Wall -std=gnu99
 SDLFLAGS = $(shell sdl2-config --cflags --libs) -lSDL2_image -lSDL2_ttf
 O = ../obj
 B = ../bin
