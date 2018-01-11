@@ -58,3 +58,4 @@ clean:
 
 cleanobj:
 	@rm -rf $(O)
+	@rm $(EXEC)
