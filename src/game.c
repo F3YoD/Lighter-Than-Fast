@@ -125,9 +125,19 @@ play_game(void)
 
         if (msg_counter < NB_DIALOGS)
         {
-            display_dialog(msg_counter++);
+            display_dialog(msg_counter);
 
-            wait_key_press(-1);
+            /* wait_key_press(); */
+            SDL_Event e;
+            while (SDL_PollEvent(&e))
+            {
+                if (e.type == SDL_KEYUP)
+                {
+                    msg_counter += 1;
+                    break;
+                }
+            }
+
             mchoice = CONTINUE_GAME;
             show_map = true;
 
@@ -310,6 +320,8 @@ play_game(void)
         next_loop_delay = next_loop_time - SDL_GetTicks();
         if (next_loop_delay > 0)
             SDL_Delay(next_loop_delay);
+
+        SDL_RenderClear(renderer);
     }
 
     // Leave game

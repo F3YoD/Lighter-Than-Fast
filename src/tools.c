@@ -15,15 +15,12 @@ gen_rand(unsigned short int min, unsigned short int max)
 }
 
 void
-wait_key_press(unsigned int timeout)
+wait_key_press(void)
 {
     SDL_Event e;
     do
     {
-        if (timeout > 0)
-            SDL_WaitEvent(&e);
-        else
-            SDL_WaitEventTimeout(&e, timeout);
+        SDL_WaitEvent(&e);
     } while (e.type != SDL_KEYUP);
 }
 

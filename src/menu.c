@@ -99,6 +99,7 @@ menu(bool can_continue)
                 choice = (choice + NB_CHOICES_MENU - 1) % NB_CHOICES_MENU;
             break;
         case SDLK_q:
+        case SDL_QUIT:
             choice = QUIT_GAME;
             quit = true;
         default:
