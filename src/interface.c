@@ -277,27 +277,15 @@ display_dialog(unsigned counter)
  * Display immersive text.
  */
 {
-    static unsigned prev_counter = (unsigned)(-1);
-
-    if (counter == prev_counter)
-    {
-        SDL_RenderCopy(renderer, dialog_texture, NULL, NULL);
-        SDL_RenderPresent(renderer);
-        return;
-    }
-
+    SDL_RenderClear(renderer);
     SDL_Texture *t;
 
-    dialog_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
-    SDL_SetRenderTarget(renderer, dialog_texture);
+    SDL_DestroyTexture(dialog_texture);
 
     t = texture_from_text(font, 10, inner_overlay_rect, dialogs[counter], white, ALIGN_LEFT);
 
-    render_overlay_bg(NULL, 0);
     SDL_RenderCopy(renderer, t, NULL, NULL);
     SDL_RenderCopy(renderer, continue_texture, NULL, NULL);
-
-    SDL_SetRenderTarget(renderer, NULL);
 
     SDL_RenderPresent(renderer);
 
@@ -550,9 +538,9 @@ render_combat_box(enum combat_choice choice, ship *self)
     snprintf(choices_text[COMBAT_REPAIR], max_size, "Se reparer (%d scraps)", prices[COMBAT_REPAIR]);
     snprintf(choices_text[COMBAT_FLEE], max_size, "Fuir le combat (%d plasma)", prices[COMBAT_FLEE]);
 
-    render_choices(&combat_r, NB_CHOICES_SHOP, choices_text, choice, mask, line_spacing, 20);
+    render_choices(&combat_r, NB_CHOICES_COMBAT, choices_text, choice, mask, line_spacing, 20);
 
-    for (int i = 0; i < NB_CHOICES_SHOP; i++)
+    for (int i = 0; i < NB_CHOICES_COMBAT; i++)
     {
         free(choices_text[i]);
     }
@@ -591,6 +579,11 @@ render_shop_box(enum shop_choice choice, ship *self, ship *shop)
     snprintf(choices_text[SHOP_LEAVE], max_size, "Sortir du shop");
 
     render_choices(&shop_r, NB_CHOICES_SHOP, choices_text, choice, mask, line_spacing, 20);
+
+    for (int i = 0; i < NB_CHOICES_SHOP; i++)
+    {
+        free(choices_text[i]);
+    }
 }
 
 void
@@ -616,10 +609,9 @@ render_overlay_bg(SDL_Rect *rect, short padding)
  * Render a semi-transparent background for dialogs/map readability.
  */
 {
-    SDL_Rect r;
     if (rect)
     {
-        r = *rect;
+        SDL_Rect r = *rect;
 
         if (padding)
         {
@@ -628,9 +620,13 @@ render_overlay_bg(SDL_Rect *rect, short padding)
             r.w += 2 * padding;
             r.h += 2 * padding;
         }
-    }
 
-    SDL_RenderCopy(renderer, bg_overlay, NULL, (rect ? &r : NULL));
+        SDL_RenderCopy(renderer, bg_overlay, NULL, &r);
+    }
+    else
+    {
+        SDL_RenderCopy(renderer, bg_overlay, NULL, NULL);
+    }
 }
 
 void
