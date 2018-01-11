@@ -50,7 +50,7 @@ load_boss(void)
 {
     ship *s = (ship *)malloc(sizeof(ship));
 
-    strlcpy(s->name, "Herr FRAUFRAU", 50);
+    strncpy(s->name, "Herr FRAUFRAU", 50);
     s->is_shop = false;
     s->health = 100;
     s->shield = 50;
@@ -100,7 +100,7 @@ load_ship_from_line(char *line)
     tofree = str = strdup(line);
     // Name
     if ((token = strsep(&str, sep)) != NULL)
-        strlcpy(s->name, token, 50);
+        strncpy(s->name, token, 50);
     // Shop
     if ((token = strsep(&str, sep)) != NULL)
         s->is_shop = atoi(token);
