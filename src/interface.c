@@ -375,16 +375,22 @@ render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
     // Define clipping
     health_clip.w = s->health * health_bar_bg_img->width / health;
     shield_clip.w = s->shield * shield_bar_bg_img->width / shield;
+    if (reversed)
+    {
+        health_clip.x += health_bar_bg_img->width - health_clip.w;
+        shield_clip.x += shield_bar_bg_img->width - shield_clip.w;
+    }
 
-    int scale_x = reversed ? -1 : 1;
+    /* int scale_x = reversed ? -1 : 1; */
+    x_align x_al = reversed ? ALIGN_RIGHT : ALIGN_LEFT;
 
     // Render bars background
-    render_image_scale(health_bar_bg_img, health_x, health_y, scale_x, 1);
-    render_image_scale(shield_bar_bg_img, shield_x, shield_y, scale_x, 1);
+    render_image_align(health_bar_bg_img, health_x, health_y, ALIGN_TOP, x_al);
+    render_image_align(shield_bar_bg_img, shield_x, shield_y, ALIGN_TOP, x_al);
 
     // Render bars foreground
-    render_image_scale_clip(health_bar_img, health_x, health_y, scale_x, 1, &health_clip);
-    render_image_scale_clip(shield_bar_img, shield_x, shield_y, scale_x, 1, &shield_clip);
+    render_image_scale_clip_align(health_bar_img, health_x, health_y, 1, 1, 0, &health_clip, ALIGN_TOP, x_al);
+    render_image_scale_clip_align(shield_bar_img, shield_x, shield_y, 1, 1, 0, &shield_clip, ALIGN_TOP, x_al);
 }
 
 void
