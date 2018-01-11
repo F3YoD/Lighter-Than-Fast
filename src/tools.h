@@ -19,8 +19,8 @@
 #define PRINT_DEBUG 0
 #endif
 
-typedef enum { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT } h_align;
-typedef enum { ALIGN_TOP, ALIGN_MIDDLE, ALIGN_BOTTOM } v_align;
+typedef enum horizontal_alignment { ALIGN_LEFT, ALIGN_CENTER, ALIGN_RIGHT } h_align;
+typedef enum vertical_alignment { ALIGN_TOP, ALIGN_MIDDLE, ALIGN_BOTTOM } v_align;
 
 int gen_rand(unsigned short int, unsigned short int);
 
