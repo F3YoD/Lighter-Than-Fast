@@ -12,6 +12,8 @@
 #include "dialogs.h"
 #include "interface.h"
 
+#define SHIPS_SCALE 6
+
 void play_game(void);
 
 #endif /* _GAME_H */

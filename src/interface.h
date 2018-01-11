@@ -3,6 +3,7 @@
 
 #include <SDL2/SDL.h>
 
+#include "shared.h"
 #include "tools.h"
 #include "ships.h"
 #include "dialogs.h"

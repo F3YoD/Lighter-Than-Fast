@@ -1,7 +1,5 @@
 #include "game.h"
 
-#define SHIPS_SCALE 6
-
 void
 play_game(void)
 {
@@ -27,13 +25,108 @@ play_game(void)
     unsigned msg_counter, current_col;
     int next_loop_delay, next_loop_time;
     SDL_Event event;
+    bool show_dialog = true;
     bool show_menu = true;
     bool show_help = false;
     bool show_map = false;
     bool can_continue = false;
+    bool first_run = true;
 
     while (mchoice != QUIT_GAME)
     { // Game loop, everything happens here
+        // Main interactions treatment
+        while (SDL_PollEvent(&event) && !first_run)
+        {
+            if (event.type == SDL_QUIT)
+            {
+                mchoice = QUIT_GAME;
+                break;
+            }
+            else if (show_dialog && event.type == SDL_KEYUP)
+                msg_counter += 1;
+            else if (event.type != SDL_KEYUP)
+                continue;
+
+            switch (event.key.keysym.sym)
+            {
+            case SDLK_ESCAPE:
+            case SDLK_TAB:
+                show_menu = true;
+                break;
+            case SDLK_m:
+                show_map = !show_map;
+                break;
+            case SDLK_h:
+                show_help = !show_help;
+                break;
+            case SDLK_UP:
+            case SDLK_k:
+                if (foe && foe->is_shop)
+                    schoice = (schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
+                else if (foe)
+                    cchoice = (cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
+                break;
+            case SDLK_DOWN:
+            case SDLK_j:
+                if (foe && foe->is_shop)
+                    schoice = (schoice + 1) % NB_CHOICES_SHOP;
+                else if (foe)
+                    cchoice = (cchoice + 1) % NB_CHOICES_COMBAT;
+                break;
+            case SDLK_RETURN:
+            case SDLK_RETURN2:
+            case SDLK_KP_ENTER:
+            case SDLK_SPACE:
+            case SDLK_KP_SPACE:
+                if (foe && foe->is_shop)
+                    switch (schoice)
+                    {
+                    case SHOP_HEALTH:
+                        break;
+                    case SHOP_SCRAPS:
+                        break;
+                    case SHOP_LEAVE:
+                        destroy(&foe);
+                        show_map = true;
+                        node_chosen = false;
+                        current_col += 1;
+                        break;
+                    default:
+                        break;
+                    }
+                else if (foe)
+                    switch (cchoice)
+                    {
+                    case COMBAT_ATTACK:
+                        shoot(foe, self, 0);
+                        break;
+                    case COMBAT_REPAIR:
+                        repair(self, self_max_health);
+                        break;
+                    case COMBAT_FLEE:
+                        flee(self);
+                        destroy(&foe);
+                        show_map = true;
+                        node_chosen = false;
+                        current_col += 1;
+                        cchoice = COMBAT_ATTACK;
+                        break;
+                    default:
+                        break;
+                    }
+                break;
+#ifdef DEBUG
+            case SDLK_q:
+                mchoice = QUIT_GAME;
+                break;
+            case SDLK_n:
+                mchoice = NEW_GAME;
+                break;
+#endif
+            default:
+                break;
+            }
+        }
         SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
         next_loop_time = SDL_GetTicks() + 20; // 50 fps
@@ -123,25 +216,17 @@ play_game(void)
         if (show_help)
             render_help_box();
 
-        if (msg_counter < NB_DIALOGS)
+        SDL_RenderPresent(renderer);
+
+        show_dialog = msg_counter < NB_DIALOGS;
+        if (show_dialog)
         {
             display_dialog(msg_counter);
-
-            /* wait_key_press(); */
-            SDL_Event e;
-            while (SDL_PollEvent(&e))
-            {
-                if (e.type == SDL_KEYUP)
-                {
-                    msg_counter += 1;
-                    break;
-                }
-            }
 
             mchoice = CONTINUE_GAME;
             show_map = true;
 
-            continue;
+            SDL_RenderClear(renderer);
         }
         else if (show_map)
         {
@@ -195,103 +280,12 @@ play_game(void)
                 foe_max_shield = foe->shield;
                 choice_node = 0;
             }
-
-            continue;
         }
-
-        SDL_RenderPresent(renderer);
-
-        // Main interactions treatment
-        while (SDL_PollEvent(&event))
+        else
         {
-            if (event.type == SDL_QUIT)
-            {
-                mchoice = QUIT_GAME;
-                break;
-            }
-            else if (event.type != SDL_KEYUP)
-                continue;
-
-            switch (event.key.keysym.sym)
-            {
-            case SDLK_ESCAPE:
-            case SDLK_TAB:
-                show_menu = true;
-                break;
-            case SDLK_m:
-                show_map = !show_map;
-                break;
-            case SDLK_h:
-                show_help = !show_help;
-                break;
-            case SDLK_UP:
-            case SDLK_k:
-                if (foe && foe->is_shop)
-                    schoice = (schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
-                else if (foe)
-                    cchoice = (cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
-                break;
-            case SDLK_DOWN:
-            case SDLK_j:
-                if (foe && foe->is_shop)
-                    schoice = (schoice + 1) % NB_CHOICES_SHOP;
-                else if (foe)
-                    cchoice = (cchoice + 1) % NB_CHOICES_COMBAT;
-                break;
-            case SDLK_RETURN:
-            case SDLK_RETURN2:
-            case SDLK_KP_ENTER:
-            case SDLK_SPACE:
-            case SDLK_KP_SPACE:
-                if (foe && foe->is_shop)
-                    switch (schoice)
-                    {
-                    case SHOP_HEALTH:
-                        break;
-                    case SHOP_SCRAPS:
-                        break;
-                    case SHOP_LEAVE:
-                        destroy(&foe);
-                        show_map = true;
-                        node_chosen = false;
-                        current_col += 1;
-                        break;
-                    default:
-                        break;
-                    }
-                else if (foe)
-                    switch (cchoice)
-                    {
-                    case COMBAT_ATTACK:
-                        shoot(foe, self, 0);
-                        break;
-                    case COMBAT_REPAIR:
-                        repair(self, self_max_health);
-                        break;
-                    case COMBAT_FLEE:
-                        flee(self);
-                        destroy(&foe);
-                        show_map = true;
-                        node_chosen = false;
-                        current_col += 1;
-                        cchoice = COMBAT_ATTACK;
-                        break;
-                    default:
-                        break;
-                    }
-                break;
-#ifdef DEBUG
-            case SDLK_q:
-                mchoice = QUIT_GAME;
-                break;
-            case SDLK_n:
-                mchoice = NEW_GAME;
-                break;
-#endif
-            default:
-                continue;
-            }
+            /* SDL_RenderPresent(renderer); */
         }
+
 
 #ifndef DEBUG
         // Ask for user's confirmation to quit
@@ -322,6 +316,7 @@ play_game(void)
             SDL_Delay(next_loop_delay);
 
         SDL_RenderClear(renderer);
+        first_run = false;
     }
 
     // Leave game
