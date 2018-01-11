@@ -212,8 +212,6 @@ display_map(map_matrix map, unsigned map_length, unsigned short height_index[], 
     SDL_RenderCopy(renderer, map_texture, NULL, NULL);
 
     SDL_RenderPresent(renderer);
-
-    SDL_DestroyTexture(map_texture);
 }
 
 void

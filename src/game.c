@@ -181,7 +181,6 @@ play_game(void)
                 foe_max_health = foe->health;
                 foe_max_shield = foe->shield;
                 choice_node = 0;
-                show_map = false;
             }
         }
 
@@ -306,9 +305,9 @@ play_game(void)
 
 #endif
         // Wait before rendering next frame
-        next_loop_delay = next_loop_time - SDL_GetTicks();
-        if (next_loop_delay > 0)
-            SDL_Delay(next_loop_delay);
+        /* next_loop_delay = next_loop_time - SDL_GetTicks(); */
+        /* if (next_loop_delay > 0) */
+        /*     SDL_Delay(next_loop_delay); */
     }
 
     // Leave game
