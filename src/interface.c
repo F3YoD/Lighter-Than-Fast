@@ -157,7 +157,7 @@ display_map(map_matrix map, unsigned map_length, unsigned short height_index[], 
 
     if (map_texture)
         SDL_DestroyTexture(map_texture);
-    map_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
+    map_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_SetTextureBlendMode(map_texture, SDL_BLENDMODE_BLEND);
     SDL_SetRenderTarget(renderer, map_texture);
 
