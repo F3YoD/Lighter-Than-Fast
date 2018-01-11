@@ -25,6 +25,51 @@ static int font_height;
 
 // TODO introduce ennemies the Broforce way
 
+void 
+render_projectil(bool pType, bool *pTir)
+/**
+ * cree un projectile
+ * si pType = true alors c'est un tir ennemi
+ * sinon c'est un tir alié 
+ */
+{
+	SDL_Texture * tex_m_e = IMG_LoadTexture(renderer, "enemy_missile.png");
+	SDL_Texture * tex_m_a = IMG_LoadTexture(renderer, "ally_missile.png");
+	static SDL_Rect pos_m_e; pos_m_e.x = 800; pos_m_e.y = 300;
+	static SDL_Rect pos_m_a; pos_m_a.x = 100; pos_m_a.y = 600;
+	int x_limite_e = 100;
+	int x_limite_a = 800;
+	
+	if(pType && *pTir){
+		///////   enemy   //////
+		
+		// draw enemy's missil
+		SDL_QueryTexture(tex_m_e, NULL, NULL, &pos_m_e.w, &pos_m_e.h);
+		SDL_RenderCopy(renderer, tex_m_e, NULL, &pos_m_e);
+		// update missil
+		if(pos_m_e.x > x_limite_e){
+			--pos_m_e.x;
+		}else{
+			pos_m_e.x = 800;
+			*pTir = false;	
+		}
+	}else if(!pType && *pTir){
+		///////   ally    ///////
+		SDL_QueryTexture(tex_m_a, NULL, NULL, &pos_m_a.w, &pos_m_a.h);
+		SDL_RenderCopy(renderer, tex_m_a, NULL, &pos_m_a);
+		// update missil
+		if(pos_m_a.x < x_limite_a){
+			--pos_m_a.x;
+		}else{
+			pos_m_a.x = 800;
+			*pTir = false;	
+		}
+	}
+
+	SDL_DestroyTexture(tex_m_e);
+	SDL_DestroyTexture(tex_m_a);
+}
+
 void
 load_interface_components(void)
 /**
