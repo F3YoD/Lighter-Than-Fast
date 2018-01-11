@@ -129,8 +129,6 @@ play_game(void)
             wait_key_press(-1);
             mchoice = CONTINUE_GAME;
             show_map = true;
-
-            continue;
         }
         else if (show_map)
         {
@@ -183,15 +181,17 @@ play_game(void)
                 foe_max_health = foe->health;
                 foe_max_shield = foe->shield;
                 choice_node = 0;
+                show_map = false;
             }
-
-            continue;
         }
 
-        SDL_RenderPresent(renderer);
+        bool poll_and_render = !show_map && msg_counter >= NB_DIALOGS;
+
+        if (poll_and_render)
+            SDL_RenderPresent(renderer);
 
         // Main interactions treatment
-        while (SDL_PollEvent(&event))
+        while (SDL_PollEvent(&event) && poll_and_render)
         {
             if (event.type == SDL_QUIT)
             {
