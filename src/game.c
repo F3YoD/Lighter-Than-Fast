@@ -48,10 +48,11 @@ play_game(void)
             }
             else if (event.type == SDL_KEYUP)
             {
+                if (show_map && foe) show_map = false;
+
                 switch (event.key.keysym.sym)
                 {
-                case SDLK_ESCAPE:
-                case SDLK_TAB:
+                case SDLK_ESCAPE: case SDLK_TAB:
                     show_menu = true;
                     break;
                 case SDLK_m:
@@ -60,26 +61,48 @@ play_game(void)
                 case SDLK_h:
                     show_help = !show_help;
                     break;
-                case SDLK_UP:
-                case SDLK_k:
-                    if (foe && foe->is_shop)
+                case SDLK_UP: case SDLK_k:
+                    if (show_map)
+                    {
+                        if (!foe)
+                        {
+                            choice_node = (choice_node + height_index[current_col] - 1) % height_index[current_col];
+                        }
+                    }
+                    else if (foe && foe->is_shop)
+                    {
                         schoice = (schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
+                    }
                     else if (foe)
+                    {
                         cchoice = (cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
+                    }
                     break;
-                case SDLK_DOWN:
-                case SDLK_j:
-                    if (foe && foe->is_shop)
+                case SDLK_DOWN: case SDLK_j:
+                    if (show_map)
+                    {
+                        if (!foe)
+                        {
+                            choice_node = (choice_node + 1) % height_index[current_col];
+                        }
+                    }
+                    else if (foe && foe->is_shop)
+                    {
                         schoice = (schoice + 1) % NB_CHOICES_SHOP;
+                    }
                     else if (foe)
+                    {
                         cchoice = (cchoice + 1) % NB_CHOICES_COMBAT;
+                    }
                     break;
-                case SDLK_RETURN:
-                case SDLK_RETURN2:
-                case SDLK_KP_ENTER:
-                case SDLK_SPACE:
-                case SDLK_KP_SPACE:
-                    if (foe && foe->is_shop)
+                case SDLK_RETURN: case SDLK_RETURN2: case SDLK_KP_ENTER:
+                case SDLK_SPACE: case SDLK_KP_SPACE:
+                    if (show_map)
+                    {
+                        if (!foe) node_chosen = true;
+                    }
+                    else if (foe && foe->is_shop)
+                    {
                         switch (schoice)
                         {
                         case SHOP_HEALTH:
@@ -95,7 +118,9 @@ play_game(void)
                         default:
                             break;
                         }
+                    }
                     else if (foe)
+                    {
                         switch (cchoice)
                         {
                         case COMBAT_ATTACK:
@@ -115,6 +140,7 @@ play_game(void)
                         default:
                             break;
                         }
+                    }
                     break;
     #ifdef DEBUG
                 case SDLK_q:
@@ -231,54 +257,13 @@ play_game(void)
         else if (show_map)
         {
             display_map(map, map_length, height_index, current_col, choice_node);
-
-            // Choose a node
-            valid_input = false;
-            while (!valid_input)
-            {
-                SDL_WaitEvent(&event);
-                if (event.type != SDL_KEYUP)
-                    continue;
-                node_chosen = false;
-                valid_input = true;
-                switch (event.key.keysym.sym)
-                {
-                case SDLK_RETURN:
-                case SDLK_RETURN2:
-                case SDLK_KP_ENTER:
-                case SDLK_SPACE:
-                case SDLK_KP_SPACE:
-                    if (!foe)
-                        node_chosen = true;
-                    show_map = false;
-                    break;
-                case SDLK_DOWN:
-                case SDLK_j:
-                    if (!foe)
-                        choice_node = (choice_node + 1) % height_index[current_col];
-                    break;
-                case SDLK_UP:
-                case SDLK_k:
-                    if (!foe)
-                        choice_node = (choice_node + height_index[current_col] - 1) % height_index[current_col];
-                    break;
-                case SDLK_ESCAPE:
-                case SDLK_m:
-                    if (foe)
-                        show_map = false;
-                    break;
-                default:
-                    valid_input = false;
-                    break;
-                }
-            }
-
             if (node_chosen)
             {
                 foe = load_foe(map, choice_node, current_col, height_index[current_col]);
                 foe_max_health = foe->health;
                 foe_max_shield = foe->shield;
                 choice_node = 0;
+                show_map = false;
             }
         }
         else
