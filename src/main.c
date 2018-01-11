@@ -38,7 +38,7 @@ main(void)
     check_SDL(window);
 
     // Create renderer
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
     check_SDL(renderer);
 
     // Load fonts
