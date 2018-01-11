@@ -224,22 +224,33 @@ display_fake_loading(unsigned miliseconds)
  */
 {
     SDL_Color white = { 0xFF, 0xFF, 0xFF, SDL_ALPHA_OPAQUE };
-    SDL_Point pts[][2] = {
-        { { 438, 459 }, { 438, 522 } },
-        { { 489, 478 }, { 489, 542 } },
-        { { 534, 478 }, { 534, 542 } },
-        { { 585, 459 }, { 585, 522 } }
-    };
+    SDL_Point pts[4][2];
 
     unsigned int endtime = SDL_GetTicks() + miliseconds;
 
     // Prepare shuttle symbol
     SDL_Texture *shuttle = load_texture("../assets/images/big_shuttle_white.png");
-    SDL_Rect shuttle_rect = rect_from_texture(shuttle, 437, 238);
+    SDL_Rect shuttle_rect = rect_from_texture(shuttle, WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2);
+    shuttle_rect.x -= shuttle_rect.w / 2;
+    shuttle_rect.y -= shuttle_rect.h / 2;
 
     // Prepare "Loading..." message
     SDL_Texture *load_msg = create_txt(font, "Loading...", white);
-    SDL_Rect load_rect = rect_from_texture(load_msg, 773, 688);
+    SDL_Rect load_rect = rect_from_texture(load_msg, WINDOW_WIDTH / 2, 4 * WINDOW_HEIGHT / 5);
+    load_rect.x -= load_rect.w / 2;
+    load_rect.y -= load_rect.h / 2;
+
+    // Prepare lines under shuttle symbol
+    for (int i = 0; i < 4; i++)
+    {
+        int lx = WINDOW_WIDTH / 2 - (-3 + 2 * i) * shuttle_rect.w / 8;
+        int ly1 = shuttle_rect.y + shuttle_rect.h + WINDOW_HEIGHT / 70;
+        if (i == 1 || i == 2) ly1 += 20;
+        int ly2 = ly1 + WINDOW_HEIGHT / 14;
+
+        pts[i][0] = (SDL_Point){ lx, ly1 };
+        pts[i][1] = (SDL_Point){ lx, ly2 };
+    }
 
     int i = 0;
     while (SDL_GetTicks() < endtime)
