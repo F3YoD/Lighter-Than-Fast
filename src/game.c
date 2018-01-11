@@ -43,90 +43,93 @@ play_game(void)
                 break;
             }
             else if (show_dialog && event.type == SDL_KEYUP)
-                msg_counter += 1;
-            else if (event.type != SDL_KEYUP)
-                continue;
-
-            switch (event.key.keysym.sym)
             {
-            case SDLK_ESCAPE:
-            case SDLK_TAB:
-                show_menu = true;
-                break;
-            case SDLK_m:
-                show_map = !show_map;
-                break;
-            case SDLK_h:
-                show_help = !show_help;
-                break;
-            case SDLK_UP:
-            case SDLK_k:
-                if (foe && foe->is_shop)
-                    schoice = (schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
-                else if (foe)
-                    cchoice = (cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
-                break;
-            case SDLK_DOWN:
-            case SDLK_j:
-                if (foe && foe->is_shop)
-                    schoice = (schoice + 1) % NB_CHOICES_SHOP;
-                else if (foe)
-                    cchoice = (cchoice + 1) % NB_CHOICES_COMBAT;
-                break;
-            case SDLK_RETURN:
-            case SDLK_RETURN2:
-            case SDLK_KP_ENTER:
-            case SDLK_SPACE:
-            case SDLK_KP_SPACE:
-                if (foe && foe->is_shop)
-                    switch (schoice)
-                    {
-                    case SHOP_HEALTH:
-                        break;
-                    case SHOP_SCRAPS:
-                        break;
-                    case SHOP_LEAVE:
-                        destroy(&foe);
-                        show_map = true;
-                        node_chosen = false;
-                        current_col += 1;
-                        break;
-                    default:
-                        break;
-                    }
-                else if (foe)
-                    switch (cchoice)
-                    {
-                    case COMBAT_ATTACK:
-                        shoot(foe, self, 0);
-                        break;
-                    case COMBAT_REPAIR:
-                        repair(self, self_max_health);
-                        break;
-                    case COMBAT_FLEE:
-                        flee(self);
-                        destroy(&foe);
-                        show_map = true;
-                        node_chosen = false;
-                        current_col += 1;
-                        cchoice = COMBAT_ATTACK;
-                        break;
-                    default:
-                        break;
-                    }
-                break;
-#ifdef DEBUG
-            case SDLK_q:
-                mchoice = QUIT_GAME;
-                break;
-            case SDLK_n:
-                mchoice = NEW_GAME;
-                break;
-#endif
-            default:
-                break;
+                msg_counter += 1;
+            }
+            else if (event.type == SDL_KEYUP)
+            {
+                switch (event.key.keysym.sym)
+                {
+                case SDLK_ESCAPE:
+                case SDLK_TAB:
+                    show_menu = true;
+                    break;
+                case SDLK_m:
+                    show_map = !show_map;
+                    break;
+                case SDLK_h:
+                    show_help = !show_help;
+                    break;
+                case SDLK_UP:
+                case SDLK_k:
+                    if (foe && foe->is_shop)
+                        schoice = (schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
+                    else if (foe)
+                        cchoice = (cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
+                    break;
+                case SDLK_DOWN:
+                case SDLK_j:
+                    if (foe && foe->is_shop)
+                        schoice = (schoice + 1) % NB_CHOICES_SHOP;
+                    else if (foe)
+                        cchoice = (cchoice + 1) % NB_CHOICES_COMBAT;
+                    break;
+                case SDLK_RETURN:
+                case SDLK_RETURN2:
+                case SDLK_KP_ENTER:
+                case SDLK_SPACE:
+                case SDLK_KP_SPACE:
+                    if (foe && foe->is_shop)
+                        switch (schoice)
+                        {
+                        case SHOP_HEALTH:
+                            break;
+                        case SHOP_SCRAPS:
+                            break;
+                        case SHOP_LEAVE:
+                            destroy(&foe);
+                            show_map = true;
+                            node_chosen = false;
+                            current_col += 1;
+                            break;
+                        default:
+                            break;
+                        }
+                    else if (foe)
+                        switch (cchoice)
+                        {
+                        case COMBAT_ATTACK:
+                            shoot(foe, self, 0);
+                            break;
+                        case COMBAT_REPAIR:
+                            repair(self, self_max_health);
+                            break;
+                        case COMBAT_FLEE:
+                            flee(self);
+                            destroy(&foe);
+                            show_map = true;
+                            node_chosen = false;
+                            current_col += 1;
+                            cchoice = COMBAT_ATTACK;
+                            break;
+                        default:
+                            break;
+                        }
+                    break;
+    #ifdef DEBUG
+                case SDLK_q:
+                    mchoice = QUIT_GAME;
+                    break;
+                case SDLK_n:
+                    mchoice = NEW_GAME;
+                    break;
+    #endif
+                default:
+                    break;
+                }
             }
         }
+
         SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
         next_loop_time = SDL_GetTicks() + 20; // 50 fps
@@ -219,16 +222,12 @@ play_game(void)
         show_dialog = msg_counter < NB_DIALOGS;
         if (show_dialog)
         {
-            /* display_dialog(msg_counter); */
-            SDL_Texture *t = tex_dialog(msg_counter);
-            SDL_RenderCopy(renderer, t, NULL, NULL);
-            SDL_RenderPresent(renderer);
-            SDL_DestroyTexture(t);
+            display_dialog(msg_counter);
 
             mchoice = CONTINUE_GAME;
             show_map = true;
 
-            SDL_RenderClear(renderer);
+            /* SDL_RenderClear(renderer); */
         }
         else if (show_map)
         {

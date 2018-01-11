@@ -35,7 +35,7 @@ load_interface_components(void)
     if (loaded) return;
 
     bg_texture = load_img(BACKGROUND_IMAGE);
-    bg_overlay = load_img("../assets/images/1px_overlay.png");
+    bg_overlay = load_img("../assets/images/1px_overlay_copie.png");
     continue_texture = texture_from_text(font, 1, continue_msg_rect, "Appuyez sur une touche pour continuer...", white, ALIGN_RIGHT);
     alien_pointer = load_img("../assets/images/alien1.png");
 
@@ -118,7 +118,7 @@ init_rectangles(void)
 
     // FIXME inner_overlay_rect was formerly known as base_overlay_rect
     inner_overlay_rect = (SDL_Rect){ WINDOW_WIDTH / 8, WINDOW_HEIGHT / 4, 3 * WINDOW_WIDTH / 4, WINDOW_WIDTH / 2 };
-    continue_msg_rect = (SDL_Rect){ 5 * WINDOW_WIDTH / 6, 3 * WINDOW_HEIGHT / 4, 1, 1 };
+    continue_msg_rect = rect_from_texture(continue_texture, 5 * WINDOW_WIDTH / 6, 3 * WINDOW_HEIGHT / 4);
 
     SDL_QueryTexture(alien_pointer, NULL, NULL, &alien_cursor_r.w, &alien_cursor_r.h);
 
@@ -157,7 +157,7 @@ display_map(map_matrix map, unsigned map_length, unsigned short height_index[], 
 
     if (map_texture)
         SDL_DestroyTexture(map_texture);
-    map_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
+    map_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_SetTextureBlendMode(map_texture, SDL_BLENDMODE_BLEND);
     SDL_SetRenderTarget(renderer, map_texture);
 
@@ -271,39 +271,18 @@ display_fake_loading(unsigned miliseconds)
     SDL_RenderClear(renderer);
 }
 
-SDL_Texture *
-tex_dialog(unsigned counter)
-/**
- * Display immersive text.
- */
-{
-    SDL_Texture *t;
-    t = texture_from_text(font, 10, inner_overlay_rect, dialogs[counter], white, ALIGN_LEFT);
-
-    SDL_RenderCopy(renderer, t, NULL, NULL);
-    SDL_RenderCopy(renderer, continue_texture, NULL, NULL);
-
-    SDL_RenderPresent(renderer);
-
-    return t;
-}
-
-
 void
 display_dialog(unsigned counter)
 /**
  * Display immersive text.
  */
 {
-    SDL_RenderClear(renderer);
-    SDL_Texture *t;
+    SDL_Texture *t = texture_from_text(font, 10, inner_overlay_rect, dialogs[counter], white, ALIGN_LEFT);
 
-    SDL_DestroyTexture(dialog_texture);
-
-    t = texture_from_text(font, 10, inner_overlay_rect, dialogs[counter], white, ALIGN_LEFT);
+    render_overlay_bg(NULL, 0);
 
     SDL_RenderCopy(renderer, t, NULL, NULL);
-    SDL_RenderCopy(renderer, continue_texture, NULL, NULL);
+    SDL_RenderCopy(renderer, continue_texture, NULL, &continue_msg_rect);
 
     SDL_RenderPresent(renderer);
 
