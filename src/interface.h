@@ -15,6 +15,8 @@
  *   render_* functions don't
  */
 
+void render_projectil(bool, bool*); 
+
 void load_interface_components(void);
 void free_interface_components(void);
 
