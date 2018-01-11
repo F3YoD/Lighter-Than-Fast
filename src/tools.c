@@ -67,7 +67,7 @@ create_txt(TTF_Font *font, char *str, SDL_Color color)
 }
 
 SDL_Texture *
-texture_from_text(TTF_Font *font, unsigned short line_spacing, SDL_Rect origin, char *str, SDL_Color color, h_align align)
+texture_from_text(TTF_Font *font, unsigned short line_spacing, SDL_Rect origin, char *str, SDL_Color color, x_align align)
 {
     SDL_Texture *texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, WINDOW_WIDTH, WINDOW_HEIGHT);
     SDL_Texture *t = NULL;
