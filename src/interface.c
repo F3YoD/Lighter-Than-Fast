@@ -208,6 +208,16 @@ display_map(map_matrix map, unsigned map_length, unsigned short height_index[], 
     }
 
     SDL_SetRenderTarget(renderer, NULL);
+
+    if (prev_map == NULL)
+    {
+        SDL_RenderCopy(renderer, map_texture, NULL, NULL);
+        SDL_RenderPresent(renderer);
+    }
+
+    prev_map = map;
+    prev_col = current_col;
+    prev_node = choice_node;
 }
 
 void
