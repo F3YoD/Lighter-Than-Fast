@@ -9,12 +9,10 @@
 #include "tools.h"
 
 #define FIRAMONO_PATH "../assets/fonts/firamono.ttf"
-#define FONTAWESOME_PATH "../assets/fonts/fontawesome.ttf"
 
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
 TTF_Font *font = NULL;
-TTF_Font *big_symbol_font = NULL;
 
 int
 main(void)
@@ -46,9 +44,6 @@ main(void)
     // Load fonts
     font = TTF_OpenFont(FIRAMONO_PATH, 22);
     check_TTF(font);
-    // TODO check if we ever use this one
-    big_symbol_font = TTF_OpenFont(FONTAWESOME_PATH, 142);
-    check_TTF(big_symbol_font);
 
     play_game();
 

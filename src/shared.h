@@ -18,6 +18,5 @@
 
 extern SDL_Renderer *renderer;
 extern TTF_Font *font;
-extern TTF_Font *big_symbol_font;
 
 #endif

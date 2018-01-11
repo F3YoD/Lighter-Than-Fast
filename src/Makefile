@@ -8,7 +8,6 @@ O = ../obj
 B = ../bin
 A = ../assets
 FONTS = $(A)/fonts/firamono.ttf
-FONTS = $(A)/fonts/fontawesome.ttf
 OBJECTS = $(patsubst %.c, $(O)/%.o, $(wildcard *.c))
 DEBUG_MARKER = $(O)/.DEBUG_MARKER
 RELEASE_MARKER = $(O)/.RELEASE_MARKER

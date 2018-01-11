@@ -32,14 +32,6 @@ mkdir -p $FONTS_FOLDER
 if [ ! -e $FONTS_FOLDER/firamono.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading font Fira Mono..."
-    $download --show-progress firamono.ttf $FIRAMONO_URL || $download firamono.ttf $FIRAMONO_URL
-fi
-)
-
-(
-if [ ! -e $FONTS_FOLDER/fontawesome.ttf ]; then
-    cd $FONTS_FOLDER
-    echo "Downloading font FontAwesome..."
-    $download --show-progress fontawesome.ttf $FA_URL || $download fontawesome.ttf $FA_URL
+    $download firamono.ttf $FIRAMONO_URL
 fi
 )

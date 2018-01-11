@@ -216,8 +216,6 @@ play_game(void)
         if (show_help)
             render_help_box();
 
-        SDL_RenderPresent(renderer);
-
         show_dialog = msg_counter < NB_DIALOGS;
         if (show_dialog)
         {
@@ -283,7 +281,7 @@ play_game(void)
         }
         else
         {
-            /* SDL_RenderPresent(renderer); */
+            SDL_RenderPresent(renderer);
         }
 
 
