@@ -54,8 +54,8 @@ $(FONTS):
 
 # Cleaning
 clean:
-	@rm -rf $(O) $(B) $(A)/fonts $(A)/midi
+	@rm -rf $(O) $(B) $(A)/fonts $(A)/midi $(EXEC)
 
 cleanobj:
 	@rm -rf $(O)
-	@rm $(EXEC)
+	@rm -f $(EXEC)
