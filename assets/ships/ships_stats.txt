@@ -1,22 +1,27 @@
-Vaisseau de Bernard,0,100,100,100,100,5,10,0.2,50,../assets/images/ship_enemy1.%d.png
-Vaisseau d'Albert,1,100,100,100,100,0,0,0.2,50,../assets/images/ship_enemy1.%d.png
-Vaisseau de Brigite,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
+Bernard,0,100,100,100,100,5,10,0.2,50,../assets/images/ship_enemy2.%d.png
+Albert,1,100,100,100,100,0,0,0.2,50,../assets/images/vaisseau_circulaire.%d.png
+Brigite,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy5.%d.png
 Jean-Hubert de la Moria,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
 Hubert Cumberdale,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Roger,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
+Roger,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy3.%d.png
 Caroline,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-BRODOG,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
+BRODOG,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy4.%d.png
 Random Covenant,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Lorem,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Ipsum,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Dolor,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
+Lorem,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy3.%d.png
+Ipsum,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy2.%d.png
+Dolor,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy4.%d.png
 Sit Amet,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Consectetur,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
+Consectetur,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy5.%d.png
 Adipiscing Elit,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
 Opus Dei,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Ergo Sum,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Nuncere,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Store Citizen,1,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-Gruth,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
+Ergo Sum,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy4.%d.png
+Nuncere,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy2.%d.png
+Store Citizen,1,200,100,100,100,9,17,0.2,100,../assets/images/vaisseau_circulaire.%d.png
+Gruth,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy2.%d.png
 Lost Chewbie,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
-
+Stephane le beau,1,100,100,100,100,0,0,0.2,50,../assets/images/vaisseau_circulaire.%d.png
+Bachir de la savane,0,250,500,10,200,5,13,0.5,25,../assets/images/ship_enemy5.%d.png
+Franck le défourailleur,0,100,100,200,325,10,25,0.3,200,../assets/images/ship_enemy3.%d.png
+Le livreur de pizza,1,200,100,100,100,9,17,0.2,100,../assets/images/vaisseau_circulaire.%d.png
+Vaisseau furtif E52,0,200,500,200,59,8,35,0.3,50,../assets/images/ship_enemy5.%d.png
+La sainte pelle,0,150,200,200,150,6,10,0.8,60,../assets/images/Sainte_pelle.%d.png
