@@ -11,10 +11,10 @@ menu(bool can_continue)
     // *** Load background ***
     SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, 0x19);
 
-    SDL_Texture *banner_texture = load_img(BANNER_PATH);
+    SDL_Texture *banner_texture = load_texture(BANNER_PATH);
     SDL_Rect banner_rect = rect_from_texture(banner_texture, 3 * WINDOW_WIDTH / 5, 0);
     SDL_Rect pointer_rect;
-    SDL_Texture *pointer = load_img("../assets/images/alien1.png");
+    SDL_Texture *pointer = load_texture("../assets/images/alien1.png");
     SDL_QueryTexture(pointer, NULL, NULL, &pointer_rect.w, &pointer_rect.h);
 
     // *** Load text ***

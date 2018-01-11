@@ -34,14 +34,14 @@ load_interface_components(void)
     static bool loaded = false;
     if (loaded) return;
 
-    bg_texture = load_img(BACKGROUND_IMAGE);
-    bg_overlay = load_img("../assets/images/1px_overlay.png");
+    bg_texture = load_texture(BACKGROUND_IMAGE);
+    bg_overlay = load_texture("../assets/images/1px_overlay.png");
     continue_texture = texture_from_text(font, 1, continue_msg_rect, "Appuyez sur une touche pour continuer...", white, ALIGN_RIGHT);
-    alien_pointer = load_img("../assets/images/alien1.png");
+    alien_pointer = load_texture("../assets/images/alien1.png");
 
-    red_dot_texture = load_img("../assets/images/red_dot.png");
-    blue_dot_texture = load_img("../assets/images/blue_dot.png");
-    gray_dot_texture = load_img("../assets/images/gray_dot.png");
+    red_dot_texture = load_texture("../assets/images/red_dot.png");
+    blue_dot_texture = load_texture("../assets/images/blue_dot.png");
+    gray_dot_texture = load_texture("../assets/images/gray_dot.png");
 
     health_bar_bg_img = load_image("../assets/images/health_gray.png", 0);
     health_bar_img = load_image("../assets/images/health.png", 0);
@@ -234,7 +234,7 @@ display_fake_loading(unsigned miliseconds)
     unsigned int endtime = SDL_GetTicks() + miliseconds;
 
     // Prepare shuttle symbol
-    SDL_Texture *shuttle = load_img("../assets/images/big_shuttle_white.png");
+    SDL_Texture *shuttle = load_texture("../assets/images/big_shuttle_white.png");
     SDL_Rect shuttle_rect = rect_from_texture(shuttle, 437, 238);
 
     // Prepare "Loading..." message
