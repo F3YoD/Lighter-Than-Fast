@@ -34,7 +34,7 @@ main(void)
     window = SDL_CreateWindow("Lighter Than Fast: Unknown Within",
                               SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               WINDOW_WIDTH, WINDOW_HEIGHT,
-                              SDL_WINDOW_SHOWN /*| SDL_WINDOW_ALLOW_HIGHDPI*/);
+                              SDL_WINDOW_SHOWN);
     check_SDL(window);
 
     // Create renderer

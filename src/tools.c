@@ -25,7 +25,7 @@ wait_key_press(void)
 }
 
 SDL_Texture *
-load_img(char *path)
+load_texture(char *path)
 {
     SDL_Texture *t;
     t = IMG_LoadTexture(renderer, path);

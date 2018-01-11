@@ -26,7 +26,7 @@ int gen_rand(unsigned short int, unsigned short int);
 
 void wait_key_press(void);
 SDL_Texture *create_txt(TTF_Font *, char *, SDL_Color);
-SDL_Texture *load_img(char *);
+SDL_Texture *load_texture(char *);
 SDL_Rect rect_from_texture(SDL_Texture *, unsigned short int, unsigned short int);
 SDL_Texture *texture_from_text(TTF_Font *, unsigned short int, SDL_Rect, char *, SDL_Color, x_align);
 

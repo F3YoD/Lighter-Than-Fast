@@ -12,7 +12,6 @@ play_game(void)
     unsigned short height_index[map_length];
     int choice_node = 0;
     bool node_chosen = false;
-    bool valid_input = false;
 
     // Prepare shuttles
     ship *self = NULL, *foe = NULL;
@@ -257,6 +256,7 @@ play_game(void)
         else if (show_map)
         {
             display_map(map, map_length, height_index, current_col, choice_node);
+
             if (node_chosen)
             {
                 foe = load_foe(map, choice_node, current_col, height_index[current_col]);
