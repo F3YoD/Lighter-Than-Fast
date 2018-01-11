@@ -344,7 +344,8 @@ render_foe(ship *s, int health, int shield)
         prev_s = s;
     }
 
-    render_image_align(s->img, foe_r.x - 200, foe_r.y - 200, ALIGN_BOTTOM, ALIGN_RIGHT);
+    render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);
+    render_image(s->img, foe_r.x, foe_r.y);
     render_bars(s, &foe_r, health, shield, true);
 }
 
@@ -367,7 +368,7 @@ render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
 
     // Define bars positions
     health_x = ship_r->x;
-    health_y = ship_r->y + 10;
+    health_y = ship_r->y + ship_r->h + 10;
 
     shield_x = ship_r->x;
     shield_y = health_y + health_bar_bg_img->height + 2;

@@ -88,7 +88,7 @@ permanently_scale_image(image *img, float scale_x, float scale_y)
 }
 
 void
-render_image_scale_clip_align(image *img, int x, int y, float scale_x, float scale_y, int angle, SDL_Rect *clip_r, v_align v_al, h_align h_al)
+render_image_scale_clip_align(image *img, int x, int y, float scale_x, float scale_y, int angle, SDL_Rect *clip_r, y_align y_al, x_align x_al)
 {
     // FIXME images negatively scaled seem not to render, should use SDL_RenderCopyEx
     SDL_Rect r;
@@ -105,14 +105,14 @@ render_image_scale_clip_align(image *img, int x, int y, float scale_x, float sca
 
     r = (SDL_Rect){ x, y, scale_x * img->width, scale_y * img->height };
 
-    if (h_al)
+    if (x_al)
     {
-        r.x -= (v_al == ALIGN_BOTTOM) ? r.w : r.w / 2;
+        r.x -= (x_al == ALIGN_BOTTOM) ? r.w : (r.w / 2);
     }
 
-    if (v_al)
+    if (y_al)
     {
-        r.y -= (h_al == ALIGN_RIGHT) ? r.h : r.h / 2;
+        r.y -= (y_al == ALIGN_RIGHT) ? r.h : (r.h / 2);
     }
 
     SDL_RenderCopy(renderer, img->textures[img->curr_frame], clip_r, &r);
@@ -121,21 +121,21 @@ render_image_scale_clip_align(image *img, int x, int y, float scale_x, float sca
 void
 free_image(image **img)
 {
-    if (*img && (*img)->textures)
-    {
-        for (int i = 0; i < (*img)->nb_frames; i++)
-        {
-            if ((*img)->textures[i])
-            {
-                SDL_DestroyTexture((*img)->textures[i]);
-            }
-        }
-
-        free((*img)->textures);
-    }
-
     if (*img)
     {
+        if ((*img)->textures)
+        {
+            for (int i = 0; i < (*img)->nb_frames; i++)
+            {
+                if ((*img)->textures[i])
+                {
+                    SDL_DestroyTexture((*img)->textures[i]);
+                }
+            }
+
+            free((*img)->textures);
+        }
+
         free(*img);
     }
 

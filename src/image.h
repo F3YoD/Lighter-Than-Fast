@@ -39,7 +39,7 @@ bool is_animation(image *);
 image *load_image(char *, int);
 void load_frame(image *, int);
 void permanently_scale_image(image *, float, float);
-void render_image_scale_clip_align(image *, int, int, float, float, int, SDL_Rect *, v_align, h_align);
+void render_image_scale_clip_align(image *, int, int, float, float, int, SDL_Rect *, y_align, x_align);
 void free_image(image **);
 
 #endif /* _IMAGE_H */
