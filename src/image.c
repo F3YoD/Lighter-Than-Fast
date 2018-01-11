@@ -107,12 +107,12 @@ render_image_scale_clip_align(image *img, int x, int y, float scale_x, float sca
 
     if (h_al)
     {
-        r.x -= (h_al == ALIGN_BOTTOM) ? r.w : r.w / 2;
+        r.x -= (v_al == ALIGN_BOTTOM) ? r.w : r.w / 2;
     }
 
     if (v_al)
     {
-        r.y -= (v_al == ALIGN_RIGHT) ? r.h : r.h / 2;
+        r.y -= (h_al == ALIGN_RIGHT) ? r.h : r.h / 2;
     }
 
     SDL_RenderCopy(renderer, img->textures[img->curr_frame], clip_r, &r);

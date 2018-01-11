@@ -35,7 +35,7 @@ load_interface_components(void)
     if (loaded) return;
 
     bg_texture = load_img(BACKGROUND_IMAGE);
-    bg_overlay = load_img("../assets/images/1px_overlay_copie.png");
+    bg_overlay = load_img("../assets/images/1px_overlay.png");
     continue_texture = texture_from_text(font, 1, continue_msg_rect, "Appuyez sur une touche pour continuer...", white, ALIGN_RIGHT);
     alien_pointer = load_img("../assets/images/alien1.png");
 
