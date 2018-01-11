@@ -34,6 +34,7 @@ play_game(void)
 
     while (mchoice != QUIT_GAME)
     { // Game loop, everything happens here
+        SDL_SetRenderDrawColor(renderer, 0x06, 0x00, 0x0B, SDL_ALPHA_OPAQUE);
         SDL_RenderClear(renderer);
         next_loop_time = SDL_GetTicks() + 20; // 50 fps
 

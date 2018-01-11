@@ -121,16 +121,23 @@ render_image_scale_clip_align(image *img, int x, int y, float scale_x, float sca
 void
 free_image(image **img)
 {
-    for (int i = 0; i < (*img)->nb_frames; i++)
+    if (*img && (*img)->textures)
     {
-        if ((*img)->textures[i])
+        for (int i = 0; i < (*img)->nb_frames; i++)
         {
-            SDL_DestroyTexture((*img)->textures[i]);
+            if ((*img)->textures[i])
+            {
+                SDL_DestroyTexture((*img)->textures[i]);
+            }
         }
+
+        free((*img)->textures);
     }
 
-    free((*img)->textures);
-    free(*img);
+    if (*img)
+    {
+        free(*img);
+    }
 
     *img = NULL;
 }
