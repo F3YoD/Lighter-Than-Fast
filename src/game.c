@@ -54,8 +54,8 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 
 	// on cree un rayon enemy
 	SDL_Rect rayon_enemy;
-	rayon_enemy.x = 800;
-	rayon_enemy.y = 300;
+	rayon_enemy.x = 1000;
+	rayon_enemy.y = 600;
 	rayon_enemy.w = 0;
 	rayon_enemy.h = 10;
 		// ========================================= //
@@ -143,7 +143,8 @@ void game(SDL_Surface * pEcran, char pNom[20]){
 		init_menu_combat();
 		combat(my_ship, enemy, &choi, ev, &clique2, &action, &pos_tir, &my_turn);
 		if(!my_turn && enemy->hp > 0){
-			attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship,enemy);
+			// attaque_rayon_enemy(&rayon_enemy, &my_turn, my_ship,enemy);
+			printf("attack\n");
 		}
 		if(enemy->hp <= 0){
 			pos_enemy.x++;

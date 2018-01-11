@@ -19,8 +19,8 @@ void menu(int * pState){
 	///fin variables
 
 	///affichage menu
-	texture = IMG_LoadTexture(renderer, "../assets/images/side_banner.png");
-	posFond.x = 700; posFond.y = 0;
+	texture = IMG_LoadTexture(renderer, "../assets/images/menu2.png");
+	posFond.x = 0; posFond.y = 0;
 	SDL_QueryTexture(texture, NULL, NULL, &posFond.w, &posFond.h);
 	SDL_RenderCopy(renderer, texture, NULL, &posFond);
 	///fin affichage menu

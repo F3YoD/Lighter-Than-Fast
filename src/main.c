@@ -19,7 +19,7 @@
 #define ETAT_QUIT 2
 
 int main(int argc, char * argv[]){
-	srand(time(NULL));
+	// srand(time(NULL));
    	char nom[40];
     	printf("saisir nom (sans espaces) : ");
     	scanf("%s", nom);
@@ -73,6 +73,10 @@ int main(int argc, char * argv[]){
     switch(State){
     case ETAT_GAME :
         printf("***** DEBUT DE PARTIE *****\n\n\n");
+
+	// on lance une animation de chargement ..:wq
+	//:
+
         game(ecran, nom);
         break;
    case ETAT_QUIT:

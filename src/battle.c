@@ -23,8 +23,11 @@ void shoot(ship_t *s1, ship_t *s2, const int shoottype)
     }
 
     // Determine inflicted damage
+    //static int touch_chance; 
     int touch_chance = CreeAlea(0, 100);
+    //static int damage;
     int damage = CreeAlea(damage_min, damage_max);
+    
     if (touch_chance > s2->dodge_score)
     {
         if (s2->shield < damage)
@@ -218,13 +221,13 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 	
 	/// attaque ennemi
 	static SDL_Rect rayon_enemy;
-	rayon_enemy.x = 500;
-	rayon_enemy.y = 0;
+	rayon_enemy.x = 800;
+	rayon_enemy.y = 300;
 
 	if (!mon_tour && pPirate->hp > 0){
 		attaque_rayon_enemy(&rayon_enemy, &mon_tour, pPlayer, pPirate);
 	}else{
-		// on affiche le vaisseau a:wq
+		// on affiche le vaisseau
 		//
 	}
 
@@ -241,7 +244,7 @@ void attaque_rayon_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * pl
 	if(pRayon_enemy->h < 200){
 		pRayon_enemy->h += 2;
 		pRayon_enemy->w -= 20; 
-		pRayon_enemy->y--;
+		pRayon_enemy->y -= 1;
 		SDL_SetRenderDrawColor(renderer, 150,0,255,255);
 		SDL_RenderFillRect(renderer, &(*pRayon_enemy));
 	}
@@ -249,7 +252,7 @@ void attaque_rayon_enemy(SDL_Rect *pRayon_enemy, bool *pTour, player_ship_t * pl
 		*pTour = true;
 		pRayon_enemy->h = 10;
 		pRayon_enemy->w = 0;
-		pRayon_enemy->y = 300;
+		pRayon_enemy->y = 800;
 		shoot(pPirate,&player->ship,1);
 	}
 }
