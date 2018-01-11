@@ -335,7 +335,7 @@ render_foe(ship *s, int health, int shield)
         scaled = true;
     }
 
-    render_image_scale(s->img, foe_r.x, foe_r.y, -1, 1);
+    render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);
     render_bars(s, &foe_r, health, shield, true);
 }
 

@@ -30,7 +30,7 @@ load_self(void)
 {
     ship *s = (ship *)malloc(sizeof(ship));
 
-    strlcpy(s->name, "UNSC Yvan", 50);
+    strncpy(s->name, "UNSC Yvan", 50);
     s->is_shop = false;
     s->health = 100;
     s->shield = 50;

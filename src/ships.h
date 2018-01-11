@@ -3,7 +3,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#ifdef __MACH__
 #include <string.h>
+#else
+#include <bsd/string.h>
+#endif
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 

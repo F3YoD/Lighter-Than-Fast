@@ -9,7 +9,7 @@ play_game(void)
     SDL_RenderClear(renderer);
 
     // Map
-    map_t map = NULL;
+    map_matrix map = NULL;
     unsigned short map_length = 6, map_max_height = 4;
     unsigned short height_index[map_length];
     int choice_node = 0;
@@ -17,7 +17,7 @@ play_game(void)
     bool valid_input = false;
 
     // Prepare shuttles
-    ship_t *self = NULL, *foe = NULL;
+    ship *self = NULL, *foe = NULL;
     int self_max_health, foe_max_health, self_max_shield, foe_max_shield;
 
     // Gameplay
