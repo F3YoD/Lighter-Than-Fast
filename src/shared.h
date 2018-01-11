@@ -8,7 +8,7 @@
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
 
-#define BACKGROUND_IMAGE "../assets/images/gameFond1.jpg"
+#define BACKGROUND_IMAGE "../assets/images/starbg.jpg"
 #define SELF_SHIP_IMAGE  "../assets/images/player%d.png"
 #define BOSS_SHIP_IMAGE  "../assets/images/boss%d.png"
 

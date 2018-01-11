@@ -381,7 +381,6 @@ render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
         shield_clip.x += shield_bar_bg_img->width - shield_clip.w;
     }
 
-    /* int scale_x = reversed ? -1 : 1; */
     x_align x_al = reversed ? ALIGN_RIGHT : ALIGN_LEFT;
 
     // Render bars background
