@@ -129,6 +129,8 @@ play_game(void)
             wait_key_press(-1);
             mchoice = CONTINUE_GAME;
             show_map = true;
+
+            continue;
         }
         else if (show_map)
         {
@@ -182,15 +184,14 @@ play_game(void)
                 foe_max_shield = foe->shield;
                 choice_node = 0;
             }
+
+            continue;
         }
 
-        bool poll_and_render = !show_map && msg_counter >= NB_DIALOGS;
-
-        if (poll_and_render)
-            SDL_RenderPresent(renderer);
+        SDL_RenderPresent(renderer);
 
         // Main interactions treatment
-        while (SDL_PollEvent(&event) && poll_and_render)
+        while (SDL_PollEvent(&event))
         {
             if (event.type == SDL_QUIT)
             {
@@ -305,9 +306,9 @@ play_game(void)
 
 #endif
         // Wait before rendering next frame
-        /* next_loop_delay = next_loop_time - SDL_GetTicks(); */
-        /* if (next_loop_delay > 0) */
-        /*     SDL_Delay(next_loop_delay); */
+        next_loop_delay = next_loop_time - SDL_GetTicks();
+        if (next_loop_delay > 0)
+            SDL_Delay(next_loop_delay);
     }
 
     // Leave game

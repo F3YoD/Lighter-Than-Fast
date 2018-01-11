@@ -9,7 +9,6 @@ B = ../bin
 A = ../assets
 FONTS = $(A)/fonts/firamono.ttf
 FONTS = $(A)/fonts/fontawesome.ttf
-MIDI_EXAMPLE = $(A)/midi/1\ Space\ Cruise\ (Title).mid
 OBJECTS = $(patsubst %.c, $(O)/%.o, $(wildcard *.c))
 DEBUG_MARKER = $(O)/.DEBUG_MARKER
 RELEASE_MARKER = $(O)/.RELEASE_MARKER
@@ -33,7 +32,7 @@ $(DEBUG_MARKER) $(RELEASE_MARKER):
 
 
 # General
-binary: $(O) $(FONTS) $(MIDI_EXAMPLE) $(B) $(OBJECTS)
+binary: $(O) $(FONTS) $(B) $(OBJECTS)
 	$(CC) $(CFLAGS) -o $(B)/$(NAME) $(OBJECTS) $(SDLFLAGS)
 	@echo "Executable file created in "$(B)"/"$(NAME)
 

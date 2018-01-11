@@ -25,11 +25,11 @@ fi
 
 
 # Create folders in case they don't exist
-mkdir -p $FONTS_FOLDER $MIDI_FOLDER
+mkdir -p $FONTS_FOLDER
 
 ( # Subshell to ease use of `cd`
 # Download & extract fonts, and remove temp files
-if [ ! -e $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
+if [ ! -e $FONTS_FOLDER/firamono.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading font Fira Mono..."
     $download --show-progress firamono.ttf $FIRAMONO_URL || $download firamono.ttf $FIRAMONO_URL
@@ -41,15 +41,5 @@ if [ ! -e $FONTS_FOLDER/fontawesome.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading font FontAwesome..."
     $download --show-progress fontawesome.ttf $FA_URL || $download fontawesome.ttf $FA_URL
-fi
-)
-
-(
-if [[ "$(ls $MIDI_FOLDER)" == "" ]]; then
-    cd $MIDI_FOLDER
-    echo "Downloading MIDI files..."
-    $download --show-progress midi.zip $MIDI_URL || $download midi.zip $MIDI_URL
-    unzip midi.zip
-    rm -r midi.zip
 fi
 )

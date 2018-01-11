@@ -126,7 +126,7 @@ init_rectangles(void)
 
     self_r = (SDL_Rect){ .x = WINDOW_WIDTH / 20, .y = 4 * WINDOW_HEIGHT / 7 };
 
-    foe_r = (SDL_Rect){ .x = 19 * WINDOW_WIDTH / 20, .y = 2 * WINDOW_HEIGHT / 7 };
+    foe_r = (SDL_Rect){ .x = 10 * WINDOW_WIDTH / 20, .y = 2 * WINDOW_HEIGHT / 7 };
 
     belongings_r = (SDL_Rect){ .x = 60, .y = 60 };
 
@@ -315,10 +315,13 @@ render_self(ship *s, int health, int shield)
  */
 {
     static bool scaled;
-    if (!scaled)
+    static ship *prev_s;
+
+    if (!scaled && prev_s != s)
     {
         permanently_scale_image(s->img, 6, 6);
         scaled = true;
+        prev_s = s;
     }
 
     render_image_align(s->img, self_r.x, self_r.y, ALIGN_BOTTOM, ALIGN_LEFT);
@@ -341,7 +344,7 @@ render_foe(ship *s, int health, int shield)
         prev_s = s;
     }
 
-    render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);
+    render_image_align(s->img, foe_r.x - 200, foe_r.y - 200, ALIGN_BOTTOM, ALIGN_RIGHT);
     render_bars(s, &foe_r, health, shield, true);
 }
 

@@ -92,6 +92,7 @@ destroy(ship **s)
 {
     if (*s)
     {
+        free_image(&(*s)->img);
         free(*s);
         *s = NULL;
     }
