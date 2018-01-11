@@ -221,7 +221,7 @@ void combat(player_ship_t *pPlayer, ship_t *pPirate, int *pChoi, SDL_Event pEv, 
 	rayon_enemy.x = 500;
 	rayon_enemy.y = 0;
 
-	if (!mon_tour && pPirate->ship.hp > 0){
+	if (!mon_tour && pPirate->hp > 0){
 		attaque_rayon_enemy(&rayon_enemy, &mon_tour, pPlayer, pPirate);
 	}else{
 		// on affiche le vaisseau a:wq
