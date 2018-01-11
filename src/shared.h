@@ -5,8 +5,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 
-#define WINDOW_WIDTH 1024
-#define WINDOW_HEIGHT 768
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
 #define BACKGROUND_IMAGE "../assets/images/starbg.jpg"
 #define SELF_SHIP_IMAGE  "../assets/images/player%d.png"
