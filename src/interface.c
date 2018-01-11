@@ -212,6 +212,8 @@ display_map(map_matrix map, unsigned map_length, unsigned short height_index[], 
     SDL_RenderCopy(renderer, map_texture, NULL, NULL);
 
     SDL_RenderPresent(renderer);
+
+    SDL_DestroyTexture(map_texture);
 }
 
 void
@@ -329,10 +331,13 @@ render_foe(ship *s, int health, int shield)
  */
 {
     static bool scaled;
-    if (!scaled)
+    static ship *prev_s;
+
+    if (!scaled || prev_s != s)
     {
         permanently_scale_image(s->img, 8, 8);
         scaled = true;
+        prev_s = s;
     }
 
     render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);

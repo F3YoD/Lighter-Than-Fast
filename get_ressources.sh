@@ -15,7 +15,7 @@ MIDI_FOLDER=../assets/midi
 # Initialisation
 # Look for wget
 if [ "$(which wget)" != "" ]; then
-    download="wget -q --show-progress -O"
+    download="wget -q -O"
 elif [ "$(which curl)" != "" ]; then
     download="curl -o"
 else
@@ -32,7 +32,7 @@ mkdir -p $FONTS_FOLDER $MIDI_FOLDER
 if [ ! -e $FONTS_FOLDER/Inter-UI-Regular.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading font Fira Mono..."
-    $download firamono.ttf $FIRAMONO_URL
+    $download --show-progress firamono.ttf $FIRAMONO_URL || $download firamono.ttf $FIRAMONO_URL
 fi
 )
 
@@ -40,7 +40,7 @@ fi
 if [ ! -e $FONTS_FOLDER/fontawesome.ttf ]; then
     cd $FONTS_FOLDER
     echo "Downloading font FontAwesome..."
-    $download fontawesome.ttf $FA_URL
+    $download --show-progress fontawesome.ttf $FA_URL || $download fontawesome.ttf $FA_URL
 fi
 )
 
@@ -48,7 +48,7 @@ fi
 if [[ "$(ls $MIDI_FOLDER)" == "" ]]; then
     cd $MIDI_FOLDER
     echo "Downloading MIDI files..."
-    $download midi.zip $MIDI_URL
+    $download --show-progress midi.zip $MIDI_URL || $download midi.zip $MIDI_URL
     unzip midi.zip
     rm -r midi.zip
 fi
