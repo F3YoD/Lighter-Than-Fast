@@ -24,6 +24,7 @@ void init_rectangles(void);
 void display_menu(void);
 void display_map(map_matrix, unsigned, unsigned short[], unsigned, unsigned);
 void display_fake_loading(unsigned);
+SDL_Texture *tex_dialog(unsigned);
 void display_dialog(unsigned);
 void display_quit_dialog(void);
 

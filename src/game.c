@@ -219,7 +219,11 @@ play_game(void)
         show_dialog = msg_counter < NB_DIALOGS;
         if (show_dialog)
         {
-            display_dialog(msg_counter);
+            /* display_dialog(msg_counter); */
+            SDL_Texture *t = tex_dialog(msg_counter);
+            SDL_RenderCopy(renderer, t, NULL, NULL);
+            SDL_RenderPresent(renderer);
+            SDL_DestroyTexture(t);
 
             mchoice = CONTINUE_GAME;
             show_map = true;

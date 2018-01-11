@@ -271,6 +271,24 @@ display_fake_loading(unsigned miliseconds)
     SDL_RenderClear(renderer);
 }
 
+SDL_Texture *
+tex_dialog(unsigned counter)
+/**
+ * Display immersive text.
+ */
+{
+    SDL_Texture *t;
+    t = texture_from_text(font, 10, inner_overlay_rect, dialogs[counter], white, ALIGN_LEFT);
+
+    SDL_RenderCopy(renderer, t, NULL, NULL);
+    SDL_RenderCopy(renderer, continue_texture, NULL, NULL);
+
+    SDL_RenderPresent(renderer);
+
+    return t;
+}
+
+
 void
 display_dialog(unsigned counter)
 /**
