@@ -607,7 +607,7 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], int 
 }
 
 void
-render_combat_box(enum combat_choice *choice, ship *self)
+render_combat_box(enum combat_choice *choice, ship *self, unsigned current_col, unsigned map_length)
 /**
  * Render dialog to interact with shops
  */
@@ -630,7 +630,12 @@ render_combat_box(enum combat_choice *choice, ship *self)
     {
         choices_text[i] = (char *)malloc(max_size * sizeof(char));
 
-        if ((i == COMBAT_REPAIR && self->belongings.scraps >= prices[i]) || self->belongings.plasma >= prices[i])
+        bool can_repair = i == COMBAT_REPAIR && self->belongings.scraps >= RULE_COMBAT_REPAIR_COST;
+        bool has_enough_plasma = self->belongings.plasma >= prices[i];
+        bool can_flee = i == COMBAT_FLEE && current_col != map_length - 1 && has_enough_plasma;
+        bool can_attack = i == COMBAT_ATTACK && has_enough_plasma;
+
+        if (can_flee || can_repair || can_attack)
             mask |= 1 << i;
     }
 

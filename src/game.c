@@ -250,7 +250,7 @@ play_game(void)
             }
             else
             {
-                render_combat_box(cchoice, self);
+                render_combat_box(cchoice, self, current_col, map_length);
             }
             // TODO flip a coin to know whether the foe or the player starts
 
@@ -259,6 +259,7 @@ play_game(void)
             {
                 shoot(self, foe, 0);
                 *shooting = true;
+                foes_turn = false;
             }
         }
 
