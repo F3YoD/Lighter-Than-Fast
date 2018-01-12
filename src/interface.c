@@ -509,7 +509,7 @@ render_belongings(ship *s)
 }
 
 void
-render_choices(short nb_choices, char *choices_text[], int *current_choice, int mask, int line_spacing, int overlay_padding)
+render_choices(short nb_choices, char **choices_text, int *current_choice, int mask, int line_spacing, int overlay_padding)
 /**
  * Render a set of choices (expressed by the strings in `choices_text[]') with a cursor.
  * The position of the choices on the screen is given through the `choices_r' structure.
@@ -519,7 +519,6 @@ render_choices(short nb_choices, char *choices_text[], int *current_choice, int 
 {
     static short prev_mask, prev_choice;
     static char **prev_text;
-    static SDL_Rect *prev_choices_r;
 
     static SDL_Rect bg_r, cursor_r;
 
@@ -529,7 +528,7 @@ render_choices(short nb_choices, char *choices_text[], int *current_choice, int 
     }
 
     // (Re)evaluate cursor position if necessary
-    if (!cursor_r.w || prev_choice != *current_choice || prev_choices_r != &game_choices_r)
+    if (!cursor_r.w || prev_choice != *current_choice)
     {
         // Evaluate cursor position
         if (!cursor_r.w)
@@ -542,7 +541,7 @@ render_choices(short nb_choices, char *choices_text[], int *current_choice, int 
     }
 
     // Reload the texture if a parameter changed
-    if (mask != prev_mask || choices_text != prev_text || prev_choices_r != &game_choices_r)
+    if (mask != prev_mask || choices_text != prev_text)
     {
         SDL_Texture *t;
         SDL_Color color;
@@ -571,9 +570,9 @@ render_choices(short nb_choices, char *choices_text[], int *current_choice, int 
                 color = gray;
                 current_choice += 1;
             }
+
             t = create_txt(font, choices_text[i], color);
 
-            // TODO the following line is inefficient, fix it
             r = rect_from_texture(t, r.x, r.y);
             SDL_RenderCopy(renderer, t, NULL, &r);
 
@@ -599,7 +598,6 @@ render_choices(short nb_choices, char *choices_text[], int *current_choice, int 
         // Allow parameters comparision
         prev_mask = mask;
         prev_text = choices_text;
-        prev_choices_r = &game_choices_r;
     }
 
     // Done rendering intermediary texture
@@ -621,13 +619,13 @@ render_combat_box(enum combat_choice *choice, ship *self, unsigned current_col, 
     static short line_spacing = 8;
     int mask = 0;
 
-    short prices[NB_CHOICES_COMBAT]; // TODO define prices
+    short prices[NB_CHOICES_COMBAT];
     prices[COMBAT_ATTACK] = RULE_COMBAT_ATTACK_COST;
     prices[COMBAT_REPAIR] = RULE_COMBAT_REPAIR_COST;
     prices[COMBAT_FLEE] = RULE_COMBAT_FLEE_COST;
 
     const size_t max_size = 32;
-    char *choices_text[NB_CHOICES_SHOP];
+    static char *choices_text[NB_CHOICES_SHOP];
 
     // Constitute mask and perform memory allocation for choices strings
     for (int i = 0; i < NB_CHOICES_SHOP; i++)
@@ -671,7 +669,7 @@ render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
     prices[SHOP_LEAVE] = RULE_SHOP_LEAVE_COST;
 
     const size_t max_size = 32;
-    char *choices_text[NB_CHOICES_SHOP];
+    static char *choices_text[NB_CHOICES_SHOP];
 
     // Constitute mask and perform memory allocation for choices strings
     for (int i = 0; i < NB_CHOICES_SHOP; i++)
