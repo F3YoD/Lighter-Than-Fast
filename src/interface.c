@@ -34,50 +34,62 @@ render_projectile(bool from_enemy, bool *pTir)
  * else it's from the player
  */
 {
-    SDL_Texture *tex_m_e = IMG_LoadTexture(renderer, "../assets/images/enemy_missile.png");
-    SDL_Texture *tex_m_a = IMG_LoadTexture(renderer, "../assets/images/ally_missile.png");
-    static SDL_Rect pos_m_e = { 800, 300, 0, 0 };
-    static SDL_Rect pos_m_a = { 100, 600, 0, 0 };
+    //SDL_Texture *tex_m_e = IMG_LoadTexture(renderer, "../assets/images/enemy_missile.png");
+    //SDL_Texture *tex_m_a = IMG_LoadTexture(renderer, "../assets/images/ally_missile.png");
+    static SDL_Rect pos_m_e = { 100, 300, 1000, 5 };
+    static SDL_Rect pos_m_a = { 800, 600, 150, 5 };
     int x_limite_e = 100;
     int x_limite_a = 800;
 
     if(from_enemy && *pTir)
     {
-        ///////   enemy   //////
+	while (*pTir){
+ 	///////   enemy   //////
 
         // draw enemy's missile
-        SDL_QueryTexture(tex_m_e, NULL, NULL, &pos_m_e.w, &pos_m_e.h);
-        SDL_RenderCopy(renderer, tex_m_e, NULL, &pos_m_e);
+        //SDL_QueryTexture(tex_m_e, NULL, NULL, &pos_m_e.w, &pos_m_e.h);
+        //SDL_RenderCopy(renderer, tex_m_e, NULL, &pos_m_e);
         // update missil
+	SDL_SetRenderDrawColor(renderer, 10, 0, 0, 255);
+	SDL_RenderFillRect(renderer, &pos_m_e);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
         if(pos_m_e.x > x_limite_e)
         {
-            --pos_m_e.x;
+            pos_m_e.x -= 10;
         }
         else
         {
             pos_m_e.x = 800;
             *pTir = !(*pTir);
         }
+	}
     }
     else if(!from_enemy && *pTir)
     {
+	while(*pTir){
         ///////   ally    ///////
-        SDL_QueryTexture(tex_m_a, NULL, NULL, &pos_m_a.w, &pos_m_a.h);
-        SDL_RenderCopy(renderer, tex_m_a, NULL, &pos_m_a);
+        //SDL_QueryTexture(tex_m_a, NULL, NULL, &pos_m_a.w, &pos_m_a.h);
+        //SDL_RenderCopy(renderer, tex_m_a, NULL, &pos_m_a);
         // update missil
-        if(pos_m_a.x < x_limite_a)
+	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	SDL_RenderFillRect(renderer, &pos_m_e);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        
+	if(pos_m_a.x < x_limite_a)
         {
-            ++pos_m_a.x;
+            pos_m_a.x += 10;
         }
         else
         {
-            pos_m_a.x = 800;
+            pos_m_a.x = 100;
             *pTir = !(*pTir);
         }
+	}
     }
 
-    SDL_DestroyTexture(tex_m_e);
-    SDL_DestroyTexture(tex_m_a);
+    // SDL_DestroyTexture(tex_m_e);
+    // SDL_DestroyTexture(tex_m_a);
 }
 
 void
