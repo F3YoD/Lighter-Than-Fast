@@ -406,6 +406,11 @@ render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
     {
         health_clip.h = health_bar_bg_img->height;
         shield_clip.h = shield_bar_bg_img->height;
+
+#ifdef DEBUG
+        s->health -= 10;
+        s->shield -= 10;
+#endif
     }
 
     int health_x, health_y, shield_x, shield_y;
@@ -422,8 +427,8 @@ render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
     shield_clip.w = s->shield * shield_bar_bg_img->width / shield;
     if (reversed)
     {
-        health_clip.x += health_bar_bg_img->width - health_clip.w;
-        shield_clip.x += shield_bar_bg_img->width - shield_clip.w;
+        health_clip.x = health_bar_bg_img->width - health_clip.w;
+        shield_clip.x = shield_bar_bg_img->width - shield_clip.w;
     }
 
     x_align x_al = reversed ? ALIGN_RIGHT : ALIGN_LEFT;

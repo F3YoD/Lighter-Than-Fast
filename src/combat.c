@@ -30,6 +30,7 @@ repair(ship *src, int max_health)
         return;
 
     src->health += RULE_COMBAT_REPAIR_COST;
+    if (src->health > max_health) src->health = max_health;
     src->belongings.scraps -= RULE_COMBAT_REPAIR_COST;
 }
 
@@ -56,10 +57,7 @@ exchange(ship *dst, ship *src, struct belongings exchanged_goods)
 void
 buy_health(ship *dst, int max_health)
 {
-    if (dst->health >= max_health)
-        return;
-
-    dst->health += RULE_SHOP_HEALTH_BACK;
+    dst->health = dst->health > max_health ? max_health : dst->health + RULE_SHOP_HEALTH_BACK;
     dst->belongings.money -= RULE_SHOP_HEALTH_COST;
 }
 

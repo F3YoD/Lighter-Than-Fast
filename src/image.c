@@ -104,6 +104,11 @@ render_image_scale_clip_align(image *img, int x, int y, float scale_x, float sca
     load_frame(img, img->curr_frame);
 
     r = (SDL_Rect){ x, y, scale_x * img->width, scale_y * img->height };
+    if (clip_r)
+    {
+        r.w = clip_r->w;
+        r.h = clip_r->h;
+    }
 
     if (x_al)
     {
