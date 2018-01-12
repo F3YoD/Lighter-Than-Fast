@@ -39,8 +39,8 @@ load_self(void)
     s->belongings.plasma = 300;
     s->belongings.money = 230;
     s->belongings.scraps = 75;
-    s->damage_min = 10;
-    s->damage_max = 30;
+    s->damage_min = 15;
+    s->damage_max = 45;
     s->dodge_score = 0.3;
     s->img = load_image(SELF_SHIP_IMAGE, 200);
 
