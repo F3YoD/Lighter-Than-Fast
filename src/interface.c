@@ -395,8 +395,17 @@ render_foe(ship *s, int health, int shield)
  * Render the ship representing the ennemy.
  */
 {
-    SDL_Texture *name_tex = create_txt(font, s->name, white);
-    SDL_Rect name_r = rect_from_texture(name_tex, foe_r.x - s->img->width - 24, foe_r.y - s->img->height);
+    static SDL_Texture *name_tex;
+    static ship *prev_s;
+    static SDL_Rect name_r;
+
+    if (!name_tex || prev_s != s)
+    {
+        name_tex = create_txt(font, s->name, white);
+        name_r = rect_from_texture(name_tex, foe_r.x - s->img->width - 24, foe_r.y - s->img->height);
+        prev_s = s;
+    }
+
     SDL_RenderCopy(renderer, name_tex, NULL, &name_r);
     render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);
     render_bars(s, &foe_r, health, shield, true);
