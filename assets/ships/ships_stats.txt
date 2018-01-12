@@ -1,7 +1,7 @@
 Bernard,0,100,100,100,100,5,10,0.2,50,../assets/images/ship_enemy2.%d.png
 Albert,1,100,100,100,100,0,0,0.2,50,../assets/images/vaisseau_circulaire.%d.png
-Brigite,0,200,100,100,100,9,15,0.2,100,../assets/images/ship_enemy5.%d.png
-Jean-Hubert de la Moria,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
+Brigitte,0,200,100,100,100,9,15,0.2,100,../assets/images/ship_enemy5.%d.png
+Jean-Hubert la castagne,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy1.%d.png
 Hubert Cumberdale,0,200,100,100,100,9,13,0.2,100,../assets/images/ship_enemy1.%d.png
 Roger,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy3.%d.png
 Caroline,0,200,100,100,100,9,13,0.2,100,../assets/images/ship_enemy1.%d.png
@@ -21,7 +21,7 @@ Gruth,0,200,100,100,100,9,17,0.2,100,../assets/images/ship_enemy2.%d.png
 Lost Chewbie,0,200,100,100,100,9,18,0.2,100,../assets/images/ship_enemy1.%d.png
 Stephane Le Beau,1,100,100,100,100,0,0,0.2,50,../assets/images/vaisseau_circulaire.%d.png
 Bachir De La Savane,0,250,300,10,200,5,17,0.5,25,../assets/images/ship_enemy5.%d.png
-Franck Le Défourailleur,0,100,100,200,325,10,20,0.3,200,../assets/images/ship_enemy3.%d.png
+Franck Le Defourailleur,0,100,100,200,325,10,20,0.3,200,../assets/images/ship_enemy3.%d.png
 Le Livreur De Pizza,1,200,100,100,100,9,17,0.2,100,../assets/images/vaisseau_circulaire.%d.png
 Vaisseau Furtif E52,0,200,200,200,59,20,25,0.3,50,../assets/images/ship_enemy5.%d.png
 La Sainte Pelle,0,150,200,200,150,8,17,0.8,60,../assets/images/Sainte_pelle.%d.png
