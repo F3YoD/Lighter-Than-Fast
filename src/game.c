@@ -212,10 +212,14 @@ play_game(void)
 
         render_background();
 
-        // FIXME Manage combat here
         // Display player's ship
         render_self(self, self_max_health, self_max_shield);
         render_belongings(self);
+
+        if (self->health <= 0)
+        {
+            destroy(&self);
+        }
 
         if (foe)
         {
@@ -227,6 +231,7 @@ play_game(void)
                 show_map = true;
                 node_chosen = false;
                 current_col += 1;
+                choice_node = 0;
 
                 continue;
             }
@@ -241,6 +246,7 @@ play_game(void)
             // TODO flip a coin to know whether the foe or the player starts
 
             // TODO Manage foe's attack
+            shoot(self, foe, 0);
         }
 
         if (show_help)
@@ -260,16 +266,12 @@ play_game(void)
         {
             display_map(map, map_length, height_index, current_col, choice_node);
 
-            if (node_chosen)
+            if (node_chosen && !foe)
             {
-                if (!foe)
-                {
-                    foe = load_foe(map, choice_node, current_col, height_index[current_col]);
-                    foe_max_health = foe->health;
-                    foe_max_shield = foe->shield;
-                    show_map = false;
-                }
-                choice_node = 0;
+                foe = load_foe(map, choice_node, current_col, height_index[current_col]);
+                foe_max_health = foe->health;
+                foe_max_shield = foe->shield;
+                show_map = false;
             }
         }
         else
