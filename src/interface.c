@@ -698,7 +698,7 @@ render_shop_box(enum shop_choice *choice, ship *self, ship *shop, int max_health
         choices_text[i] = (char *)malloc(max_size * sizeof(char));
 
         bool can_heal = i == SHOP_HEALTH && self->belongings.money >= RULE_SHOP_HEALTH_COST && self->health < max_health;
-        bool can_buy_scraps = i == SHOP_SCRAPS && self->belongings.money >= RULE_SHOP_SCRAPS_COST;
+        bool can_buy_scraps = i == SHOP_SCRAPS && self->belongings.money >= RULE_SHOP_SCRAPS_COST && shop->belongings.scraps >= RULE_SHOP_SCRAPS_BACK;
         bool can_leave = i == SHOP_LEAVE;
 
         if (can_heal || can_buy_scraps || can_leave)
