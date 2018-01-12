@@ -54,6 +54,24 @@ exchange(ship *dst, ship *src, struct belongings exchanged_goods)
 }
 
 void
+buy_health(ship *dst, int max_health)
+{
+    if (dst->health >= max_health)
+        return;
+
+    dst->health += RULE_SHOP_HEALTH_BACK;
+    dst->belongings.money -= RULE_SHOP_HEALTH_COST;
+}
+
+void
+buy_scraps(ship *dst, ship *src)
+{
+    dst->belongings.scraps += RULE_SHOP_SCRAPS_BACK;
+    src->belongings.scraps -= RULE_SHOP_SCRAPS_BACK;
+    dst->belongings.money -= RULE_SHOP_SCRAPS_COST;
+}
+
+void
 loot(ship *dst, ship *src)
 {
     exchange(dst, src, src->belongings);

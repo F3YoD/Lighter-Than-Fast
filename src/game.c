@@ -105,8 +105,10 @@ play_game(void)
                         switch (schoice)
                         {
                         case SHOP_HEALTH:
+                            buy_health(self, self_max_health);
                             break;
                         case SHOP_SCRAPS:
+                            buy_scraps(self, foe);
                             break;
                         case SHOP_LEAVE:
                             destroy(&foe);

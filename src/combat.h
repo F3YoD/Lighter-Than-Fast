@@ -16,6 +16,8 @@ void shoot(ship *, ship *, unsigned short);
 void repair(ship *, int);
 void flee(ship *);
 void exchange(ship *, ship *, struct belongings);
+void buy_health(ship *, int);
+void buy_scraps(ship *, ship *);
 void loot(ship *, ship *);
 void destroy(ship **);
 

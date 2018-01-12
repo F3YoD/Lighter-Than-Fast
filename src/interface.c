@@ -624,9 +624,9 @@ render_shop_box(enum shop_choice choice, ship *self, ship *shop)
     short mask = 0;
 
     short prices[NB_CHOICES_SHOP]; // TODO define prices
-    prices[SHOP_HEALTH] = 1;
-    prices[SHOP_SCRAPS] = 1;
-    prices[SHOP_LEAVE] = 0;
+    prices[SHOP_HEALTH] = RULE_SHOP_HEALTH_COST;
+    prices[SHOP_SCRAPS] = RULE_SHOP_SCRAPS_COST;
+    prices[SHOP_LEAVE] = RULE_SHOP_LEAVE_COST;
 
     const size_t max_size = 32;
     char *choices_text[NB_CHOICES_SHOP];
