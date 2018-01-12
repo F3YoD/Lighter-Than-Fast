@@ -2,6 +2,7 @@
 obj/
 bin/
 *.swp
+*/a.out
 
 # Discard separate files
 assets/fonts/
