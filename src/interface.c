@@ -20,6 +20,7 @@ static SDL_Rect icon_rect, alien_pointer_map_rect, alien_cursor_r;
 static SDL_Rect help_rect;
 static SDL_Rect self_r, foe_r;
 static SDL_Rect belongings_r;
+static SDL_Rect game_choices_r;
 
 static int font_height;
 
@@ -183,6 +184,7 @@ init_rectangles(void)
     foe_r = (SDL_Rect){ .x = 19 * WINDOW_WIDTH / 20, .y = 4 * WINDOW_HEIGHT / 7 };
 
     belongings_r = (SDL_Rect){ .x = 60, .y = 60 };
+    game_choices_r = (SDL_Rect){ WINDOW_WIDTH / 20, 3 * WINDOW_HEIGHT / 4, 1, 1 };
 
     initiated = true;
 }
@@ -421,7 +423,7 @@ announce_foe(ship *s)
         prev_s = s;
     }
 
-    // TODO cycle colors
+    // FIXME cycle colors
     name = create_txt(font, s->name, white);
 }
 
@@ -503,7 +505,7 @@ render_belongings(ship *s)
 }
 
 void
-render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], int *current_choice, int mask, int line_spacing, int overlay_padding)
+render_choices(short nb_choices, char *choices_text[], int *current_choice, int mask, int line_spacing, int overlay_padding)
 /**
  * Render a set of choices (expressed by the strings in `choices_text[]') with a cursor.
  * The position of the choices on the screen is given through the `choices_r' structure.
@@ -523,26 +525,26 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], int 
     }
 
     // (Re)evaluate cursor position if necessary
-    if (!cursor_r.w || prev_choice != *current_choice || prev_choices_r != choices_r)
+    if (!cursor_r.w || prev_choice != *current_choice || prev_choices_r != &game_choices_r)
     {
         // Evaluate cursor position
         if (!cursor_r.w)
             cursor_r = (SDL_Rect){ .w = alien_cursor_r.w, .h = alien_cursor_r.h };
-        cursor_r.x = choices_r->x - cursor_r.w - 8;
-        cursor_r.y = choices_r->y + (font_height + line_spacing) * *current_choice + (font_height - cursor_r.h) / 2;
+        cursor_r.x = game_choices_r.x - cursor_r.w - 8;
+        cursor_r.y = game_choices_r.y + (font_height + line_spacing) * *current_choice + (font_height - cursor_r.h) / 2;
 
         // Allow parameters comparison
         prev_choice = *current_choice;
     }
 
     // Reload the texture if a parameter changed
-    if (mask != prev_mask || choices_text != prev_text || prev_choices_r != choices_r)
+    if (mask != prev_mask || choices_text != prev_text || prev_choices_r != &game_choices_r)
     {
         SDL_Texture *t;
         SDL_Color color;
         SDL_Rect r;
 
-        r = bg_r = (SDL_Rect){ .x = choices_r->x, .y = choices_r->y };
+        r = bg_r = (SDL_Rect){ .x = game_choices_r.x, .y = game_choices_r.y };
 
         // Create new texture to render on
         if (choices_texture)
@@ -593,7 +595,7 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], int 
         // Allow parameters comparision
         prev_mask = mask;
         prev_text = choices_text;
-        prev_choices_r = choices_r;
+        prev_choices_r = &game_choices_r;
     }
 
     // Done rendering intermediary texture
@@ -612,8 +614,6 @@ render_combat_box(enum combat_choice *choice, ship *self, unsigned current_col, 
  * Render dialog to interact with shops
  */
 {
-    // TODO move this rect to init_rectangles and use it for shops as well if we keep having them at the same place?
-    static SDL_Rect combat_r = { WINDOW_WIDTH / 20, 3 * WINDOW_HEIGHT / 4, 1, 1 };
     static short line_spacing = 8;
     int mask = 0;
 
@@ -644,7 +644,7 @@ render_combat_box(enum combat_choice *choice, ship *self, unsigned current_col, 
     snprintf(choices_text[COMBAT_REPAIR], max_size, "Se reparer (%d scraps)", prices[COMBAT_REPAIR]);
     snprintf(choices_text[COMBAT_FLEE], max_size, "Fuir le combat (%d plasma)", prices[COMBAT_FLEE]);
 
-    render_choices(&combat_r, NB_CHOICES_COMBAT, choices_text, (int *)choice, mask, line_spacing, 20);
+    render_choices(NB_CHOICES_COMBAT, choices_text, (int *)choice, mask, line_spacing, 20);
 
     for (int i = 0; i < NB_CHOICES_COMBAT; i++)
     {
@@ -658,11 +658,10 @@ render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
  * Render dialog to interact with shops
  */
 {
-    static SDL_Rect shop_r = { WINDOW_WIDTH / 20, 3 * WINDOW_HEIGHT / 4, 1, 1 };
     static short line_spacing = 8;
     short mask = 0;
 
-    short prices[NB_CHOICES_SHOP]; // TODO define prices
+    short prices[NB_CHOICES_SHOP];
     prices[SHOP_HEALTH] = RULE_SHOP_HEALTH_COST;
     prices[SHOP_SCRAPS] = RULE_SHOP_SCRAPS_COST;
     prices[SHOP_LEAVE] = RULE_SHOP_LEAVE_COST;
@@ -684,7 +683,7 @@ render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
     snprintf(choices_text[SHOP_SCRAPS], max_size, "Acheter des scraps ($%d)", prices[SHOP_SCRAPS]);
     snprintf(choices_text[SHOP_LEAVE], max_size, "Sortir du shop");
 
-    render_choices(&shop_r, NB_CHOICES_SHOP, choices_text, (int *)choice, mask, line_spacing, 20);
+    render_choices(NB_CHOICES_SHOP, choices_text, (int *)choice, mask, line_spacing, 20);
 
     for (int i = 0; i < NB_CHOICES_SHOP; i++)
     {
