@@ -30,6 +30,7 @@ play_game(void)
     bool show_map = false;
     bool can_continue = false;
     bool first_run = true;
+    bool foes_turn = false;
 
     while (mchoice != QUIT_GAME)
     { // Game loop, everything happens here
@@ -127,6 +128,7 @@ play_game(void)
                         {
                         case COMBAT_ATTACK:
                             shoot(foe, self, 0);
+                            foes_turn = true;
                             break;
                         case COMBAT_REPAIR:
                             repair(self, self_max_health);
@@ -246,7 +248,11 @@ play_game(void)
             // TODO flip a coin to know whether the foe or the player starts
 
             // TODO Manage foe's attack
-            shoot(self, foe, 0);
+            if (foes_turn)
+            {
+                shoot(self, foe, 0);
+                foes_turn = false;
+            }
         }
 
         if (show_help)
