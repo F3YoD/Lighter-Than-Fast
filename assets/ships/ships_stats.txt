@@ -25,3 +25,4 @@ Franck le défourailleur,0,100,100,200,325,10,45,0.3,200,../assets/images/ship_e
 Le livreur de pizza,1,200,100,100,100,9,17,0.2,100,../assets/images/vaisseau_circulaire.%d.png
 Vaisseau furtif E52,0,200,200,200,59,20,50,0.3,50,../assets/images/ship_enemy5.%d.png
 La sainte pelle,0,150,200,200,150,6,10,0.8,60,../assets/images/Sainte_pelle.%d.png
+
