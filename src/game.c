@@ -47,15 +47,13 @@ play_game(void)
             }
             else if (event.type == SDL_KEYUP)
             {
-                if (show_map && foe) show_map = false;
-
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_ESCAPE: case SDLK_TAB:
                     show_menu = true;
                     break;
                 case SDLK_m:
-                    show_map = !show_map;
+                    if (foe) show_map = !show_map;
                     break;
                 case SDLK_h:
                     show_help = !show_help;
