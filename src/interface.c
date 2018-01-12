@@ -414,7 +414,7 @@ render_foe(ship *s, int health, int shield)
     if (!name_tex || prev_s != s)
     {
         name_tex = create_txt(font, s->name, white);
-        name_r = rect_from_texture(name_tex, foe_r.x - s->img->width - 24, foe_r.y - s->img->height);
+        name_r = rect_from_texture(name_tex, foe_r.x - s->img->width - 24, foe_r.y - s->img->height - 60);
         prev_s = s;
     }
 
