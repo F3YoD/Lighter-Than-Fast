@@ -143,6 +143,7 @@ play_game(void)
                             show_map = true;
                             node_chosen = false;
                             current_col += 1;
+                            choice_node = 0;
                             *cchoice = COMBAT_ATTACK;
                             break;
                         default:
