@@ -344,16 +344,20 @@ display_dialog(unsigned counter)
  * Display immersive text.
  */
 {
-    SDL_Texture *t = texture_from_text(font, 10, inner_overlay_rect, dialogs[counter], white, ALIGN_LEFT);
+    static unsigned prev_c;
+
+    if (!dialog_texture || prev_c != counter)
+    {
+        dialog_texture = texture_from_text(font, 10, inner_overlay_rect, dialogs[counter], white, ALIGN_LEFT);
+        prev_c = counter;
+    }
 
     render_overlay_bg(NULL, 0);
 
-    SDL_RenderCopy(renderer, t, NULL, NULL);
+    SDL_RenderCopy(renderer, dialog_texture, NULL, NULL);
     SDL_RenderCopy(renderer, continue_texture, NULL, &continue_msg_rect);
 
     SDL_RenderPresent(renderer);
-
-    SDL_DestroyTexture(t);
 }
 
 void
