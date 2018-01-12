@@ -34,8 +34,8 @@ load_self(void)
 
     strncpy(s->name, "UNSC Yvan", 50);
     s->is_shop = false;
-    s->health = 200;
-    s->shield = 600;
+    s->health = 250;
+    s->shield = 300;
     s->belongings.plasma = 320;
     s->belongings.money = 230;
     s->belongings.scraps = 75;
