@@ -56,13 +56,13 @@ load_boss(void)
 
     strncpy(s->name, "Herr FRAUFRAU", 50);
     s->is_shop = false;
-    s->health = 100;
-    s->shield = 50;
+    s->health = 500;
+    s->shield = 250;
     s->belongings.plasma = 100;
     s->belongings.money = 100;
     s->belongings.scraps = 20;
-    s->damage_min = 10;
-    s->damage_max = 30;
+    s->damage_min = 8;
+    s->damage_max = 23;
     s->dodge_score = 0.1;
     s->img = load_image(BOSS_SHIP_IMAGE, 300);
 
