@@ -58,11 +58,11 @@ load_boss(void)
     s->is_shop = false;
     s->health = 500;
     s->shield = 250;
-    s->belongings.plasma = 100;
+    s->belongings.plasma = 300;
     s->belongings.money = 100;
     s->belongings.scraps = 20;
     s->damage_min = 8;
-    s->damage_max = 23;
+    s->damage_max = 22;
     s->dodge_score = 0.1;
     s->img = load_image(BOSS_SHIP_IMAGE, 300);
 
