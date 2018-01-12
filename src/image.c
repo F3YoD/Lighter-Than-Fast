@@ -90,7 +90,6 @@ permanently_scale_image(image *img, float scale_x, float scale_y)
 void
 render_image_scale_clip_align(image *img, int x, int y, float scale_x, float scale_y, int angle, SDL_Rect *clip_r, y_align y_al, x_align x_al)
 {
-    // FIXME images negatively scaled seem not to render, should use SDL_RenderCopyEx
     SDL_Rect r;
 
     // Show next frame if time is ok
@@ -103,21 +102,18 @@ render_image_scale_clip_align(image *img, int x, int y, float scale_x, float sca
     // Load texture if not loaded yet
     load_frame(img, img->curr_frame);
 
-    r = (SDL_Rect){ x, y, scale_x * img->width, scale_y * img->height };
-    if (clip_r)
+    r = (SDL_Rect){ .x = x, .y = y };
+    r.w = scale_x * (clip_r ? clip_r->w : img->width);
+    r.h = scale_y * (clip_r ? clip_r->h : img->height);
+
+    if (x_al != ALIGN_LEFT)
     {
-        r.w = clip_r->w;
-        r.h = clip_r->h;
+        r.x -= (x_al == ALIGN_RIGHT) ? r.w : (r.w / 2);
     }
 
-    if (x_al)
+    if (y_al != ALIGN_TOP)
     {
-        r.x -= (x_al == ALIGN_BOTTOM) ? r.w : (r.w / 2);
-    }
-
-    if (y_al)
-    {
-        r.y -= (y_al == ALIGN_RIGHT) ? r.h : (r.h / 2);
+        r.y -= (y_al == ALIGN_BOTTOM) ? r.h : (r.h / 2);
     }
 
     SDL_RenderCopy(renderer, img->textures[img->curr_frame], clip_r, &r);
