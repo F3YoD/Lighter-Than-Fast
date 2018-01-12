@@ -57,7 +57,8 @@ exchange(ship *dst, ship *src, struct belongings exchanged_goods)
 void
 buy_health(ship *dst, int max_health)
 {
-    dst->health = dst->health > max_health ? max_health : dst->health + RULE_SHOP_HEALTH_BACK;
+    dst->health += RULE_SHOP_HEALTH_BACK;
+    if (dst->health > max_health) dst->health = max_health;
     dst->belongings.money -= RULE_SHOP_HEALTH_COST;
 }
 

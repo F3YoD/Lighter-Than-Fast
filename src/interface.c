@@ -676,7 +676,7 @@ render_combat_box(enum combat_choice *choice, ship *self, unsigned current_col, 
 }
 
 void
-render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
+render_shop_box(enum shop_choice *choice, ship *self, ship *shop, int max_health)
 /**
  * Render dialog to interact with shops
  */
@@ -697,7 +697,11 @@ render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
     {
         choices_text[i] = (char *)malloc(max_size * sizeof(char));
 
-        if (i == SHOP_LEAVE || (self->belongings.money >= prices[i] && shop->belongings.all[i] > 0))
+        bool can_heal = i == SHOP_HEALTH && self->belongings.money >= RULE_SHOP_HEALTH_COST && self->health < max_health;
+        bool can_buy_scraps = i == SHOP_SCRAPS && self->belongings.money >= RULE_SHOP_SCRAPS_COST;
+        bool can_leave = i == SHOP_LEAVE;
+
+        if (can_heal || can_buy_scraps || can_leave)
             mask |= 1 << i;
     }
 
