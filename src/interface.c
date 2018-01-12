@@ -482,6 +482,11 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], shor
 
     static SDL_Rect bg_r, cursor_r;
 
+    while (!((mask >> current_choice) & 1))
+    {
+        current_choice += 1;
+    }
+
     // (Re)evaluate cursor position if necessary
     if (!cursor_r.w || prev_choice != current_choice || prev_choices_r != choices_r)
     {
@@ -516,6 +521,15 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], shor
         {
             // Write in gray if the mask says so
             color = ((mask >> i) & 1) ? white : gray;
+            if ((mask >> i) & 1)
+            {
+                color = white;
+            }
+            else
+            {
+                color = gray;
+                current_choice += 1;
+            }
             t = create_txt(font, choices_text[i], color);
 
             // TODO the following line is inefficient, fix it
