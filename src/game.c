@@ -19,8 +19,10 @@ play_game(void)
 
     // Gameplay
     enum menu_choice mchoice = NEW_GAME;
-    enum combat_choice cchoice = COMBAT_ATTACK;
-    enum shop_choice schoice = SHOP_HEALTH;
+    enum combat_choice *cchoice = (enum combat_choice *)malloc(sizeof(enum combat_choice));
+    *cchoice = COMBAT_ATTACK;
+    enum shop_choice *schoice = (enum shop_choice *)malloc(sizeof(enum shop_choice));
+    *schoice = SHOP_HEALTH;
     unsigned msg_counter, current_col;
     int next_loop_delay, next_loop_time;
     SDL_Event event;
@@ -31,9 +33,11 @@ play_game(void)
     bool can_continue = false;
     bool first_run = true;
     bool foes_turn = false;
+    bool *shooting = (bool *)malloc(sizeof(bool));
 
+    // Game loop, everything happens here
     while (mchoice != QUIT_GAME)
-    { // Game loop, everything happens here
+    {
         // Main interactions treatment
         while (SDL_PollEvent(&event) && !first_run)
         {
@@ -69,11 +73,11 @@ play_game(void)
                     }
                     else if (foe && foe->is_shop)
                     {
-                        schoice = (schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
+                        *schoice = (*schoice + NB_CHOICES_SHOP - 1) % NB_CHOICES_SHOP;
                     }
                     else if (foe)
                     {
-                        cchoice = (cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
+                        *cchoice = (*cchoice + NB_CHOICES_COMBAT - 1) % NB_CHOICES_COMBAT;
                     }
                     break;
                 case SDLK_DOWN: case SDLK_j:
@@ -86,11 +90,11 @@ play_game(void)
                     }
                     else if (foe && foe->is_shop)
                     {
-                        schoice = (schoice + 1) % NB_CHOICES_SHOP;
+                        *schoice = (*schoice + 1) % NB_CHOICES_SHOP;
                     }
                     else if (foe)
                     {
-                        cchoice = (cchoice + 1) % NB_CHOICES_COMBAT;
+                        *cchoice = (*cchoice + 1) % NB_CHOICES_COMBAT;
                     }
                     break;
                 case SDLK_RETURN: case SDLK_RETURN2: case SDLK_KP_ENTER:
@@ -104,7 +108,7 @@ play_game(void)
                     }
                     else if (foe && foe->is_shop)
                     {
-                        switch (schoice)
+                        switch (*schoice)
                         {
                         case SHOP_HEALTH:
                             buy_health(self, self_max_health);
@@ -124,7 +128,7 @@ play_game(void)
                     }
                     else if (foe)
                     {
-                        switch (cchoice)
+                        switch (*cchoice)
                         {
                         case COMBAT_ATTACK:
                             shoot(foe, self, 0);
@@ -139,7 +143,7 @@ play_game(void)
                             show_map = true;
                             node_chosen = false;
                             current_col += 1;
-                            cchoice = COMBAT_ATTACK;
+                            *cchoice = COMBAT_ATTACK;
                             break;
                         default:
                             break;
@@ -183,6 +187,7 @@ play_game(void)
             msg_counter = 0;
             current_col = 0;
             can_continue = true;
+            *shooting = false;
 
             if (self)
                 free(self);
@@ -213,6 +218,8 @@ play_game(void)
         }
 
         render_background();
+
+        render_projectile(foes_turn, shooting);
 
         // Display player's ship
         render_self(self, self_max_health, self_max_shield);
@@ -248,10 +255,10 @@ play_game(void)
             // TODO flip a coin to know whether the foe or the player starts
 
             // TODO Manage foe's attack
-            if (foes_turn)
+            if (foes_turn && foe->belongings.plasma >= RULE_COMBAT_ATTACK_COST)
             {
                 shoot(self, foe, 0);
-                foes_turn = false;
+                *shooting = true;
             }
         }
 

@@ -15,7 +15,7 @@
  *   render_* functions don't
  */
 
-void render_projectil(bool, bool*); 
+void render_projectile(bool, bool*);
 
 void load_interface_components(void);
 void free_interface_components(void);
@@ -32,10 +32,10 @@ void display_quit_dialog(void);
 void render_self(ship *, int, int);
 void render_foe(ship *, int, int);
 void render_bars(ship *, SDL_Rect *, int, int, bool);
-void render_choices(SDL_Rect *, short, char *[], short, short, short, short);
+void render_choices(SDL_Rect *, short, char *[], int *, int, int, int);
 void render_belongings(ship *);
-void render_combat_box(enum combat_choice, ship *);
-void render_shop_box(enum shop_choice, ship *, ship *);
+void render_combat_box(enum combat_choice *, ship *);
+void render_shop_box(enum shop_choice *, ship *, ship *);
 void render_help_box(void);
 void render_overlay_bg(SDL_Rect *, short);
 void render_background(void);

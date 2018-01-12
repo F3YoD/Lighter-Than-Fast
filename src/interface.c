@@ -26,21 +26,21 @@ static int font_height;
 // TODO introduce ennemies the Broforce way
 
 void
-render_projectil(bool pType, bool *pTir)
+render_projectile(bool from_enemy, bool *pTir)
 /**
  * Render a projectile from one ship to another
  * if pType is true, the enemy is shooting
  * else it's from the player
  */
 {
-    SDL_Texture *tex_m_e = IMG_LoadTexture(renderer, "enemy_missile.png");
-    SDL_Texture *tex_m_a = IMG_LoadTexture(renderer, "ally_missile.png");
+    SDL_Texture *tex_m_e = IMG_LoadTexture(renderer, "../assets/images/enemy_missile.png");
+    SDL_Texture *tex_m_a = IMG_LoadTexture(renderer, "../assets/images/ally_missile.png");
     static SDL_Rect pos_m_e = { 800, 300, 0, 0 };
     static SDL_Rect pos_m_a = { 100, 600, 0, 0 };
     int x_limite_e = 100;
     int x_limite_a = 800;
 
-    if(pType && *pTir)
+    if(from_enemy && *pTir)
     {
         ///////   enemy   //////
 
@@ -55,10 +55,10 @@ render_projectil(bool pType, bool *pTir)
         else
         {
             pos_m_e.x = 800;
-            *pTir = false;
+            *pTir = !(*pTir);
         }
     }
-    else if(!pType && *pTir)
+    else if(!from_enemy && *pTir)
     {
         ///////   ally    ///////
         SDL_QueryTexture(tex_m_a, NULL, NULL, &pos_m_a.w, &pos_m_a.h);
@@ -71,7 +71,7 @@ render_projectil(bool pType, bool *pTir)
         else
         {
             pos_m_a.x = 800;
-            *pTir = false;
+            *pTir = !(*pTir);
         }
     }
 
@@ -467,7 +467,7 @@ render_belongings(ship *s)
 }
 
 void
-render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], short current_choice, short mask, short line_spacing, short overlay_padding)
+render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], int *current_choice, int mask, int line_spacing, int overlay_padding)
 /**
  * Render a set of choices (expressed by the strings in `choices_text[]') with a cursor.
  * The position of the choices on the screen is given through the `choices_r' structure.
@@ -475,29 +475,28 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], shor
  * An optionnal overlay can be added if `overlay_padding' is greater or equal to zero.
  */
 {
-    // FIXME forbid cursor on choices forbidden by mask
     static short prev_mask, prev_choice;
     static char **prev_text;
     static SDL_Rect *prev_choices_r;
 
     static SDL_Rect bg_r, cursor_r;
 
-    while (!((mask >> current_choice) & 1))
+    while (!((mask >> *current_choice) & 1))
     {
-        current_choice += 1;
+        *current_choice = (*current_choice + 1) % nb_choices;
     }
 
     // (Re)evaluate cursor position if necessary
-    if (!cursor_r.w || prev_choice != current_choice || prev_choices_r != choices_r)
+    if (!cursor_r.w || prev_choice != *current_choice || prev_choices_r != choices_r)
     {
         // Evaluate cursor position
         if (!cursor_r.w)
             cursor_r = (SDL_Rect){ .w = alien_cursor_r.w, .h = alien_cursor_r.h };
         cursor_r.x = choices_r->x - cursor_r.w - 8;
-        cursor_r.y = choices_r->y + (font_height + line_spacing) * current_choice + (font_height - cursor_r.h) / 2;
+        cursor_r.y = choices_r->y + (font_height + line_spacing) * *current_choice + (font_height - cursor_r.h) / 2;
 
         // Allow parameters comparison
-        prev_choice = current_choice;
+        prev_choice = *current_choice;
     }
 
     // Reload the texture if a parameter changed
@@ -572,7 +571,7 @@ render_choices(SDL_Rect *choices_r, short nb_choices, char *choices_text[], shor
 }
 
 void
-render_combat_box(enum combat_choice choice, ship *self)
+render_combat_box(enum combat_choice *choice, ship *self)
 /**
  * Render dialog to interact with shops
  */
@@ -580,7 +579,7 @@ render_combat_box(enum combat_choice choice, ship *self)
     // TODO move this rect to init_rectangles and use it for shops as well if we keep having them at the same place?
     static SDL_Rect combat_r = { WINDOW_WIDTH / 20, 3 * WINDOW_HEIGHT / 4, 1, 1 };
     static short line_spacing = 8;
-    short mask = 0;
+    int mask = 0;
 
     short prices[NB_CHOICES_COMBAT]; // TODO define prices
     prices[COMBAT_ATTACK] = RULE_COMBAT_ATTACK_COST;
@@ -604,7 +603,7 @@ render_combat_box(enum combat_choice choice, ship *self)
     snprintf(choices_text[COMBAT_REPAIR], max_size, "Se reparer (%d scraps)", prices[COMBAT_REPAIR]);
     snprintf(choices_text[COMBAT_FLEE], max_size, "Fuir le combat (%d plasma)", prices[COMBAT_FLEE]);
 
-    render_choices(&combat_r, NB_CHOICES_COMBAT, choices_text, choice, mask, line_spacing, 20);
+    render_choices(&combat_r, NB_CHOICES_COMBAT, choices_text, (int *)choice, mask, line_spacing, 20);
 
     for (int i = 0; i < NB_CHOICES_COMBAT; i++)
     {
@@ -613,7 +612,7 @@ render_combat_box(enum combat_choice choice, ship *self)
 }
 
 void
-render_shop_box(enum shop_choice choice, ship *self, ship *shop)
+render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
 /**
  * Render dialog to interact with shops
  */
@@ -644,7 +643,7 @@ render_shop_box(enum shop_choice choice, ship *self, ship *shop)
     snprintf(choices_text[SHOP_SCRAPS], max_size, "Acheter des scraps ($%d)", prices[SHOP_SCRAPS]);
     snprintf(choices_text[SHOP_LEAVE], max_size, "Sortir du shop");
 
-    render_choices(&shop_r, NB_CHOICES_SHOP, choices_text, choice, mask, line_spacing, 20);
+    render_choices(&shop_r, NB_CHOICES_SHOP, choices_text, (int *)choice, mask, line_spacing, 20);
 
     for (int i = 0; i < NB_CHOICES_SHOP; i++)
     {
