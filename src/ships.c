@@ -34,14 +34,14 @@ load_self(void)
 
     strncpy(s->name, "UNSC Yvan", 50);
     s->is_shop = false;
-    s->health = 100;
-    s->shield = 50;
+    s->health = 200;
+    s->shield = 100;
     s->belongings.plasma = 150;
     s->belongings.money = 100;
-    s->belongings.scraps = 20;
+    s->belongings.scraps = 50;
     s->damage_min = 10;
     s->damage_max = 30;
-    s->dodge_score = 0.1;
+    s->dodge_score = 0.3;
     s->img = load_image(SELF_SHIP_IMAGE, 200);
 
     permanently_scale_image(s->img, 6, 6);
