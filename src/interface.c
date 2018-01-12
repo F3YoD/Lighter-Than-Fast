@@ -379,16 +379,6 @@ render_self(ship *s, int health, int shield)
  * Render the ship representing the player.
  */
 {
-    static bool scaled;
-    static ship *prev_s;
-
-    if (!scaled && prev_s != s)
-    {
-        permanently_scale_image(s->img, 6, 6);
-        scaled = true;
-        prev_s = s;
-    }
-
     render_image_align(s->img, self_r.x, self_r.y, ALIGN_BOTTOM, ALIGN_LEFT);
     render_bars(s, &self_r, health, shield, false);
 }
@@ -399,16 +389,6 @@ render_foe(ship *s, int health, int shield)
  * Render the ship representing the ennemy.
  */
 {
-    static bool scaled;
-    static ship *prev_s;
-
-    if (!scaled || prev_s != s)
-    {
-        permanently_scale_image(s->img, 8, 8);
-        scaled = true;
-        prev_s = s;
-    }
-
     render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);
     render_bars(s, &foe_r, health, shield, true);
 }

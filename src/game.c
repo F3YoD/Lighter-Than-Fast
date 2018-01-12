@@ -98,7 +98,10 @@ play_game(void)
                 case SDLK_SPACE: case SDLK_KP_SPACE:
                     if (show_map)
                     {
-                        if (!foe) node_chosen = true;
+                        if (!foe)
+                        {
+                            node_chosen = true;
+                        }
                     }
                     else if (foe && foe->is_shop)
                     {
@@ -261,11 +264,14 @@ play_game(void)
 
             if (node_chosen)
             {
-                foe = load_foe(map, choice_node, current_col, height_index[current_col]);
-                foe_max_health = foe->health;
-                foe_max_shield = foe->shield;
+                if (!foe)
+                {
+                    foe = load_foe(map, choice_node, current_col, height_index[current_col]);
+                    foe_max_health = foe->health;
+                    foe_max_shield = foe->shield;
+                    show_map = false;
+                }
                 choice_node = 0;
-                show_map = false;
             }
         }
         else

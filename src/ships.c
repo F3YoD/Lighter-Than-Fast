@@ -22,6 +22,8 @@ load_foe(map_matrix map, unsigned line, unsigned col, unsigned col_height)
     map[col] = NULL;
     */
 
+    permanently_scale_image(foe->img, 8, 8);
+
     return foe;
 }
 
@@ -41,6 +43,8 @@ load_self(void)
     s->damage_max = 30;
     s->dodge_score = 0.1;
     s->img = load_image(SELF_SHIP_IMAGE, 200);
+
+    permanently_scale_image(s->img, 6, 6);
 
     return s;
 }
