@@ -246,7 +246,7 @@ play_game(void)
             }
             else if (foe->is_shop)
             {
-                render_shop_box(schoice, self, foe);
+                render_shop_box(schoice, self, foe, self_max_health);
             }
             else
             {

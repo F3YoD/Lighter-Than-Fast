@@ -392,8 +392,17 @@ render_foe(ship *s, int health, int shield)
  * Render the ship representing the ennemy.
  */
 {
-    SDL_Texture *name_tex = create_txt(font, s->name, white);
-    SDL_Rect name_r = rect_from_texture(name_tex, foe_r.x - s->img->width - 24, foe_r.y - s->img->height);
+    static SDL_Texture *name_tex;
+    static ship *prev_s;
+    static SDL_Rect name_r;
+
+    if (!name_tex || prev_s != s)
+    {
+        name_tex = create_txt(font, s->name, white);
+        name_r = rect_from_texture(name_tex, foe_r.x - s->img->width - 24, foe_r.y - s->img->height - 60);
+        prev_s = s;
+    }
+
     SDL_RenderCopy(renderer, name_tex, NULL, &name_r);
     render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);
     render_bars(s, &foe_r, health, shield, true);
@@ -652,7 +661,7 @@ render_combat_box(enum combat_choice *choice, ship *self, unsigned current_col, 
 }
 
 void
-render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
+render_shop_box(enum shop_choice *choice, ship *self, ship *shop, int max_health)
 /**
  * Render dialog to interact with shops
  */
@@ -673,7 +682,11 @@ render_shop_box(enum shop_choice *choice, ship *self, ship *shop)
     {
         choices_text[i] = (char *)malloc(max_size * sizeof(char));
 
-        if (i == SHOP_LEAVE || (self->belongings.money >= prices[i] && shop->belongings.all[i] > 0))
+        bool can_heal = i == SHOP_HEALTH && self->belongings.money >= RULE_SHOP_HEALTH_COST && self->health < max_health;
+        bool can_buy_scraps = i == SHOP_SCRAPS && self->belongings.money >= RULE_SHOP_SCRAPS_COST && shop->belongings.scraps >= RULE_SHOP_SCRAPS_BACK;
+        bool can_leave = i == SHOP_LEAVE;
+
+        if (can_heal || can_buy_scraps || can_leave)
             mask |= 1 << i;
     }
 

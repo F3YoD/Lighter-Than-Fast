@@ -35,7 +35,7 @@ void render_bars(ship *, SDL_Rect *, int, int, bool);
 void render_choices(short, char *[], int *, int, int, int);
 void render_belongings(ship *);
 void render_combat_box(enum combat_choice *, ship *, unsigned, unsigned);
-void render_shop_box(enum shop_choice *, ship *, ship *);
+void render_shop_box(enum shop_choice *, ship *, ship *, int);
 void render_help_box(void);
 void render_overlay_bg(SDL_Rect *, short);
 void render_background(void);

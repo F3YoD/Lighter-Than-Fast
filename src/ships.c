@@ -96,7 +96,8 @@ gen_ship_list(unsigned *nb_ships)
 
 ship *
 load_ship_from_line(char *line)
-{ // Fill ship fields from a formatted string
+// Fill ship fields from a formatted string
+{
     ship *s = (ship *)malloc(sizeof(ship));
     char *token = NULL;
     char sep[] = ",\n";
