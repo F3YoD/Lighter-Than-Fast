@@ -389,8 +389,40 @@ render_foe(ship *s, int health, int shield)
  * Render the ship representing the ennemy.
  */
 {
+    SDL_Texture *name_tex = create_txt(font, s->name, white);
+    SDL_Rect name_r = rect_from_texture(name_tex, foe_r.x - s->img->width - 24, foe_r.y - s->img->height);
+    SDL_RenderCopy(renderer, name_tex, NULL, &name_r);
     render_image_align(s->img, foe_r.x, foe_r.y, ALIGN_BOTTOM, ALIGN_RIGHT);
     render_bars(s, &foe_r, health, shield, true);
+}
+
+void
+announce_foe(ship *s)
+{
+    static SDL_Texture *behold, *name;
+    static SDL_Rect behold_r, name_r;
+    static int i;
+    static ship *prev_s;
+
+    if (!behold)
+    {
+        behold = create_txt(font, "BEHOLD", white);
+        SDL_QueryTexture(behold, NULL, NULL, &behold_r.w, &behold_r.h);
+        behold_r.x = WINDOW_WIDTH / 2 - behold_r.w;
+        behold_r.y = WINDOW_WIDTH / 3 - behold_r.h;
+    }
+
+    if (prev_s != s)
+    {
+        SDL_QueryTexture(name, NULL, NULL, &name_r.w, &name_r.h);
+        name_r.x = WINDOW_WIDTH / 2 - name_r.w;
+        name_r.y = behold_r.y + behold_r.h + 8;
+        i = 0;
+        prev_s = s;
+    }
+
+    // TODO cycle colors
+    name = create_txt(font, s->name, white);
 }
 
 void
