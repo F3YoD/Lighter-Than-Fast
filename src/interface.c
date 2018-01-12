@@ -33,8 +33,8 @@ render_projectil(bool pType, bool *pTir)
  * else it's from the player
  */
 {
-    SDL_Texture * tex_m_e = IMG_LoadTexture(renderer, "enemy_missile.png");
-    SDL_Texture * tex_m_a = IMG_LoadTexture(renderer, "ally_missile.png");
+    SDL_Texture *tex_m_e = IMG_LoadTexture(renderer, "enemy_missile.png");
+    SDL_Texture *tex_m_a = IMG_LoadTexture(renderer, "ally_missile.png");
     static SDL_Rect pos_m_e = { 800, 300, 0, 0 };
     static SDL_Rect pos_m_a = { 100, 600, 0, 0 };
     int x_limite_e = 100;
