@@ -26,6 +26,9 @@ play_game(void)
     unsigned msg_counter, current_col;
     int next_loop_delay, next_loop_time;
     SDL_Event event;
+    bool no_health = false;
+    bool has_won = false;
+    bool no_more_plasma = false;
     bool show_dialog = true;
     bool show_menu = true;
     bool show_help = false;
@@ -52,6 +55,13 @@ play_game(void)
             }
             else if (event.type == SDL_KEYUP)
             {
+                if (no_health || has_won || no_more_plasma)
+                {
+                    can_continue = false;
+                    show_menu = true;
+                    break;
+                }
+
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_ESCAPE: case SDLK_TAB:
@@ -218,6 +228,28 @@ play_game(void)
 #endif
         }
 
+        no_health = self->health <= 0;
+        has_won = current_col == map_length;
+        no_more_plasma = self->belongings.plasma < RULE_COMBAT_ATTACK_COST;
+
+        if (no_health)
+        {
+            display_lost();
+        }
+        else if (has_won)
+        {
+            display_win();
+        }
+        else if (no_more_plasma)
+        {
+            display_noplasma();
+        }
+
+        if (no_health || has_won || no_more_plasma)
+        {
+            continue;
+        }
+
         render_background();
 
         render_projectile(foes_turn, shooting);
@@ -253,9 +285,7 @@ play_game(void)
             {
                 render_combat_box(cchoice, self, current_col, map_length);
             }
-            // TODO flip a coin to know whether the foe or the player starts
 
-            // TODO Manage foe's attack
             if (foes_turn && foe->belongings.plasma >= RULE_COMBAT_ATTACK_COST)
             {
                 shoot(self, foe, 0);

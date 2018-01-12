@@ -377,6 +377,30 @@ display_quit_dialog(void)
 }
 
 void
+display_lost(void)
+{
+    SDL_Texture *t = load_texture("../assets/images/Loose.jpg");
+    SDL_RenderCopy(renderer, t, NULL, NULL);
+    SDL_RenderPresent(renderer);
+}
+
+void
+display_noplasma(void)
+{
+    SDL_Texture *t = load_texture("../assets/images/No_plasma.jpg");
+    SDL_RenderCopy(renderer, t, NULL, NULL);
+    SDL_RenderPresent(renderer);
+}
+
+void
+display_win(void)
+{
+    SDL_Texture *t = load_texture("../assets/images/Victory.jpg");
+    SDL_RenderCopy(renderer, t, NULL, NULL);
+    SDL_RenderPresent(renderer);
+}
+
+void
 render_self(ship *s, int health, int shield)
 /**
  * Render the ship representing the player.
@@ -493,7 +517,6 @@ render_bars(ship *s, SDL_Rect *ship_r, int health, int shield, bool reversed)
 void
 render_belongings(ship *s)
 {
-    // TODO move the rect to render in in the parameters to be able to render foe's?
     struct belongings *b = &s->belongings;
     static struct belongings prev_b;
 

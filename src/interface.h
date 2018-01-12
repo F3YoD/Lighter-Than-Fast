@@ -28,6 +28,9 @@ void display_map(map_matrix, unsigned, unsigned short[], unsigned, unsigned);
 void display_fake_loading(unsigned);
 void display_dialog(unsigned);
 void display_quit_dialog(void);
+void display_lost(void);
+void display_noplasma(void);
+void display_win(void);
 
 void render_self(ship *, int, int);
 void render_foe(ship *, int, int);
