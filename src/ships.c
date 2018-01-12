@@ -35,10 +35,10 @@ load_self(void)
     strncpy(s->name, "UNSC Yvan", 50);
     s->is_shop = false;
     s->health = 200;
-    s->shield = 100;
-    s->belongings.plasma = 150;
-    s->belongings.money = 100;
-    s->belongings.scraps = 50;
+    s->shield = 600;
+    s->belongings.plasma = 300;
+    s->belongings.money = 230;
+    s->belongings.scraps = 75;
     s->damage_min = 10;
     s->damage_max = 30;
     s->dodge_score = 0.3;
