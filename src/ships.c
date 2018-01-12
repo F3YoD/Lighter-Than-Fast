@@ -36,7 +36,7 @@ load_self(void)
     s->is_shop = false;
     s->health = 200;
     s->shield = 600;
-    s->belongings.plasma = 300;
+    s->belongings.plasma = 320;
     s->belongings.money = 230;
     s->belongings.scraps = 75;
     s->damage_min = 12;
