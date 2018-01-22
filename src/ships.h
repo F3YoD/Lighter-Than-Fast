@@ -4,9 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
+#include "shared.h"
 #include "tools.h"
 #include "list.h"
 #include "image.h"

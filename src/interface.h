@@ -1,8 +1,6 @@
 #ifndef _INTERFACE_H
 #define _INTERFACE_H
 
-#include <SDL2/SDL.h>
-
 #include "shared.h"
 #include "tools.h"
 #include "ships.h"

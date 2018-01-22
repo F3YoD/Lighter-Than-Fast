@@ -4,7 +4,6 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
-#include <SDL2/SDL.h>
 
 #include "shared.h"
 #include "list.h"

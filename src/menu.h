@@ -4,11 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 
-#include "tools.h"
 #include "shared.h"
+#include "tools.h"
 #include "macros.h"
 
 enum menu_choice { CONTINUE_GAME, NEW_GAME, QUIT_GAME, NB_CHOICES_MENU };
